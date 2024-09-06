@@ -48,50 +48,44 @@ public class HeaderController extends Application {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("XML Files", "*.xml")
         );
-
         Stage stage = (Stage) loadFileButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
             currentFile.setText(selectedFile.getAbsolutePath());
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-
-            // Start the file loading task
             loadFileWithProgress(selectedFile);
         }
     }
 
     private void loadFileWithProgress(File file) {
-        // Show the progress bar
         progressBar.setVisible(true);
-        progressBar.setProgress(0);
+        progressBar.progressProperty().unbind();
 
-        // Create a task to load the file
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                // Simulate a file loading process
                 for (int i = 0; i <= 100; i += 10) {
-                    Thread.sleep(200); // Simulate time taken to load file
+                    Thread.sleep(200);
                     updateProgress(i, 100);
                 }
                 return null;
             }
         };
 
-        // Bind progress bar to task progress
         progressBar.progressProperty().bind(task.progressProperty());
 
-        // Start the task in a new thread
         new Thread(task).start();
-
-        // Hide the progress bar when task is complete
-        task.setOnSucceeded(e -> progressBar.setVisible(false));
+        task.setOnSucceeded(e -> {
+            progressBar.setVisible(false);
+            currentFile.setText(file.getAbsolutePath());
+        });
         task.setOnFailed(e -> {
             progressBar.setVisible(false);
             e.getSource().getException().printStackTrace();
         });
     }
+
 
     public static void main(String[] args) {
         launch(args);

@@ -9,16 +9,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/22.0.2" xmlns:fx="http://javafx.com/fxml/1.0" fx:controller="Header.HeaderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="157.0" prefWidth="776.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Header.HeaderController">
     <top>
-        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticel" textAlignment="CENTER" wrappingWidth="161.5791015625" BorderPane.alignment="CENTER">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticel" textAlignment="CENTER" wrappingWidth="160.5791015625" BorderPane.alignment="CENTER">
             <font>
-                <Font name="Gisha Bold" size="34.0" />
+                <Font name="Yu Gothic UI Light" size="40.0" />
             </font>
         </Text>
     </top>
     <center>
-        <ToolBar prefHeight="55.0" prefWidth="737.0" BorderPane.alignment="CENTER">
+        <ToolBar prefHeight="55.0" prefWidth="732.0" BorderPane.alignment="CENTER">
             <items>
                 <Button fx:id="loadFileButton" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="31.0" prefWidth="102.0" text="Load File " />
                 <TextField fx:id="currentFile" editable="false" prefHeight="17.0" prefWidth="605.0" />
@@ -31,8 +31,11 @@
     <bottom>
         <ProgressBar fx:id="progressBar" prefHeight="23.0" prefWidth="394.0" progress="0.0" BorderPane.alignment="BASELINE_LEFT">
             <padding>
-                <Insets left="25.0" />
+                <Insets left="28.0" />
             </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
         </ProgressBar>
     </bottom>
 </BorderPane>
