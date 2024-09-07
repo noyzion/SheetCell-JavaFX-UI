@@ -34,6 +34,8 @@ public class SheetDTO {
         this.counterChangedCells = counterChangedCells;
     }
 
+    public Map<CoordinateDTO, CellDTO> getCells() { return cells; }
+
     public int getCounterChangedCells() {
         return counterChangedCells;
     }
@@ -49,6 +51,10 @@ public class SheetDTO {
     public int getColumnSize() {
         return columnSize;
     }
+
+    public int getColumnWidthUnits() { return columnWidthUnits; }
+
+    public int getRowsHeightUnits() { return rowsHeightUnits; }
 
 
 

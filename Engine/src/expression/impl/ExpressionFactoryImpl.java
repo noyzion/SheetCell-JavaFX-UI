@@ -3,6 +3,8 @@ package expression.impl;
 import expression.api.Expression;
 import expression.api.ExpressionFactory;
 import expression.impl.Operations.*;
+import expression.impl.Operations.numeric.*;
+import expression.impl.Operations.string.Concat;
 import sheet.api.Sheet;
 import sheet.cell.api.CellType;
 import sheet.coordinate.Coordinate;

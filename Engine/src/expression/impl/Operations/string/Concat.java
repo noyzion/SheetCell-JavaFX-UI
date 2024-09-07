@@ -1,24 +1,22 @@
-package expression.impl.Operations;
+package expression.impl.Operations.string;
 
 import expression.api.Expression;
 import expression.impl.BinaryExpression;
 import sheet.cell.api.CellType;
 
-public class Mod extends BinaryExpression {
-
-    public Mod(Expression expression1, Expression expression2) {
+public class Concat extends BinaryExpression {
+    public Concat(Expression expression1, Expression expression2) {
         super(expression1, expression2);
     }
 
     @Override
     public String getOperationName() {
-        return "MOD";
+        return "CONCAT";
     }
-
 
     @Override
     public CellType getCellType() {
-        return CellType.NUMERIC;
+        return CellType.STRING;
     }
 
     @Override
@@ -29,17 +27,14 @@ public class Mod extends BinaryExpression {
         if (e2 == null) {
             throw new IllegalArgumentException("Second argument cannot be empty.");
         }
-
-        if (!(e1 instanceof Double) || !(e2 instanceof Double)) {
-            return Double.NaN;
+        if (!(e1 instanceof String str1)) {
+            return "!UNDEFINED!";
         }
-            double numerator = (Double) e1;
-            double denominator = (Double) e2;
 
-            if (denominator == 0) {
-                return Double.NaN; // Return NaN for modulus by zero
-            }
-
-            return numerator % denominator;
+        if (!(e2 instanceof String str2)) {
+            return "!UNDEFINED!";
         }
+
+        return str1 + str2;
     }
+}

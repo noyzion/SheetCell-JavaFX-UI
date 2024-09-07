@@ -1,4 +1,4 @@
-package Header;
+package header;
 
 import javafx.application.Application;
 import javafx.concurrent.Task;
@@ -11,30 +11,21 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import mainContoroller.AppController;
 
 import java.io.File;
 import java.io.IOException;
 
-public class HeaderController extends Application {
+public class HeaderController {
 
-    @FXML private TextField currentFile;
-    @FXML private Button loadFileButton;
-    @FXML private ProgressBar progressBar;
-
-    @Override
-    public void start(Stage stage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Header.fxml"));
-            Parent root = loader.load();
-
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Header");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    @FXML
+    private TextField currentFile;
+    @FXML
+    private Button loadFileButton;
+    @FXML
+    private ProgressBar progressBar;
+    private AppController mainController;
+    private String xmlFilePath;
 
     @FXML
     private void initialize() {
@@ -52,10 +43,12 @@ public class HeaderController extends Application {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            currentFile.setText(selectedFile.getAbsolutePath());
+            xmlFilePath = selectedFile.getAbsolutePath();
+            currentFile.setText(xmlFilePath);
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             loadFileWithProgress(selectedFile);
         }
+        mainController.setSheet();
     }
 
     private void loadFileWithProgress(File file) {
@@ -86,8 +79,14 @@ public class HeaderController extends Application {
         });
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
+    public String getXmlFilePath() {
+        return xmlFilePath;
     }
+
+    // Method to allow AppController to inject itself
+    public void setMainController(AppController mainController) {
+        this.mainController = mainController;
+    }
+
+
 }

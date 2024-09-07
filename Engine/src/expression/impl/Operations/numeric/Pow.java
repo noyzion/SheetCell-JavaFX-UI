@@ -1,30 +1,27 @@
-package expression.impl.Operations;
+package expression.impl.Operations.numeric;
 
-import jakarta.xml.bind.ValidationException;
 import expression.api.Expression;
 import expression.impl.BinaryExpression;
 import sheet.cell.api.CellType;
 
-public class Times extends BinaryExpression {
-    public Times(Expression expression1, Expression expression2) {
+public class Pow extends BinaryExpression {
+    public Pow(Expression expression1, Expression expression2) {
         super(expression1, expression2);
     }
 
     @Override
     public String getOperationName() {
-        return "TIMES";
+        return "POW";
     }
-
 
     @Override
     public CellType getCellType() {
         return CellType.NUMERIC;
     }
-
     @Override
     protected Object evaluate(Object e1, Object e2) {
         if (e1 == null) {
-            throw new IllegalArgumentException("Second argument cannot be empty.");
+            throw new IllegalArgumentException("First argument cannot be empty.");
         }
         if (e2 == null) {
             throw new IllegalArgumentException("Second argument cannot be empty.");
@@ -33,9 +30,13 @@ public class Times extends BinaryExpression {
             return Double.NaN;
         }
 
-        double num1 = (Double) e1;
-        double num2 = (Double) e2;
+        double base = (Double) e1;
+        double exponent = (Double) e2;
 
-        return num1 * num2;
+        if (base == 0 && exponent < 0) {
+            return Double.NaN;
+        }
+
+        return Math.pow(base, exponent);
     }
 }

@@ -1,4 +1,4 @@
-package expression.impl.Operations;
+package expression.impl.Operations.numeric;
 
 import expression.api.Expression;
 import expression.impl.UnaryExpression;
