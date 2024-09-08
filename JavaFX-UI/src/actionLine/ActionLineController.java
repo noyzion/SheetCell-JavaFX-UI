@@ -3,11 +3,17 @@ package actionLine;
 import DTO.CellDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import mainContoroller.AppController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +29,7 @@ public class ActionLineController  {
     @FXML
     private void initialize() {
         cellIdSelection.setOnAction(event -> handleCellIdSelctionAction());
+        updateValue.setOnAction(event -> handleUpdateValueAction());
 
     }
     public void clearUIComponents() {
@@ -91,11 +98,22 @@ public class ActionLineController  {
         return columnName.toString();
     }
 
-
     @FXML
     private void handleUpdateValueAction() {
-        // Your code here
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("showValues.fxml"));
+        Parent root = loader.load();
+
+        showValuesController showValuesController = loader.getController();
+        Stage stage = new Stage();
+        stage.setTitle("Show Values");
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.show();
+    } catch (IOException e) {
+        mainController.showErrorDialog("Error", "Failed to open the Show Values window.", e.getMessage());
     }
+}
 
     @FXML
     private void handleVersionSelectorAction() {
