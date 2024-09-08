@@ -41,7 +41,6 @@ public class AppController extends Application {
         String xmlFilePath = headerComponentController.getXmlFilePath();
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
-            actionLineComponentController.fillCellsOptions();
 
         }
     }

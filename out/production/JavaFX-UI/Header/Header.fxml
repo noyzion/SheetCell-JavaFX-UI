@@ -4,58 +4,61 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
     <top>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticel" textAlignment="CENTER" wrappingWidth="160.5791015625" BorderPane.alignment="CENTER">
             <font>
                 <Font name="Yu Gothic UI Light" size="40.0" />
             </font>
          <BorderPane.margin>
-            <Insets right="10.0" />
+            <Insets right="-20.0" />
          </BorderPane.margin>
         </Text>
     </top>
     <center>
-      <VBox BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </BorderPane.margin>
+      <VBox>
          <children>
-              <ToolBar maxWidth="-Infinity" prefHeight="55.0" prefWidth="377.0">
-                  <items>
-                      <Button fx:id="loadFileButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="26.0" prefWidth="90.0" text="Load File ">
+            <HBox maxWidth="-Infinity" prefHeight="27.0" prefWidth="483.0">
+               <children>
+                      <Button fx:id="loadFileButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="26.0" prefWidth="92.0" text="Load File ">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Button>
-                      <TextField fx:id="currentFile" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" prefWidth="260.0" />
-                  </items>
-               <opaqueInsets>
-                  <Insets top="20.0" />
-               </opaqueInsets>
-              </ToolBar>
-              <ProgressBar fx:id="progressBar" prefHeight="23.0" prefWidth="340.0" progress="0.0">
+                      <TextField fx:id="currentFile" cacheShape="false" centerShape="false" editable="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pickOnBounds="false" prefHeight="27.0" prefWidth="384.0" scaleShape="false">
+                     <HBox.margin>
+                        <Insets bottom="-5.0" left="10.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+              <ProgressBar fx:id="progressBar" prefHeight="23.0" prefWidth="385.0" progress="0.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <VBox.margin>
-                  <Insets left="20.0" />
+                  <Insets left="60.0" top="10.0" />
                </VBox.margin>
               </ProgressBar>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="220.0" top="30.0" />
+         </BorderPane.margin>
       </VBox>
     </center>
    <bottom>
       <TextField fx:id="fileName" alignment="CENTER" editable="false" maxWidth="-Infinity" prefHeight="31.0" prefWidth="170.0" promptText="file name" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="10.0" />
+            <Insets bottom="5.0" right="-30.0" />
          </BorderPane.margin>
       </TextField>
    </bottom>
