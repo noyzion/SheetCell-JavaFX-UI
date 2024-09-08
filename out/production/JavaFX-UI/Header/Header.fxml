@@ -6,41 +6,57 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="433.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
     <top>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticel" textAlignment="CENTER" wrappingWidth="160.5791015625" BorderPane.alignment="CENTER">
             <font>
                 <Font name="Yu Gothic UI Light" size="40.0" />
             </font>
+         <BorderPane.margin>
+            <Insets right="10.0" />
+         </BorderPane.margin>
         </Text>
     </top>
     <center>
-        <ToolBar maxWidth="-Infinity" prefHeight="55.0" prefWidth="400.0" BorderPane.alignment="CENTER">
-            <items>
-                <Button fx:id="loadFileButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="26.0" prefWidth="90.0" text="Load File ">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-                <TextField fx:id="currentFile" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" prefWidth="260.0" />
-            </items>
-            <BorderPane.margin>
-                <Insets left="20.0" right="20.0" />
-            </BorderPane.margin>
-        </ToolBar>
+      <VBox BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </BorderPane.margin>
+         <children>
+              <ToolBar maxWidth="-Infinity" prefHeight="55.0" prefWidth="377.0">
+                  <items>
+                      <Button fx:id="loadFileButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="26.0" prefWidth="90.0" text="Load File ">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                      <TextField fx:id="currentFile" editable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" prefWidth="260.0" />
+                  </items>
+               <opaqueInsets>
+                  <Insets top="20.0" />
+               </opaqueInsets>
+              </ToolBar>
+              <ProgressBar fx:id="progressBar" prefHeight="23.0" prefWidth="340.0" progress="0.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
+              </ProgressBar>
+         </children>
+      </VBox>
     </center>
-    <bottom>
-        <ProgressBar fx:id="progressBar" prefHeight="23.0" prefWidth="328.0" progress="0.0" BorderPane.alignment="BASELINE_CENTER">
-            <padding>
-                <Insets left="-24.0" />
-            </padding>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-        </ProgressBar>
-    </bottom>
+   <bottom>
+      <TextField fx:id="fileName" alignment="CENTER" editable="false" maxWidth="-Infinity" prefHeight="31.0" prefWidth="170.0" promptText="file name" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
+      </TextField>
+   </bottom>
 </BorderPane>

@@ -36,14 +36,10 @@ public class AppController extends Application {
     public void setSheet() {
         String xmlFilePath = headerComponentController.getXmlFilePath();
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
-            try {
-                logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
-                actionLineComponentController.fillCellsOptions();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+            logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
+            actionLineComponentController.fillCellsOptions();
 
+        }
     }
 
     public CellDTO getCell(String coordinate) {
