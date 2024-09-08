@@ -4,10 +4,12 @@ import DTO.CellDTO;
 import actionLine.ActionLineController;
 import header.HeaderController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -34,6 +36,8 @@ public class AppController extends Application {
 
 
     public void setSheet() {
+       headerComponentController.clearUIComponents();
+        actionLineComponentController.clearUIComponents();
         String xmlFilePath = headerComponentController.getXmlFilePath();
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
@@ -41,7 +45,15 @@ public class AppController extends Application {
 
         }
     }
-
+    public void showErrorDialog(String title, String header, String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.setContentText(content);
+            alert.showAndWait();
+        });
+    }
     public CellDTO getCell(String coordinate) {
         return logic.getLatestSheet().getCell(coordinate);
     }

@@ -25,7 +25,11 @@ public class ActionLineController  {
         cellIdSelection.setOnAction(event -> handleCellIdSelctionAction());
 
     }
-
+    public void clearUIComponents() {
+        cellIdSelection.cancelEdit();
+        originalValueBox.clear();
+        showLastVersion.clear();
+    }
     @FXML
     private void handleCellIdSelctionAction() {
         String selectedCellId = cellIdSelection.getSelectionModel().getSelectedItem();

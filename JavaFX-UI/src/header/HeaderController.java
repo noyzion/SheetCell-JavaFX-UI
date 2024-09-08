@@ -27,6 +27,7 @@ public class HeaderController {
 
     @FXML
     private void initialize() {
+        clearUIComponents();
         loadFileButton.setOnAction(event -> handleLoadFileButtonAction());
         progressBar.setVisible(false);
     }
@@ -54,21 +55,19 @@ public class HeaderController {
             } catch (Exception e) {
                 currentFile.setText(previousFilePath);
                 fileName.setText(previousFileName);
-                showErrorDialog("Sheet Error", "An error occurred while setting the sheet.", e.getMessage());
+                mainController.showErrorDialog("Sheet Error", "An error occurred while setting the sheet.", e.getMessage());
                 return;
             }
         } else {
             currentFile.setText(previousFilePath);
             fileName.setText(previousFileName);
-            showErrorDialog("File Selection Error", "No file was selected.", "Please select a valid XML file.");
+            mainController.showErrorDialog("File Selection Error", "No file was selected.", "Please select a valid XML file.");
         }
     }
 
-    private void clearUIComponents() {
+    public void clearUIComponents() {
         currentFile.clear();
         fileName.clear();
-        progressBar.setProgress(0); // Reset progress to 0
-        progressBar.setVisible(false); // Hide progress bar
     }
 
     private void loadFileWithProgress(File file) {
@@ -79,8 +78,8 @@ public class HeaderController {
             @Override
             protected Void call() throws Exception {
                 for (int i = 0; i <= 100; i += 10) {
-                    Thread.sleep(200); // Simulate loading time
-                    updateProgress(i / 100.0, 1.0); // Update progress between 0.0 and 1.0
+                    Thread.sleep(200);
+                    updateProgress(i / 100.0, 1.0);
                 }
                 return null;
             }
@@ -98,21 +97,13 @@ public class HeaderController {
             progressBar.setVisible(false);
             currentFile.setText(previousFilePath);
             fileName.setText(previousFileName);
-            showErrorDialog("File Load Error", "An error occurred while loading the file.", e.getSource().getException().getMessage());
+            mainController.showErrorDialog("File Load Error", "An error occurred while loading the file.", e.getSource().getException().getMessage());
         });
 
         new Thread(task).start();
     }
 
-    private void showErrorDialog(String title, String header, String content) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(title);
-            alert.setHeaderText(header);
-            alert.setContentText(content);
-            alert.showAndWait();
-        });
-    }
+
 
     public String getXmlFilePath() {
         return xmlFilePath;
