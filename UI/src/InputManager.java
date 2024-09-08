@@ -29,28 +29,7 @@ public class InputManager {
         return userChoice;
     }
 
-    public String getCellCoordinate(int maxRow, int maxCol) {
-        String coordinate;
-
-        while (true) {
-            System.out.print("Please enter the cell coordinate (e.g., A5): ");
-            String input = scanner.nextLine().trim().toUpperCase();
-
-            try {
-                CoordinateFactory.isValidCoordinateFormat(input);
-                if (CoordinateFactory.isCoordinateWithinBounds(maxRow, maxCol, input)) {
-                    coordinate = input;
-                    break;
-                } else {
-                    System.out.println("Coordinate is out of bounds. Please enter a valid coordinate.");
-                }
-            } catch (IllegalArgumentException | ParseException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
-
-        return coordinate;
-    }
+  
 
     public String getNewValueForCell() {
         System.out.print("Enter the new value: ");

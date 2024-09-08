@@ -1,5 +1,6 @@
 package mainContoroller;
 
+import DTO.CellDTO;
 import actionLine.ActionLineController;
 import header.HeaderController;
 import javafx.application.Application;
@@ -8,13 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import logic.Logic;
 import xmlParse.XmlSheetLoader;
 
 public class AppController extends Application {
 
-    @FXML private ScrollPane headerComponent;
+    @FXML private BorderPane headerComponent;
     @FXML private ScrollPane actionLineComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private ActionLineController actionLineComponentController;
@@ -36,12 +38,16 @@ public class AppController extends Application {
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             try {
                 logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
-                actionLineComponentController.handleCellIdSelctionAction();
+                actionLineComponentController.fillCellsOptions();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+    }
+
+    public CellDTO getCell(String coordinate) {
+        return logic.getLatestSheet().getCell(coordinate);
     }
 
     public int getSheetRowSize() {

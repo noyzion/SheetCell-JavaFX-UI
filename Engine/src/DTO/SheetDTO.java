@@ -2,7 +2,6 @@ package DTO;
 
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
-import sheet.coordinate.ParseException;
 import sheet.impl.Edge;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class SheetDTO {
 
 
 
-    public CellDTO getCell(String coordinate) throws ParseException {
+    public CellDTO getCell(String coordinate){
         Coordinate cord = CoordinateParser.parse(coordinate);
         return cells.get(new CoordinateDTO(cord.getRow(), cord.getColumn(), cord.getStringCord()));
     }

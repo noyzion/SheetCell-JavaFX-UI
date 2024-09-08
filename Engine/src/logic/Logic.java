@@ -6,7 +6,6 @@ import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
-import sheet.coordinate.ParseException;
 import sheet.impl.Edge;
 import sheet.impl.SheetImpl;
 
@@ -32,7 +31,7 @@ public class Logic implements Serializable {
         return versionManager.getSheetByVersion(version);
     }
 
-    public void setCellValue(String cellId, String value) throws ParseException {
+    public void setCellValue(String cellId, String value){
         if (cellId == null) {
             throw new IllegalArgumentException("Cell ID cannot be null.");
         }

@@ -8,7 +8,6 @@ import sheet.cell.api.CellType;
 import sheet.cell.impl.CellImpl;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
-import sheet.coordinate.ParseException;
 
 import java.util.Objects;
 
@@ -36,8 +35,6 @@ public class Ref extends UnaryExpression {
 
         try {
             this.refCoordinate = CoordinateParser.parse(coordinateStr);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Invalid coordinate format: " + coordinateStr, e);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error parsing coordinate: " + coordinateStr, e);
         }

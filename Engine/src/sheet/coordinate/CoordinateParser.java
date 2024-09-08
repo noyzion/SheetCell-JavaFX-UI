@@ -4,10 +4,7 @@ import java.io.Serializable;
 
 public class CoordinateParser implements Serializable {
 
-        public static Coordinate parse(String coordinateString) throws ParseException {
-            if (coordinateString == null || coordinateString.isEmpty()) {
-                throw new ParseException("Coordinate input cannot be null or empty.", 0);
-            }
+        public static Coordinate parse(String coordinateString)  {
 
             coordinateString = coordinateString.toUpperCase().trim();
             int row = 0;
@@ -22,10 +19,6 @@ public class CoordinateParser implements Serializable {
             while (i < coordinateString.length() && Character.isDigit(coordinateString.charAt(i))) {
                 row = row * 10 + (coordinateString.charAt(i) - '0');
                 i++;
-            }
-
-            if (row <= 0 || col <= 0) {
-                throw new ParseException("Invalid coordinate input: " + coordinateString, i);
             }
 
             return new CoordinateImpl(row-1 , col-1 ,coordinateString);

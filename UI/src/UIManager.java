@@ -36,17 +36,12 @@ public class UIManager implements Menu {
                 logic.getLatestSheet().getColumnSize()
         );
         if (coordinate != null) {
-            try {
                 CellDTO cellDTO = logic.getLatestSheet().getCell(coordinate);
                 if (cellDTO != null) {
                     System.out.println(cellDTO);
                 } else {
                     System.out.println("Cell " + coordinate + " is empty");
                 }
-            } catch (ParseException e) {
-                System.out.println(e.getMessage());
-            }
-        }
     }
 
     @Override

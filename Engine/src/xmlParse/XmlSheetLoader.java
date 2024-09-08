@@ -8,7 +8,6 @@ import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
-import sheet.coordinate.ParseException;
 import sheet.impl.SheetImpl;
 import xmlParse.jaxb.STLCell;
 import xmlParse.jaxb.STLCells;
@@ -36,12 +35,10 @@ public class XmlSheetLoader {
 
         } catch (JAXBException e) {
             throw new IllegalArgumentException(e.getMessage());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public static Sheet convert(STLSheet stlSheet) throws ParseException {
+    public static Sheet convert(STLSheet stlSheet)   {
         if (stlSheet == null) {
             return null;
         }
