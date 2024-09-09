@@ -1,0 +1,49 @@
+/* General style for cells */
+.label {
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Gisha"; /* Font set to Gisha */
+    -fx-text-fill: #002f6c; /* Dark blue text color for contrast */
+    -fx-alignment: center;
+    -fx-background-radius: 8;  /* Slightly rounded corners */
+    -fx-background-insets: 0;
+    -fx-background-color: #e6f0ff; /* Very light blue background for cells */
+    -fx-border-color: #003d7d; /* Medium dark blue border */
+    -fx-border-style: solid;   /* Solid border */
+    -fx-border-radius: 8;      /* Rounded corners for the border */
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Column and row headers */
+.header {
+    -fx-text-fill: #ffffff;          /* White text color for contrast */
+    -fx-font-size: 16px;             /* Larger font size */
+    -fx-font-family: "Gisha";        /* Font set to Gisha */
+    -fx-font-weight: bold;           /* Bold text */
+    -fx-alignment: center;
+    -fx-padding: 0px;
+    -fx-background-color: #003d7d;   /* Dark blue background */
+    -fx-border-color: #002f6c;       /* Darker blue border */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.3, 3, 3); /* Soft shadow effect */
+}
+
+/* Hover effect for column and row headers */
+.header:hover {
+    -fx-background-color: #004c99; /* Slightly lighter blue background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
+}
+
+/* Hover effect when the mouse is over the cell */
+.label:hover {
+    -fx-background-color: #cce0ff; /* Light blue background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
+}
+
+/* General style for GridPane */
+.grid-pane {
+    -fx-background-color: #ffffff; /* White background for the grid */
+    -fx-hgap: 20;  /* Increased horizontal gap */
+    -fx-vgap: 20;  /* Increased vertical gap */
+    -fx-padding: 20;
+}

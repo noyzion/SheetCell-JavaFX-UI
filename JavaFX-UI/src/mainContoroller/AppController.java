@@ -37,20 +37,14 @@ public class AppController extends Application {
         if (headerComponentController != null && actionLineComponentController != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
-
-            // Manually instantiate SheetController
             sheetComponentController = new SheetController();
             sheetComponentController.setMainController(this);
-        } else {
-            showErrorDialog("Initialization Error", "Controllers Not Set", "One or more controllers are not properly initialized.");
         }
     }
 
     public void setSheet() {
         headerComponentController.clearUIComponents();
         actionLineComponentController.clearUIComponents();
-
-        // Clear any existing data in the SheetController
         sheetComponentController.clearGrid();
 
         String xmlFilePath = headerComponentController.getXmlFilePath();
@@ -58,18 +52,12 @@ public class AppController extends Application {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
         }
 
-        // Set the SheetDTO in SheetController
         SheetDTO latestSheet = logic.getLatestSheet();
         sheetComponentController.setSheetDTO(latestSheet);
         sheetComponentController.createGridFromSheetDTO();
-
-        // Clear any existing children in the sheetComponent
         sheetComponent.getChildren().clear();
-
-        // Add the GridPane from SheetController to the sheetComponent
         sheetComponent.getChildren().add(sheetComponentController.getGridPane());
 
-        // Center the GridPane in the AnchorPane
         AnchorPane.setTopAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);
@@ -91,13 +79,8 @@ public class AppController extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("app.fxml"));
             Parent root = fxmlLoader.load();
-
-            // Obtain the AppController instance from the FXMLLoader
             AppController controller = fxmlLoader.getController();
-
             Scene scene = new Scene(root);
-
-
             primaryStage.setScene(scene);
             primaryStage.setTitle("Sheet Cell Application");
             primaryStage.show();
