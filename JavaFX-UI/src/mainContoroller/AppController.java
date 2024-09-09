@@ -97,13 +97,6 @@ public class AppController extends Application {
 
             Scene scene = new Scene(root);
 
-            // Adjust the path to the location of style.css
-            URL cssUrl = getClass().getResource("/sheet/style.css"); // Use the full path from the classpath root
-            if (cssUrl != null) {
-                scene.getStylesheets().add(cssUrl.toExternalForm());
-            } else {
-                System.err.println("CSS file not found.");
-            }
 
             primaryStage.setScene(scene);
             primaryStage.setTitle("Sheet Cell Application");

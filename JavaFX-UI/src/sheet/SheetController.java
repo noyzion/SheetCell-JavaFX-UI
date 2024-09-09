@@ -12,6 +12,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import mainContoroller.AppController;
 
+import java.net.URL;
 import java.util.Map;
 
 public class SheetController {
@@ -27,10 +28,15 @@ public class SheetController {
 
     public void createGridFromSheetDTO() {
         gridPane.getChildren().clear(); // Clear existing content
+        gridPane.setHgap(10); // Set horizontal gap between cells
+        gridPane.setVgap(10); // Set vertical gap between cells
 
         Map<CoordinateDTO, CellDTO> cells = sheetDTO.getCells();
         int rows = sheetDTO.getRowSize();
         int columns = sheetDTO.getColumnSize();
+
+        URL cssUrl = getClass().getResource("/sheet/style.css");
+        gridPane.getStylesheets().add(cssUrl.toExternalForm());
 
         // Create column headers (A, B, C...)
         for (int col = 0; col < columns; col++) {
@@ -66,8 +72,8 @@ public class SheetController {
     }
     private Label createCellLabel(String text, String styleClass) {
         Label label = new Label(text);
-        label.setPrefWidth(80);
-        label.setPrefHeight(40);
+        label.setPrefWidth(sheetDTO.getColumnWidthUnits());
+        label.setPrefHeight(sheetDTO.getRowsHeightUnits());
         label.setAlignment(Pos.CENTER);
         label.getStyleClass().add(styleClass);
         return label;

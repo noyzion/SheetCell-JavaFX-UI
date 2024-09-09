@@ -1,68 +1,49 @@
-/* עיצוב כללי לתאים */
+/* General style for cells */
 .label {
     -fx-padding: 10;
     -fx-font-size: 14px;
-    -fx-font-family: "Arial Rounded MT Bold";
-    -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-font-family: "Gisha"; /* Font set to Gisha */
+    -fx-text-fill: #000000; /* Black text color for contrast */
     -fx-alignment: center;
-    -fx-background-radius: 10;  /* פינות עגולות */
+    -fx-background-radius: 8;  /* Slightly rounded corners */
     -fx-background-insets: 0;
-    -fx-background-color: #fff; /* רקע לבן */
-    -fx-border-color: #96989a;
-    -fx-border-style: dashed;   /* מסגרת מקווקו */
-    -fx-border-radius: 10;      /* פינות עגולות */
-    -fx-border-width: 1;
-    -fx-effect: dropshadow(three-pass-box, rgb(151, 150, 150), 5, 0, 2, 2); /* אפקט צל תלת-מימדי */
-
+    -fx-background-color: #e0e0e0; /* Light gray background for cells */
+    -fx-border-color: #000000; /* Black border */
+    -fx-border-style: solid;   /* Solid border */
+    -fx-border-radius: 8;      /* Rounded corners for the border */
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1); /* Subtle shadow effect */
 }
 
-/*
-@font-face {
-    font-family: 'Handlee';
-    src: url('/fonts/Handlee/Handlee-Regular.ttf');
-}
-
-@font-face {
-    font-family: 'Nerko_One';
-    src: url('/fonts/Nerko_One/NerkoOne-Regular.ttf');
-}
-
-@font-face {
-    font-family: 'Lilita_One';
-    src: url('/fonts/Lilita_One/LilitaOne-Regular.ttf');
-}
-*/
-
-/* כותרות עמודות ושורות */
+/* Column and row headers */
 .header {
-    -fx-text-fill: rgba(13, 124, 98, 0.99);          /* צבע טקסט */
-    -fx-font-size: 18px;           /* פונט גדול יותר */
-    -fx-font-family: "Franklin Gothic Medium Cond";
-    -fx-font-weight: bold;         /* מודגש */
+    -fx-text-fill: #ffffff;          /* White text color for contrast */
+    -fx-font-size: 16px;             /* Larger font size */
+    -fx-font-family: "Gisha";        /* Font set to Gisha */
+    -fx-font-weight: bold;           /* Bold text */
     -fx-alignment: center;
     -fx-padding: 0px;
-    -fx-background-color: transparent; /* רקע שקוף */
-    -fx-border-color: transparent; /* מסגרת שקופה */
-    -fx-effect: dropshadow(gaussian, rgb(181, 189, 186), 10, 0.2, 4, 4); /* אפקט הצללה */
+    -fx-background-color: #333333;   /* Dark gray background */
+    -fx-border-color: #000000;       /* Black border */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.3, 3, 3); /* Soft shadow effect */
 }
 
-/* אפקט hover לכותרות עמודות ושורות */
+/* Hover effect for column and row headers */
 .header:hover {
-    -fx-background-color: #c3c0c0; /* רקע אפור בהיר בזמן hover */
-    -fx-cursor: hand; /* מצביע העכבר משתנה ליד */
+    -fx-background-color: #4d4d4d; /* Slightly lighter dark gray background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
 }
 
-/* אפקט hover כאשר סמן העכבר מעל התא */
+/* Hover effect when the mouse is over the cell */
 .label:hover {
-    -fx-background-color: #abd6dd; /* רקע  */
-    -fx-cursor: hand; /* מצביע העכבר משתנה ליד */
+    -fx-background-color: #c0c0c0; /* Slightly darker gray background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
 }
 
-/* עיצוב כללי ל-GridPane */
+/* General style for GridPane */
 .grid-pane {
-    -fx-background-color: #f8f9fa;
-    -fx-hgap: 10;
-    -fx-vgap: 10;
+    -fx-background-color: #ffffff; /* White background for the grid */
+    -fx-hgap: 20;  /* Increased horizontal gap */
+    -fx-vgap: 20;  /* Increased vertical gap */
     -fx-padding: 20;
 }

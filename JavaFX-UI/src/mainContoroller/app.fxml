@@ -10,7 +10,7 @@
    <top>
       <VBox prefHeight="240.0" prefWidth="911.0" BorderPane.alignment="CENTER">
          <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
-         <ScrollPane  prefHeight="61.0" prefWidth="912.0">
+         <ScrollPane prefHeight="61.0" prefWidth="912.0">
             <fx:include fx:id="actionLineComponent" source="../actionLine/actionLine.fxml" />
             <VBox.margin>
                <Insets />
@@ -19,6 +19,12 @@
       </VBox>
    </top>
    <center>
-      <AnchorPane fx:id="sheetComponent"  />
+      <AnchorPane fx:id="sheetComponent" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="90.0" />
+         </padding></AnchorPane>
    </center>
 </BorderPane>
