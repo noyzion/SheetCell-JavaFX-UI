@@ -1,5 +1,8 @@
 package DTO;
 
+import sheet.coordinate.CoordinateFactory;
+import sheet.coordinate.CoordinateParser;
+
 public class CoordinateDTO {
     private final int row;
     private final int column;
@@ -12,7 +15,12 @@ public class CoordinateDTO {
     }
 
     public CoordinateDTO(int row, int column) {
-        this(row, column, null);
+        String col = CoordinateFactory.convertIndexToColumnLetter(column);
+        String rowC = Integer.toString(row);
+        String stringCord = col+rowC;
+        this.row = row;
+        this.column = column;
+        this.stringCord = stringCord;
     }
 
     public int getRow() {

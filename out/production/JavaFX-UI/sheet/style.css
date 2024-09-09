@@ -1,0 +1,68 @@
+/* עיצוב כללי לתאים */
+.label {
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial Rounded MT Bold";
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-alignment: center;
+    -fx-background-radius: 10;  /* פינות עגולות */
+    -fx-background-insets: 0;
+    -fx-background-color: #fff; /* רקע לבן */
+    -fx-border-color: #96989a;
+    -fx-border-style: dashed;   /* מסגרת מקווקו */
+    -fx-border-radius: 10;      /* פינות עגולות */
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgb(151, 150, 150), 5, 0, 2, 2); /* אפקט צל תלת-מימדי */
+
+}
+
+/*
+@font-face {
+    font-family: 'Handlee';
+    src: url('/fonts/Handlee/Handlee-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Nerko_One';
+    src: url('/fonts/Nerko_One/NerkoOne-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Lilita_One';
+    src: url('/fonts/Lilita_One/LilitaOne-Regular.ttf');
+}
+*/
+
+/* כותרות עמודות ושורות */
+.header {
+    -fx-text-fill: rgba(13, 124, 98, 0.99);          /* צבע טקסט */
+    -fx-font-size: 18px;           /* פונט גדול יותר */
+    -fx-font-family: "Franklin Gothic Medium Cond";
+    -fx-font-weight: bold;         /* מודגש */
+    -fx-alignment: center;
+    -fx-padding: 0px;
+    -fx-background-color: transparent; /* רקע שקוף */
+    -fx-border-color: transparent; /* מסגרת שקופה */
+    -fx-effect: dropshadow(gaussian, rgb(181, 189, 186), 10, 0.2, 4, 4); /* אפקט הצללה */
+}
+
+/* אפקט hover לכותרות עמודות ושורות */
+.header:hover {
+    -fx-background-color: #c3c0c0; /* רקע אפור בהיר בזמן hover */
+    -fx-cursor: hand; /* מצביע העכבר משתנה ליד */
+}
+
+/* אפקט hover כאשר סמן העכבר מעל התא */
+.label:hover {
+    -fx-background-color: #abd6dd; /* רקע  */
+    -fx-cursor: hand; /* מצביע העכבר משתנה ליד */
+}
+
+/* עיצוב כללי ל-GridPane */
+.grid-pane {
+    -fx-background-color: #f8f9fa;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-padding: 20;
+}
