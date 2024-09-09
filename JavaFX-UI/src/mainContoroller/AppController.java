@@ -1,5 +1,7 @@
 package mainContoroller;
 
+import DTO.CellDTO;
+import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import actionLine.ActionLineController;
 import header.HeaderController;
@@ -89,7 +91,12 @@ public class AppController extends Application {
             showErrorDialog("Application Error", "Failed to Load", "An error occurred while loading the application.");
         }
     }
-
+    public void updateActionLineFields(CoordinateDTO coordinate) {
+        CellDTO cell = logic.getLatestSheet().getCell(coordinate.toString());
+        if (cell != null) {
+            actionLineComponentController.updateFields(cell);
+        }
+    }
     public static void main(String[] args) {
         launch(args);
     }

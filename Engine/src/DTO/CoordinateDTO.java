@@ -16,7 +16,7 @@ public class CoordinateDTO {
 
     public CoordinateDTO(int row, int column) {
         String col = CoordinateFactory.convertIndexToColumnLetter(column);
-        String rowC = Integer.toString(row);
+        String rowC = Integer.toString(row+1);
         String stringCord = col+rowC;
         this.row = row;
         this.column = column;

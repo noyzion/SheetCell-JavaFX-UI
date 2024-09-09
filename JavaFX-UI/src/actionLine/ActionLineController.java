@@ -1,6 +1,7 @@
 package actionLine;
 
 import DTO.CellDTO;
+import DTO.CoordinateDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +56,11 @@ public class ActionLineController  {
     }
 
 
-
+    public void updateFields( CellDTO cell) {
+        cellIdSelection.setText(cell.getCoordinateDTO().toString());
+        originalValueBox.setText(cell.getOriginalValue().toString());
+        showLastVersion.setText(Integer.toString(cell.getLastVersionUpdate()));
+    }
 
     @FXML
     private void handleUpdateValueAction() {
