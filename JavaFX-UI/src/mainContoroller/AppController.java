@@ -30,7 +30,7 @@ public class AppController extends Application {
     @FXML private AnchorPane sheetComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private ActionLineController actionLineComponentController;
-    private SheetController sheetComponentController; // Declare without @FXML
+    private SheetController sheetComponentController;
 
     private Logic logic = new Logic();
 

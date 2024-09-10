@@ -52,15 +52,6 @@ public class ActionLineController {
         }
     }
 
-    private String getCellOriginalValue(CellDTO cell) {
-        if (cell == null)
-            return "empty cell";
-        else if (cell.getOriginalValue() == null)
-            return "empty cell";
-        else
-            return cell.getOriginalValue();
-    }
-
 
     public void updateFields(CoordinateDTO cord, CellDTO cell) {
         cellIdSelection.setText(cord.toString());
