@@ -2,20 +2,11 @@ package actionLine;
 
 import DTO.CellDTO;
 import DTO.CoordinateDTO;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import mainContoroller.AppController;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActionLineController {
@@ -35,7 +26,6 @@ public class ActionLineController {
     @FXML
     private void initialize() {
         updateValue.setOnAction(event -> handleUpdateValueAction());
-
     }
 
     public void clearUIComponents() {
@@ -51,7 +41,6 @@ public class ActionLineController {
             return String.valueOf(cell.getLastVersionUpdate());
         }
     }
-
 
     public void updateFields(CoordinateDTO cord, CellDTO cell) {
         cellIdSelection.setText(cord.toString());
@@ -70,24 +59,42 @@ public class ActionLineController {
 
     @FXML
     private void handleUpdateValueAction() {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("showValues.fxml"));
-        Parent root = loader.load();
-
-        showValuesController showValuesController = loader.getController();
-        Stage stage = new Stage();
-        stage.setTitle("Show Values");
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
-    } catch (IOException e) {
-        mainController.showErrorDialog("Error", "Failed to open the Show Values window.", e.getMessage());
+        openUpdateValueDialog();
     }
-}
+
+    public void openUpdateValueDialog() {
+        // Fetch previous values from current fields
+        String originalValue = originalValueBox.getText();
+        String effectiveValue = showLastVersion.getText(); // Assuming this represents the effective value
+
+        // Instantiate the dialog with previous values
+        UpdateValueController updateDialog = new UpdateValueController(originalValue, effectiveValue);
+        updateDialog.display();
+
+        // Get the user inputs after the dialog is closed
+        String inputType = updateDialog.getInputType();
+        String selectedValueOrFunction = updateDialog.getSelectedFunction();
+        List<String> functionArgs = updateDialog.getFunctionArguments();
+
+        // Process the retrieved inputs
+        processUserInputs(inputType, selectedValueOrFunction, functionArgs);
+    }
+
+    private void processUserInputs(String inputType, String selectedValueOrFunction, List<String> functionArgs) {
+        // Implement your logic based on the input type and user choices
+        System.out.println("Input Type: " + inputType);
+        System.out.println("Selected Value/Function: " + selectedValueOrFunction);
+        if ("Function".equals(inputType)) {
+            System.out.println("Function Arguments: " + functionArgs);
+            // Further processing with the function arguments
+        } else {
+            // Handle number or string input types
+        }
+    }
 
     @FXML
     private void handleVersionSelectorAction() {
-        // Your code here
+        // Implement version selection logic
     }
 
     public void setMainController(AppController mainController) {

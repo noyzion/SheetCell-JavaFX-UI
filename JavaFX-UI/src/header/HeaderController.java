@@ -36,6 +36,7 @@ public class HeaderController {
 
     @FXML
     private void handleLoadFileButtonAction() {
+        // Save the current file path and name before attempting to load a new file
         previousFilePath = currentFile.getText();
         previousFileName = fileName.getText();
 
@@ -50,10 +51,6 @@ public class HeaderController {
         if (selectedFile != null) {
             xmlFilePath = selectedFile.getAbsolutePath();
             loadFileWithProgressPopup(selectedFile);
-        } else {
-            currentFile.setText(previousFilePath);
-            fileName.setText(previousFileName);
-            mainController.showErrorDialog("File Selection Error", "No file was selected.", "Please select a valid XML file.");
         }
     }
 
@@ -62,8 +59,8 @@ public class HeaderController {
         fileName.clear();
     }
 
+    @FXML
     private void loadFileWithProgressPopup(File file) {
-        // Create a new Stage for the progress popup
         Stage progressStage = new Stage();
         progressStage.initStyle(StageStyle.UTILITY);
         progressStage.initModality(Modality.APPLICATION_MODAL);
@@ -74,18 +71,15 @@ public class HeaderController {
 
         VBox vbox = new VBox(progressBar);
         vbox.setSpacing(10);
-
         Scene scene = new Scene(vbox);
         progressStage.setScene(scene);
-        progressStage.show();
 
-        // Create a task for loading the file
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 try {
                     for (int i = 0; i <= 100; i += 10) {
-                        Thread.sleep(200); // Simulate a time-consuming task
+                        Thread.sleep(200);
                         updateProgress(i, 100);
                     }
                 } catch (InterruptedException e) {
@@ -98,31 +92,40 @@ public class HeaderController {
             }
         };
 
-        // Bind progress bar to task's progress
         progressBar.progressProperty().bind(task.progressProperty());
+        progressStage.setOnCloseRequest(event -> {
+            if (task.isRunning()) {
+                task.cancel(); // Cancel the task if the dialog is closed
+            }
+        });
 
-        // Set up actions on task completion
-        task.setOnSucceeded(e -> {
-            Platform.runLater(() -> {
-                progressBar.progressProperty().unbind();
-                progressStage.close(); // Close the progress popup
+        task.setOnSucceeded(e -> Platform.runLater(() -> {
+            progressBar.progressProperty().unbind();
+            progressStage.close();
+
+            try {
+                mainController.setSheet();
+                // Update UI to reflect the new file and name
                 currentFile.setText(xmlFilePath);
                 fileName.setText(file.getName());
-                mainController.setSheet(); // Update sheet data after loading
-            });
-        });
-
-        task.setOnFailed(e -> {
-            Platform.runLater(() -> {
-                progressBar.progressProperty().unbind();
-                progressStage.close(); // Close the progress popup
+            } catch (Exception error) {
+                // Restore the previous file path and name on error
                 currentFile.setText(previousFilePath);
                 fileName.setText(previousFileName);
-                mainController.showErrorDialog("File Load Error", "An error occurred while loading the file.", e.getSource().getException().getMessage());
-            });
-        });
+                mainController.showErrorDialog("File Load Error", "An error occurred while loading the file.", error.getMessage());
+            }
+        }));
 
-        // Start the task in a new thread
+        task.setOnFailed(e -> Platform.runLater(() -> {
+            progressBar.progressProperty().unbind();
+            progressStage.close();
+            // Restore the previous file path and name
+            currentFile.setText(previousFilePath);
+            fileName.setText(previousFileName);
+            mainController.showErrorDialog("File Load Error", "An error occurred while loading the file.", e.getSource().getException().getMessage());
+        }));
+
+        progressStage.show();
         new Thread(task).start();
     }
 

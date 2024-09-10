@@ -45,15 +45,13 @@ public class AppController extends Application {
     }
 
     public void setSheet() {
-        headerComponentController.clearUIComponents();
-        actionLineComponentController.clearUIComponents();
-        sheetComponentController.clearGrid();
 
         String xmlFilePath = headerComponentController.getXmlFilePath();
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
         }
-
+        actionLineComponentController.clearUIComponents();
+        sheetComponentController.clearGrid();
         SheetDTO latestSheet = logic.getLatestSheet();
         sheetComponentController.setSheetDTO(latestSheet);
         sheetComponentController.createGridFromSheetDTO();
@@ -64,6 +62,8 @@ public class AppController extends Application {
         AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setRightAnchor(sheetComponentController.getGridPane(), 0.0);
+
+
     }
 
     public void showErrorDialog(String title, String header, String content) {

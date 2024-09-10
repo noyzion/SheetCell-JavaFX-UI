@@ -1,81 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="295.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="actionLine.showValuesController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="actionLine.updateValueController">
    <top>
-      <HBox prefHeight="62.0" prefWidth="422.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="54.0" prefWidth="583.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="update value for cell: " textAlignment="CENTER">
+            <Label prefHeight="32.0" prefWidth="210.0" text="update value for cell:" textAlignment="CENTER">
                <font>
                   <Font name="Gisha Bold" size="20.0" />
                </font>
                <HBox.margin>
-                  <Insets left="90.0" top="20.0" />
+                  <Insets left="120.0" top="30.0" />
                </HBox.margin>
-            </Text>
-            <Label fx:id="cellID" prefHeight="30.0" prefWidth="38.0">
-               <HBox.margin>
-                  <Insets left="5.0" top="20.0" />
-               </HBox.margin>
+            </Label>
+            <Label fx:id="cellID" prefHeight="27.0" prefWidth="39.0">
                <font>
-                  <Font size="16.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <HBox.margin>
+                  <Insets bottom="30.0" top="33.0" />
+               </HBox.margin>
             </Label>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="30.0" />
+         </BorderPane.margin>
       </HBox>
    </top>
-   <center>
-      <HBox prefHeight="232.0" prefWidth="434.0" BorderPane.alignment="CENTER">
+   <left>
+      <VBox prefHeight="229.0" prefWidth="203.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="125.0" prefWidth="170.0">
-               <children>
-                  <Label text="original value:">
-                     <VBox.margin>
-                        <Insets left="35.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="originalValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="effective value:">
-                     <VBox.margin>
-                        <Insets left="35.0" top="20.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="effectiveValue" maxWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Button fx:id="updateValueButton" mnemonicParsing="false" onAction="#handleUpdateValueButton" text="update value">
-                     <VBox.margin>
-                        <Insets left="35.0" top="25.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-               <HBox.margin>
-                  <Insets left="140.0" top="20.0" />
-               </HBox.margin>
-            </VBox>
+            <Label prefHeight="43.0" prefWidth="127.0" text="prev values:">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </Label>
+            <Label prefHeight="43.0" prefWidth="116.0" text="original value:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" />
+               </VBox.margin>
+            </Label>
+            <TextField alignment="CENTER" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+            </TextField>
+            <Label prefHeight="43.0" prefWidth="116.0" text="effective value">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" />
+               </VBox.margin>
+            </Label>
+            <TextField alignment="CENTER" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+            </TextField>
          </children>
-      </HBox>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ComboBox prefHeight="31.0" prefWidth="175.0" promptText="select value type">
+               <VBox.margin>
+                  <Insets left="110.0" />
+               </VBox.margin>
+            </ComboBox>
+         </children>
+      </VBox>
    </center>
 </BorderPane>
