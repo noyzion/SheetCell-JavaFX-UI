@@ -93,9 +93,7 @@ public class AppController extends Application {
     }
     public void updateActionLineFields(CoordinateDTO coordinate) {
         CellDTO cell = logic.getLatestSheet().getCell(coordinate.toString());
-        if (cell != null) {
-            actionLineComponentController.updateFields(cell);
-        }
+            actionLineComponentController.updateFields(coordinate,cell);
     }
     public static void main(String[] args) {
         launch(args);

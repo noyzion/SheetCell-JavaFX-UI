@@ -18,13 +18,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionLineController  {
+public class ActionLineController {
 
-    @FXML private TextField cellIdSelection;
-    @FXML private TextField originalValueBox;
-    @FXML private Button updateValue;
-    @FXML private TextField showLastVersion;
-    @FXML private Button versionSelector;
+    @FXML
+    private TextField cellIdSelection;
+    @FXML
+    private TextField originalValueBox;
+    @FXML
+    private Button updateValue;
+    @FXML
+    private TextField showLastVersion;
+    @FXML
+    private Button versionSelector;
     private AppController mainController;
 
     @FXML
@@ -32,6 +37,7 @@ public class ActionLineController  {
         updateValue.setOnAction(event -> handleUpdateValueAction());
 
     }
+
     public void clearUIComponents() {
         cellIdSelection.cancelEdit();
         originalValueBox.clear();
@@ -47,19 +53,28 @@ public class ActionLineController  {
     }
 
     private String getCellOriginalValue(CellDTO cell) {
-        if(cell == null)
+        if (cell == null)
             return "empty cell";
-        else if(cell.getOriginalValue() == null)
+        else if (cell.getOriginalValue() == null)
             return "empty cell";
         else
             return cell.getOriginalValue();
     }
 
 
-    public void updateFields( CellDTO cell) {
-        cellIdSelection.setText(cell.getCoordinateDTO().toString());
-        originalValueBox.setText(cell.getOriginalValue().toString());
-        showLastVersion.setText(Integer.toString(cell.getLastVersionUpdate()));
+    public void updateFields(CoordinateDTO cord, CellDTO cell) {
+        cellIdSelection.setText(cord.toString());
+
+        if (cell == null) {
+            originalValueBox.setText("empty cell");
+            showLastVersion.setText("1");
+        } else if (cell.getOriginalValue() == null) {
+            originalValueBox.setText("empty cell");
+            showLastVersion.setText(Integer.toString(cell.getLastVersionUpdate()));
+        } else {
+            originalValueBox.setText(cell.getOriginalValue().toString());
+            showLastVersion.setText(Integer.toString(cell.getLastVersionUpdate()));
+        }
     }
 
     @FXML

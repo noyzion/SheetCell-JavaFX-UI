@@ -30,7 +30,7 @@ public class SheetController {
         int rows = sheetDTO.getRowSize();
         int columns = sheetDTO.getColumnSize();
 
-        URL cssUrl = getClass().getResource("/sheet/styles/basicStyle.css");
+        URL cssUrl = getClass().getResource("/sheet/styles/BasicStyle.css");
         gridPane.getStylesheets().add(cssUrl.toExternalForm());
 
         for (int col = 0; col < columns; col++) {
