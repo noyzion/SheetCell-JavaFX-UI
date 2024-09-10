@@ -1,28 +1,27 @@
-package actionLine;
+package header;
 
+import DTO.CellDTO;
+import expression.Operation;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UpdateValueController {
 
-    private String inputType; // Stores the type of input (Number, String, Function)
-    private String selectedFunction; // Stores the selected function name
-    private List<String> functionArguments; // Stores the function arguments
+    private String inputType;
+    private Operation selectedOperation;
+    private List<String> functionArguments;
+    private CellDTO selectedCell;
 
-    // Variables to hold previous values
-    private String originalValue;
-    private String effectiveValue;
-
-    // Constructor to accept previous values
-    public UpdateValueController(String originalValue, String effectiveValue) {
-        this.originalValue = originalValue;
-        this.effectiveValue = effectiveValue;
+    public UpdateValueController(CellDTO cellDTO) {
+        this.selectedCell = cellDTO;
     }
 
     public void display() {
@@ -30,28 +29,33 @@ public class UpdateValueController {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Update Value");
         window.setMinWidth(400);
+        Label originalValueLabel;
+        Label effectiveValueLabel;
+        if(selectedCell != null ) {
+             originalValueLabel = new Label("Original Value: " + selectedCell.getOriginalValue());
+             effectiveValueLabel = new Label("Effective Value: " + selectedCell.getEffectiveValue().getValue().toString());
+        }
+        else
+        {
+             originalValueLabel = new Label("Original Value: cell is empty");
+             effectiveValueLabel = new Label("Effective Value: cell is empty");
+        }
 
-        // Create UI elements for previous values
-        Label originalValueLabel = new Label("Original Value: " + originalValue);
-        Label effectiveValueLabel = new Label("Effective Value: " + effectiveValue);
-
-        // Create UI elements for input type selection
         Label chooseTypeLabel = new Label("Choose input type:");
         ComboBox<String> inputTypeComboBox = new ComboBox<>();
-        inputTypeComboBox.getItems().addAll("Number", "String", "Function");
+        inputTypeComboBox.getItems().addAll("Number", "Text", "Function");
         inputTypeComboBox.setValue("Number");
 
-        // Dynamic content area to update based on input type
         VBox dynamicContentArea = new VBox();
         dynamicContentArea.setSpacing(10);
         dynamicContentArea.setPadding(new Insets(10));
 
-        // Function choice box and input fields (initially hidden)
         ComboBox<String> functionChoiceBox = new ComboBox<>();
-        functionChoiceBox.getItems().addAll("SUM", "AVG", "MIN", "MAX"); // Add function names here
+        functionChoiceBox.getItems().addAll(Arrays.stream(Operation.values())
+                .map(Operation::name)
+                .toList()); // Add function names from enum
         functionChoiceBox.setVisible(false);
 
-        // Argument container for function input fields
         VBox functionArgumentsContainer = new VBox();
         functionArgumentsContainer.setSpacing(5);
         functionArgumentsContainer.setVisible(false);
@@ -59,7 +63,6 @@ public class UpdateValueController {
         TextField valueInputField = new TextField();
         valueInputField.setPromptText("Enter a value");
 
-        // Add input type change listener
         inputTypeComboBox.setOnAction(e -> {
             String selectedType = inputTypeComboBox.getValue();
             dynamicContentArea.getChildren().clear();
@@ -69,9 +72,9 @@ public class UpdateValueController {
                     dynamicContentArea.getChildren().add(valueInputField);
                     valueInputField.setPromptText("Enter a number");
                     break;
-                case "String":
+                case "Text":
                     dynamicContentArea.getChildren().add(valueInputField);
-                    valueInputField.setPromptText("Enter a string");
+                    valueInputField.setPromptText("Enter text");
                     break;
                 case "Function":
                     dynamicContentArea.getChildren().add(functionChoiceBox);
@@ -82,25 +85,31 @@ public class UpdateValueController {
             }
         });
 
-        // Handle function selection to create argument fields
         functionChoiceBox.setOnAction(e -> {
             functionArgumentsContainer.getChildren().clear();
-            String selectedFunction = functionChoiceBox.getValue();
-            int numberOfArguments = getNumberOfArgumentsForFunction(selectedFunction);
+            String selectedFunctionName = functionChoiceBox.getValue();
 
-            // Dynamically create fields for each argument
-            for (int i = 0; i < numberOfArguments; i++) {
-                TextField argumentField = new TextField();
-                argumentField.setPromptText("Argument " + (i + 1));
-                functionArgumentsContainer.getChildren().add(argumentField);
+            try {
+                // Convert the selected function name to an Operation enum
+                selectedOperation = Operation.valueOf(selectedFunctionName);
+                int numberOfArguments = selectedOperation.getNumArgs();
+
+                // Create and add argument fields based on the number of arguments
+                for (int i = 0; i < numberOfArguments; i++) {
+                    TextField argumentField = new TextField();
+                    argumentField.setPromptText("Argument " + (i + 1));
+                    functionArgumentsContainer.getChildren().add(argumentField);
+                }
+            } catch (IllegalArgumentException ex) {
+                // Handle invalid function names
+                System.err.println("Invalid function selected: " + selectedFunctionName);
             }
         });
 
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             inputType = inputTypeComboBox.getValue();
-            if ("Function".equals(inputType)) {
-                selectedFunction = functionChoiceBox.getValue();
+            if ("Function".equals(inputType) && selectedOperation != null) {
                 functionArguments = new ArrayList<>();
                 for (var child : functionArgumentsContainer.getChildren()) {
                     if (child instanceof TextField) {
@@ -108,7 +117,8 @@ public class UpdateValueController {
                     }
                 }
             } else {
-                selectedFunction = valueInputField.getText();
+                selectedOperation = null;
+                functionArguments = null;
             }
             window.close();
         });
@@ -122,32 +132,15 @@ public class UpdateValueController {
         window.showAndWait();
     }
 
-    private int getNumberOfArgumentsForFunction(String functionName) {
-        // Define the number of arguments required for each function
-        switch (functionName) {
-            case "SUM":
-                return 2; // Example: SUM requires 2 arguments
-            case "AVG":
-                return 3; // Example: AVG requires 3 arguments
-            case "MIN":
-                return 2; // Example: MIN requires 2 arguments
-            case "MAX":
-                return 2; // Example: MAX requires 2 arguments
-            default:
-                return 0; // Default case if no function is selected
-        }
-    }
-
-
     public String getInputType() {
         return inputType;
     }
 
-    public String getSelectedFunction() {
-        return selectedFunction;
+    public Operation getSelectedOperation() {
+        return selectedOperation;
     }
 
-    public List<String> getFunctionArguments() {
+    public List<String> getOperationArguments() {
         return functionArguments;
     }
 }

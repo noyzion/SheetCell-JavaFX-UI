@@ -25,9 +25,12 @@ public class CellDTO {
     }
 
     public String getOriginalValue() {
-        return originalValue;
-    }
+        if (originalValue == null)
+            return "empty cell";
+        else
+            return originalValue;
 
+    }
     public EffectiveValue getEffectiveValue() {
         return effectiveValue;
     }
