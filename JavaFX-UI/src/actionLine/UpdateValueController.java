@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import mainContoroller.AppController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,7 +77,7 @@ public class UpdateValueController {
         layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, buttonBox);
 
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add(getClass().getResource("UpdateValueStyle.css").toExternalForm()); // Load CSS file
+        scene.getStylesheets().add(getClass().getResource("/actionLine/style/UpdateValueStyle.css").toExternalForm()); // Load CSS file
         window.setScene(scene);
 
         window.setOnCloseRequest(e -> {
@@ -108,9 +107,23 @@ public class UpdateValueController {
 
         switch (inputType) {
             case "Number":
+                TextField numberField = new TextField();
+                numberField.setPromptText("Enter a number");
+
+                // Add a TextFormatter to restrict input to numbers
+                numberField.setTextFormatter(new TextFormatter<>(change -> {
+                    String newText = change.getControlNewText();
+                    if (newText.matches("\\d*\\.?\\d*")) { // Allows numbers and decimal points
+                        return change;
+                    }
+                    return null; // Reject invalid input
+                }));
+
+                dynamicContentArea.getChildren().add(numberField);
+                break;
             case "Text":
                 TextField textField = new TextField();
-                textField.setPromptText("Enter a value");
+                textField.setPromptText("Enter text");
                 dynamicContentArea.getChildren().add(textField);
                 break;
             case "Function":
@@ -182,9 +195,7 @@ public class UpdateValueController {
         }
     }
 
-
     private FunctionArgument createFunctionArgument(HBox argumentBox) {
-
         ComboBox<String> argumentTypeComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
         String argumentType = argumentTypeComboBox.getValue();
         String argumentValue;
@@ -209,7 +220,6 @@ public class UpdateValueController {
             argumentValue = argumentField.getText();
         }
         return new FunctionArgument(argumentValue);
-
     }
 
     public String getInputType() {
@@ -223,7 +233,6 @@ public class UpdateValueController {
     public List<FunctionArgument> getOperationArguments() {
         return functionArguments;
     }
-
 
     private String formatNonFunctionArgument(String value) {
         return value;
@@ -254,9 +263,30 @@ public class UpdateValueController {
             selectedOperation = null;
             functionArguments = null;
             TextField inputField = (TextField) dynamicContentArea.getChildren().get(0);
-            generatedString = inputField.getText();
+            String inputValue = inputField.getText();
+
+            if ("Number".equals(inputType)) {
+                try {
+                    Double.parseDouble(inputValue);
+                    generatedString = inputValue;
+                } catch (NumberFormatException e) {
+                    showErrorDialog("Invalid Input", "Please enter a valid number.", "The value entered is not a valid number.");
+                    return;
+                }
+            } else {
+                generatedString = inputValue;
+            }
         }
         window.close();
+    }
+
+    private boolean isValidNumber(String text) {
+        try {
+            Double.parseDouble(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private String formatOperation(Operation operation, List<FunctionArgument> functionArguments) {
@@ -304,5 +334,13 @@ public class UpdateValueController {
         } else {
             return formatNonFunctionArgument(argument.getValue());
         }
+    }
+
+    private void showErrorDialog(String title, String message, String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

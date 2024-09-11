@@ -10,7 +10,6 @@ public class FunctionArgument {
     private final String value;
     private final boolean isFunction;
 
-    // Constructor for function arguments
     public FunctionArgument(Operation operation, List<FunctionArgument> nestedArguments) {
         this.operation = operation;
         this.nestedArguments = nestedArguments;
@@ -18,7 +17,6 @@ public class FunctionArgument {
         this.isFunction = true;
     }
 
-    // Constructor for non-function arguments
     public FunctionArgument(String value) {
         this.operation = null;
         this.nestedArguments = null;

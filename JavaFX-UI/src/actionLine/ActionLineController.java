@@ -70,6 +70,7 @@ public class ActionLineController {
 
     public void openUpdateValueDialog(CellDTO cell) {
         boolean validInput = false;
+        CellValueWindow cellValueWindow = new CellValueWindow();
         while (!validInput) {
             try {
                 UpdateValueController updateDialog = new UpdateValueController(cell, mainController.getAllCellNames());
@@ -79,7 +80,11 @@ public class ActionLineController {
                     String inputType = updateDialog.getInputType();
                     var selectedOperation = updateDialog.getSelectedOperation();
                     List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
-                    mainController.setCell(cell.getCoordinateDTO(), updateDialog.getGeneratedString());
+                    String updatedValue = updateDialog.getGeneratedString();
+                    cell = mainController.setCell(cell.getCoordinateDTO(), updatedValue);
+
+                    cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
+
                     validInput = true;
                 } else {
                     break;

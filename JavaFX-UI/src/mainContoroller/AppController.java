@@ -102,7 +102,7 @@ public class AppController extends Application {
             actionLineComponentController.updateFields(coordinate,cell);
     }
 
-    public void setCell(CoordinateDTO coordinate, String value) {
+    public CellDTO setCell(CoordinateDTO coordinate, String value) {
         logic.setCellValue(coordinate.toString(),value);
         actionLineComponentController.clearUIComponents();
         sheetComponentController.clearGrid();
@@ -116,6 +116,7 @@ public class AppController extends Application {
         AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setRightAnchor(sheetComponentController.getGridPane(), 0.0);
+        return logic.getLatestSheet().getCell(coordinate.toString());
     }
     public static void main(String[] args) {
         launch(args);
