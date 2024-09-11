@@ -80,6 +80,7 @@ public class SheetController {
         return label;
     }
     private void handleCellClick(CoordinateDTO coordinate) {
+
         mainController.updateActionLineFields(coordinate);
     }
 

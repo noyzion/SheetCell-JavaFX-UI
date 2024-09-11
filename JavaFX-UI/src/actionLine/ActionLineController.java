@@ -63,9 +63,8 @@ public class ActionLineController {
 
     @FXML
     private void handleUpdateValueAction() {
-        if (selectedCell != null) {
             openUpdateValueDialog(selectedCell);
-        }
+
     }
 
     public void openUpdateValueDialog(CellDTO cell) {
@@ -81,7 +80,7 @@ public class ActionLineController {
                     var selectedOperation = updateDialog.getSelectedOperation();
                     List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
                     String updatedValue = updateDialog.getGeneratedString();
-                    cell = mainController.setCell(cell.getCoordinateDTO(), updatedValue);
+                    cell = mainController.setCell(cellIdSelection.getText(), updatedValue);
 
                     cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
 

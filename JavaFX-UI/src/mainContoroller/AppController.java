@@ -15,16 +15,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import logic.Logic;
 import sheet.SheetController;
 import xmlParse.XmlSheetLoader;
 
-import java.net.URL;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class AppController extends Application {
 
@@ -102,7 +98,7 @@ public class AppController extends Application {
             actionLineComponentController.updateFields(coordinate,cell);
     }
 
-    public CellDTO setCell(CoordinateDTO coordinate, String value) {
+    public CellDTO setCell(String coordinate, String value) {
         logic.setCellValue(coordinate.toString(),value);
         actionLineComponentController.clearUIComponents();
         sheetComponentController.clearGrid();
