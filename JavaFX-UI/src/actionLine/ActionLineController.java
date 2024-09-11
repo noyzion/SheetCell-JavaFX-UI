@@ -69,7 +69,7 @@ public class ActionLineController {
     }
 
     public void openUpdateValueDialog(CellDTO cell) {
-        UpdateValueController updateDialog = new UpdateValueController(cell);
+        UpdateValueController updateDialog = new UpdateValueController(cell,mainController.getAllCellNames());
         updateDialog.display();
 
         String inputType = updateDialog.getInputType();

@@ -22,6 +22,9 @@ import sheet.SheetController;
 import xmlParse.XmlSheetLoader;
 
 import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AppController extends Application {
 
@@ -43,7 +46,9 @@ public class AppController extends Application {
             sheetComponentController.setMainController(this);
         }
     }
-
+    public List<String> getAllCellNames() {
+       return sheetComponentController.getAllCellNames();
+    }
     public void setSheet() {
 
         String xmlFilePath = headerComponentController.getXmlFilePath();
@@ -91,6 +96,7 @@ public class AppController extends Application {
             showErrorDialog("Application Error", "Failed to Load", "An error occurred while loading the application.");
         }
     }
+
     public void updateActionLineFields(CoordinateDTO coordinate) {
         CellDTO cell = logic.getLatestSheet().getCell(coordinate.toString());
             actionLineComponentController.updateFields(coordinate,cell);

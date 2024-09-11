@@ -9,7 +9,10 @@ import javafx.scene.layout.GridPane;
 import mainContoroller.AppController;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SheetController {
 
@@ -59,6 +62,7 @@ public class SheetController {
             }
         }
     }
+
     public void clearGrid() {
         gridPane.getChildren().clear();
     }
@@ -79,6 +83,17 @@ public class SheetController {
         mainController.updateActionLineFields(coordinate);
     }
 
+    public List<String> getAllCellNames() {
+        int numRows = sheetDTO.getRowSize();
+        int numCols = sheetDTO.getColumnSize();
+
+        return IntStream.range(0, numCols)
+                .mapToObj(col -> (char) ('A' + col))
+                .flatMap(colLetter -> IntStream.range(1, numRows + 1)
+                        .mapToObj(row -> colLetter + String.valueOf(row)))
+                .sorted()
+                .collect(Collectors.toList());
+    }
     public GridPane getGridPane() {
         return gridPane;
     }

@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import mainContoroller.AppController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +23,11 @@ public class UpdateValueController {
     private List<FunctionArgument> functionArguments;
     private CellDTO selectedCell;
     private String generatedString;
+    private List<String> cellNames;
 
-    public UpdateValueController(CellDTO cellDTO) {
+
+    public UpdateValueController(CellDTO cellDTO, List<String> cellNames) {
+        this.cellNames = cellNames;
         this.selectedCell = cellDTO;
     }
 
@@ -97,44 +101,50 @@ public class UpdateValueController {
         }
     }
 
+    private Node createFunctionArgumentComponent(String promptText, String operation) {
+        HBox argumentBox = new HBox(5);
+
+        if ("REF".equals(operation)) {
+            ComboBox<String> refComboBox = new ComboBox<>();
+            refComboBox.getItems().addAll(cellNames);
+            refComboBox.setPromptText("Select a cell");
+            argumentBox.getChildren().add(refComboBox);
+
+        } else {
+            ComboBox<String> argumentTypeComboBox = new ComboBox<>();
+            argumentTypeComboBox.getItems().addAll("Number", "Text", "Function");
+            argumentTypeComboBox.setValue("Number");
+
+            TextField argumentField = new TextField();
+            argumentField.setPromptText(promptText);
+
+            argumentBox.getChildren().add(argumentTypeComboBox);
+            argumentBox.getChildren().add(argumentField);
+
+            argumentTypeComboBox.setOnAction(e -> updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField));
+        }
+
+        return argumentBox;
+    }
+
     private void updateFunctionArgumentsContainer(VBox functionArgumentsContainer, String functionName) {
         functionArgumentsContainer.getChildren().clear();
         selectedOperation = Operation.valueOf(functionName);
         if (functionName != null) {
             Operation operation = Operation.valueOf(functionName);
             for (int i = 0; i < operation.getNumArgs(); i++) {
-                functionArgumentsContainer.getChildren().add(createFunctionArgumentComponent("Argument " + (i + 1)));
+                functionArgumentsContainer.getChildren().add(createFunctionArgumentComponent("Argument " + (i + 1), functionName));
             }
         }
-    }
-
-    private Node createFunctionArgumentComponent(String promptText) {
-        HBox argumentBox = new HBox(5);
-
-        ComboBox<String> argumentTypeComboBox = new ComboBox<>();
-        argumentTypeComboBox.getItems().addAll("Number", "Text", "Function");
-        argumentTypeComboBox.setValue("Number");
-
-        TextField argumentField = new TextField();
-        argumentField.setPromptText(promptText);
-
-        argumentBox.getChildren().add(argumentTypeComboBox);
-        argumentBox.getChildren().add(argumentField);
-
-        // Initially, just display the TextField
-        argumentTypeComboBox.setOnAction(e -> updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField));
-
-        return argumentBox;
     }
 
     private void updateArgumentBox(HBox argumentBox, ComboBox<String> argumentTypeComboBox, TextField argumentField) {
         String selectedType = argumentTypeComboBox.getValue();
 
-        // Clear current content and add ComboBox
         argumentBox.getChildren().clear();
         argumentBox.getChildren().add(argumentTypeComboBox);
 
-        if ("Function".equals(selectedType)) {
+        if ("Function".equals(selectedType) && selectedOperation != Operation.REF) {
             ComboBox<String> nestedFunctionChoiceBox = new ComboBox<>();
             nestedFunctionChoiceBox.getItems().addAll(Arrays.stream(Operation.values()).map(Operation::name).toList());
             nestedFunctionChoiceBox.setValue(Operation.values()[0].name());
@@ -149,10 +159,11 @@ public class UpdateValueController {
 
 
     private FunctionArgument createFunctionArgument(HBox argumentBox) {
+
         ComboBox<String> argumentTypeComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
         String argumentType = argumentTypeComboBox.getValue();
-
-        if ("Function".equals(argumentType)) {
+        String argumentValue;
+        if ("Function".equals(argumentType) && selectedOperation != Operation.REF) {
             ComboBox<String> nestedFunctionChoiceBox = (ComboBox<String>) argumentBox.getChildren().get(1);
             Operation nestedOperation = Operation.valueOf(nestedFunctionChoiceBox.getValue());
             List<FunctionArgument> nestedArgs = new ArrayList<>();
@@ -163,16 +174,17 @@ public class UpdateValueController {
                     nestedArgs.add(createFunctionArgument((HBox) nestedChild));
                 }
             }
-
-            // Create a FunctionArgument with an Operation and nested arguments
             return new FunctionArgument(nestedOperation, nestedArgs);
+        } else if (Operation.REF == selectedOperation) {
+            ComboBox<String> refComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
+            argumentValue = refComboBox.getValue(); // Get the selected cell reference
+            return new FunctionArgument(argumentValue);
         } else {
             TextField argumentField = (TextField) argumentBox.getChildren().get(1);
-            String argumentValue = argumentField.getText();
-
-            // Return a FunctionArgument with the argument value
-            return new FunctionArgument(argumentValue);
+            argumentValue = argumentField.getText();
         }
+        return new FunctionArgument(argumentValue);
+
     }
 
     public String getInputType() {
@@ -197,7 +209,6 @@ public class UpdateValueController {
         generatedString = "";
 
         if ("Function".equals(inputType)) {
-            // Set the selectedOperation based on the first function selected in the dynamic content area
             ComboBox<String> functionChoiceBox = (ComboBox<String>) dynamicContentArea.getChildren().get(0);
             selectedOperation = Operation.valueOf(functionChoiceBox.getValue());
 
@@ -209,7 +220,6 @@ public class UpdateValueController {
                 }
             }
 
-            // Generate formatted string including the main function and its arguments
             if (!functionArguments.isEmpty()) {
                 generatedString = formatOperation(selectedOperation, functionArguments);
             }
@@ -218,7 +228,6 @@ public class UpdateValueController {
         } else {
             selectedOperation = null;
             functionArguments = null;
-            // Handle Number or Text input types
             TextField inputField = (TextField) dynamicContentArea.getChildren().get(0);
             generatedString = inputField.getText();
         }
@@ -268,10 +277,8 @@ public class UpdateValueController {
 
             return sb.toString();
         } else {
-            // For non-function arguments (Number or Text)
             return formatNonFunctionArgument(argument.getValue());
         }
     }
-
 }
 
