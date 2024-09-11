@@ -98,7 +98,18 @@ public class AppController extends Application {
 
     public void setCell(CoordinateDTO coordinate, String value) {
         logic.setCellValue(coordinate.toString(),value);
-        setSheet();
+        actionLineComponentController.clearUIComponents();
+        sheetComponentController.clearGrid();
+        SheetDTO latestSheet = logic.getLatestSheet();
+        sheetComponentController.setSheetDTO(latestSheet);
+        sheetComponentController.createGridFromSheetDTO();
+        sheetComponent.getChildren().clear();
+        sheetComponent.getChildren().add(sheetComponentController.getGridPane());
+
+        AnchorPane.setTopAnchor(sheetComponentController.getGridPane(), 0.0);
+        AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
+        AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);
+        AnchorPane.setRightAnchor(sheetComponentController.getGridPane(), 0.0);
     }
     public static void main(String[] args) {
         launch(args);

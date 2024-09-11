@@ -75,7 +75,7 @@ public class ActionLineController {
         String inputType = updateDialog.getInputType();
         var selectedOperation = updateDialog.getSelectedOperation();
         List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
-      //  mainController.setCell(cell.getCoordinateDTO(),updateDialog.getGeneratedString());
+        mainController.setCell(cell.getCoordinateDTO(),updateDialog.getGeneratedString());
     }
 
     @FXML
