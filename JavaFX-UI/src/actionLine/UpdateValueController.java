@@ -24,15 +24,10 @@ public class UpdateValueController {
     private CellDTO selectedCell;
     private String generatedString;
     private List<String> cellNames;
+    private boolean confirmed = false;  // Add this flag
 
-
-    public UpdateValueController(CellDTO cellDTO, List<String> cellNames) {
-        this.cellNames = cellNames;
-        this.selectedCell = cellDTO;
-    }
-
-    public String getGeneratedString() {
-        return generatedString;
+    public boolean isConfirmed() {
+        return confirmed;
     }
 
     public void display() {
@@ -61,18 +56,48 @@ public class UpdateValueController {
 
         Button submitButton = new Button("Submit");
         submitButton.getStyleClass().add("button");
-        submitButton.setOnAction(e -> handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window));
+        submitButton.setOnAction(e -> {
+            confirmed = true;  // User confirmed the action
+            handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window);
+        });
+
+        // Add a Cancel button
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e -> {
+            confirmed = false;  // User canceled the action
+            window.close();
+        });
+
+        HBox buttonBox = new HBox(10, submitButton, cancelButton);
+        buttonBox.setPadding(new Insets(10));
+        buttonBox.setSpacing(10);
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
         layout.getStyleClass().add("window");
-        layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, submitButton);
+        layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, buttonBox);
 
         Scene scene = new Scene(layout);
         scene.getStylesheets().add(getClass().getResource("UpdateValueStyle.css").toExternalForm()); // Load CSS file
         window.setScene(scene);
+
+        window.setOnCloseRequest(e -> {
+            confirmed = false;
+        });
+
         window.showAndWait();
     }
+
+
+    public UpdateValueController(CellDTO cellDTO, List<String> cellNames) {
+        this.cellNames = cellNames;
+        this.selectedCell = cellDTO;
+    }
+
+    public String getGeneratedString() {
+        return generatedString;
+    }
+
 
     private Label createLabel(String prefix, String value) {
         return new Label(prefix + value);
@@ -281,4 +306,3 @@ public class UpdateValueController {
         }
     }
 }
-

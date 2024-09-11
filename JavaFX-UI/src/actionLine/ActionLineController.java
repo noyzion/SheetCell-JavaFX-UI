@@ -69,14 +69,27 @@ public class ActionLineController {
     }
 
     public void openUpdateValueDialog(CellDTO cell) {
-        UpdateValueController updateDialog = new UpdateValueController(cell,mainController.getAllCellNames());
-        updateDialog.display();
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                UpdateValueController updateDialog = new UpdateValueController(cell, mainController.getAllCellNames());
+                updateDialog.display();
 
-        String inputType = updateDialog.getInputType();
-        var selectedOperation = updateDialog.getSelectedOperation();
-        List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
-        mainController.setCell(cell.getCoordinateDTO(),updateDialog.getGeneratedString());
+                if (updateDialog.isConfirmed()) {
+                    String inputType = updateDialog.getInputType();
+                    var selectedOperation = updateDialog.getSelectedOperation();
+                    List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
+                    mainController.setCell(cell.getCoordinateDTO(), updateDialog.getGeneratedString());
+                    validInput = true;
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                mainController.showErrorDialog("Error", "Failed to update cell", e.getMessage());
+            }
+        }
     }
+
 
     @FXML
     private void handleVersionSelectorAction() {
