@@ -29,7 +29,8 @@ public class UpdateValueController {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Update Value");
-        window.setMinWidth(400);
+        window.setWidth(600);
+        window.setHeight(800);
 
         Label originalValueLabel = createLabel("Original Value: ", selectedCell != null ? selectedCell.getOriginalValue() : "cell is empty");
         Label effectiveValueLabel = createLabel("Effective Value: ", selectedCell != null ? selectedCell.getEffectiveValue().getValue().toString() : "cell is empty");
@@ -37,22 +38,27 @@ public class UpdateValueController {
         ComboBox<String> inputTypeComboBox = new ComboBox<>();
         inputTypeComboBox.getItems().addAll("Number", "Text", "Function");
         inputTypeComboBox.setValue("Number");
+        inputTypeComboBox.getStyleClass().add("combo-box");
 
         VBox dynamicContentArea = new VBox(10);
         dynamicContentArea.setPadding(new Insets(10));
+        dynamicContentArea.getStyleClass().add("vbox");
 
         inputTypeComboBox.setOnAction(e -> updateDynamicContent(dynamicContentArea, inputTypeComboBox.getValue()));
 
         updateDynamicContent(dynamicContentArea, "Number"); // Initialize with Number selected
 
         Button submitButton = new Button("Submit");
+        submitButton.getStyleClass().add("button");
         submitButton.setOnAction(e -> handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window));
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
+        layout.getStyleClass().add("window");
         layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, submitButton);
 
         Scene scene = new Scene(layout);
+        scene.getStylesheets().add(getClass().getResource("UpdateValueStyle.css").toExternalForm()); // Load CSS file
         window.setScene(scene);
         window.showAndWait();
     }

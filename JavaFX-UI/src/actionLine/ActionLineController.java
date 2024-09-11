@@ -5,7 +5,6 @@ import DTO.CoordinateDTO;
 import expression.FunctionArgument;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import javafx.scene.control.TextField;
 import mainContoroller.AppController;
 
@@ -26,15 +25,19 @@ public class ActionLineController {
     private AppController mainController;
 
     private CellDTO selectedCell;
+
     @FXML
     private void initialize() {
-
+        // Initialize the "Update Value" button as disabled
+        updateValue.setDisable(true);
     }
 
     public void clearUIComponents() {
         cellIdSelection.clear();
         originalValueBox.clear();
         showLastVersion.clear();
+        // Disable the "Update Value" button
+        updateValue.setDisable(true);
     }
 
     private String getCellVersion(CellDTO cell) {
@@ -47,8 +50,8 @@ public class ActionLineController {
 
     public void updateFields(CoordinateDTO cord, CellDTO cell) {
         cellIdSelection.setText(cord.toString());
-        updateValue.setOnAction(event -> handleUpdateValueAction());
         selectedCell = cell;
+        updateValue.setDisable(false);
         if (cell == null) {
             originalValueBox.setText("empty cell");
             showLastVersion.setText("1");
@@ -60,7 +63,9 @@ public class ActionLineController {
 
     @FXML
     private void handleUpdateValueAction() {
-        openUpdateValueDialog(selectedCell);
+        if (selectedCell != null) {
+            openUpdateValueDialog(selectedCell);
+        }
     }
 
     public void openUpdateValueDialog(CellDTO cell) {
@@ -69,8 +74,7 @@ public class ActionLineController {
 
         String inputType = updateDialog.getInputType();
         var selectedOperation = updateDialog.getSelectedOperation();
-        List<FunctionArgument> functionArgs =updateDialog.getOperationArguments();
-
+        List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
     }
 
     @FXML
