@@ -2,7 +2,7 @@ package actionLine;
 
 import DTO.CellDTO;
 import DTO.CoordinateDTO;
-import header.UpdateValueController;
+import expression.FunctionArgument;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Cell;
@@ -69,7 +69,7 @@ public class ActionLineController {
 
         String inputType = updateDialog.getInputType();
         var selectedOperation = updateDialog.getSelectedOperation();
-        List<String> functionArgs = updateDialog.getOperationArguments();
+        List<FunctionArgument> functionArgs =updateDialog.getOperationArguments();
 
     }
 

@@ -1,6 +1,7 @@
-package header;
+package actionLine;
 
 import DTO.CellDTO;
+import expression.FunctionArgument;
 import expression.Operation;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -17,7 +18,7 @@ public class UpdateValueController {
 
     private String inputType;
     private Operation selectedOperation;
-    private List<String> functionArguments;
+    private List<FunctionArgument> functionArguments;
     private CellDTO selectedCell;
 
     public UpdateValueController(CellDTO cellDTO) {
@@ -29,107 +30,164 @@ public class UpdateValueController {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Update Value");
         window.setMinWidth(400);
-        Label originalValueLabel;
-        Label effectiveValueLabel;
-        if(selectedCell != null ) {
-             originalValueLabel = new Label("Original Value: " + selectedCell.getOriginalValue());
-             effectiveValueLabel = new Label("Effective Value: " + selectedCell.getEffectiveValue().getValue().toString());
-        }
-        else
-        {
-             originalValueLabel = new Label("Original Value: cell is empty");
-             effectiveValueLabel = new Label("Effective Value: cell is empty");
-        }
 
-        Label chooseTypeLabel = new Label("Choose input type:");
+        Label originalValueLabel = createLabel("Original Value: ", selectedCell != null ? selectedCell.getOriginalValue() : "cell is empty");
+        Label effectiveValueLabel = createLabel("Effective Value: ", selectedCell != null ? selectedCell.getEffectiveValue().getValue().toString() : "cell is empty");
+
         ComboBox<String> inputTypeComboBox = new ComboBox<>();
         inputTypeComboBox.getItems().addAll("Number", "Text", "Function");
         inputTypeComboBox.setValue("Number");
 
-        VBox dynamicContentArea = new VBox();
-        dynamicContentArea.setSpacing(10);
+        VBox dynamicContentArea = new VBox(10);
         dynamicContentArea.setPadding(new Insets(10));
 
-        ComboBox<String> functionChoiceBox = new ComboBox<>();
-        functionChoiceBox.getItems().addAll(Arrays.stream(Operation.values())
-                .map(Operation::name)
-                .toList()); // Add function names from enum
-        functionChoiceBox.setVisible(false);
+        inputTypeComboBox.setOnAction(e -> updateDynamicContent(dynamicContentArea, inputTypeComboBox.getValue()));
 
-        VBox functionArgumentsContainer = new VBox();
-        functionArgumentsContainer.setSpacing(5);
-        functionArgumentsContainer.setVisible(false);
-
-        TextField valueInputField = new TextField();
-        valueInputField.setPromptText("Enter a value");
-
-        inputTypeComboBox.setOnAction(e -> {
-            String selectedType = inputTypeComboBox.getValue();
-            dynamicContentArea.getChildren().clear();
-
-            switch (selectedType) {
-                case "Number":
-                    dynamicContentArea.getChildren().add(valueInputField);
-                    valueInputField.setPromptText("Enter a number");
-                    break;
-                case "Text":
-                    dynamicContentArea.getChildren().add(valueInputField);
-                    valueInputField.setPromptText("Enter text");
-                    break;
-                case "Function":
-                    dynamicContentArea.getChildren().add(functionChoiceBox);
-                    dynamicContentArea.getChildren().add(functionArgumentsContainer);
-                    functionChoiceBox.setVisible(true);
-                    functionArgumentsContainer.setVisible(true);
-                    break;
-            }
-        });
-
-        functionChoiceBox.setOnAction(e -> {
-            functionArgumentsContainer.getChildren().clear();
-            String selectedFunctionName = functionChoiceBox.getValue();
-
-            try {
-                // Convert the selected function name to an Operation enum
-                selectedOperation = Operation.valueOf(selectedFunctionName);
-                int numberOfArguments = selectedOperation.getNumArgs();
-
-                // Create and add argument fields based on the number of arguments
-                for (int i = 0; i < numberOfArguments; i++) {
-                    TextField argumentField = new TextField();
-                    argumentField.setPromptText("Argument " + (i + 1));
-                    functionArgumentsContainer.getChildren().add(argumentField);
-                }
-            } catch (IllegalArgumentException ex) {
-                // Handle invalid function names
-                System.err.println("Invalid function selected: " + selectedFunctionName);
-            }
-        });
+        updateDynamicContent(dynamicContentArea, "Number"); // Initialize with Number selected
 
         Button submitButton = new Button("Submit");
-        submitButton.setOnAction(e -> {
-            inputType = inputTypeComboBox.getValue();
-            if ("Function".equals(inputType) && selectedOperation != null) {
-                functionArguments = new ArrayList<>();
-                for (var child : functionArgumentsContainer.getChildren()) {
-                    if (child instanceof TextField) {
-                        functionArguments.add(((TextField) child).getText());
-                    }
-                }
-            } else {
-                selectedOperation = null;
-                functionArguments = null;
-            }
-            window.close();
-        });
+        submitButton.setOnAction(e -> handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window));
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
-        layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, chooseTypeLabel, inputTypeComboBox, dynamicContentArea, submitButton);
+        layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, submitButton);
 
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
+    }
+
+    private Label createLabel(String prefix, String value) {
+        return new Label(prefix + value);
+    }
+
+    private void updateDynamicContent(VBox dynamicContentArea, String inputType) {
+        dynamicContentArea.getChildren().clear();
+
+        switch (inputType) {
+            case "Number":
+            case "Text":
+                dynamicContentArea.getChildren().add(createTextField("Enter a value"));
+                break;
+            case "Function":
+                ComboBox<String> functionChoiceBox = createFunctionChoiceBox();
+                VBox functionArgumentsContainer = createFunctionArgumentsContainer();
+                dynamicContentArea.getChildren().addAll(functionChoiceBox, functionArgumentsContainer);
+                break;
+        }
+    }
+
+    private TextField createTextField(String promptText) {
+        TextField textField = new TextField();
+        textField.setPromptText(promptText);
+        return textField;
+    }
+
+    private ComboBox<String> createFunctionChoiceBox() {
+        ComboBox<String> functionChoiceBox = new ComboBox<>();
+        functionChoiceBox.getItems().addAll(Arrays.stream(Operation.values()).map(Operation::name).toList());
+
+        functionChoiceBox.setOnAction(e -> {
+            VBox parentVBox = (VBox) functionChoiceBox.getParent();
+            if (parentVBox != null && parentVBox.getChildren().size() > 1 && parentVBox.getChildren().get(1) instanceof VBox) {
+                VBox functionArgumentsContainer = (VBox) parentVBox.getChildren().get(1);
+                updateFunctionArgumentsContainer(functionArgumentsContainer, functionChoiceBox.getValue());
+            }
+        });
+
+        return functionChoiceBox;
+    }
+
+    private VBox createFunctionArgumentsContainer() {
+        VBox functionArgumentsContainer = new VBox(5);
+        return functionArgumentsContainer; // Will be updated later
+    }
+
+    private void updateFunctionArgumentsContainer(VBox functionArgumentsContainer, String functionName) {
+        functionArgumentsContainer.getChildren().clear();
+        if (functionName != null) {
+            Operation operation = Operation.valueOf(functionName);
+            for (int i = 0; i < operation.getNumArgs(); i++) {
+                functionArgumentsContainer.getChildren().add(createArgumentBox("Argument " + (i + 1)));
+            }
+        }
+    }
+
+    private VBox createArgumentBox(String promptText) {
+        VBox argumentBox = new VBox(5);
+
+        ComboBox<String> argumentTypeComboBox = new ComboBox<>();
+        argumentTypeComboBox.getItems().addAll("Number", "Text", "Function");
+        argumentTypeComboBox.setValue("Number");
+
+        TextField argumentField = createTextField(promptText);
+        VBox nestedFunctionContainer = new VBox(5);
+
+        argumentTypeComboBox.setOnAction(e -> {
+            updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField, nestedFunctionContainer);
+        });
+
+        argumentBox.getChildren().addAll(argumentTypeComboBox, argumentField);
+        return argumentBox;
+    }
+
+    private void updateArgumentBox(VBox argumentBox, ComboBox<String> argumentTypeComboBox, TextField argumentField, VBox nestedFunctionContainer) {
+        argumentBox.getChildren().clear();
+        switch (argumentTypeComboBox.getValue()) {
+            case "Number":
+            case "Text":
+                argumentBox.getChildren().addAll(argumentTypeComboBox, argumentField);
+                break;
+            case "Function":
+                ComboBox<String> nestedFunctionChoiceBox = createFunctionChoiceBox();
+                argumentBox.getChildren().addAll(argumentTypeComboBox, nestedFunctionChoiceBox, nestedFunctionContainer);
+                nestedFunctionChoiceBox.setOnAction(e -> {
+                    updateFunctionArgumentsContainer(nestedFunctionContainer, nestedFunctionChoiceBox.getValue());
+                });
+                updateFunctionArgumentsContainer(nestedFunctionContainer, nestedFunctionChoiceBox.getValue());
+                break;
+        }
+    }
+
+    private void handleSubmit(String inputType, VBox dynamicContentArea, Stage window) {
+        this.inputType = inputType;
+
+        if ("Function".equals(inputType)) {
+            functionArguments = new ArrayList<>();
+            for (var child : dynamicContentArea.getChildren()) {
+                if (child instanceof VBox) {
+                    functionArguments.add(createFunctionArgument((VBox) child));
+                }
+            }
+        } else {
+            selectedOperation = null;
+            functionArguments = null;
+        }
+
+        window.close();
+    }
+
+    private FunctionArgument createFunctionArgument(VBox argumentBox) {
+        ComboBox<String> argumentTypeComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
+        String argumentType = argumentTypeComboBox.getValue();
+
+        if ("Function".equals(argumentType)) {
+            ComboBox<String> nestedFunctionChoiceBox = (ComboBox<String>) argumentBox.getChildren().get(1);
+            Operation nestedOperation = Operation.valueOf(nestedFunctionChoiceBox.getValue());
+            List<FunctionArgument> nestedArgs = new ArrayList<>();
+
+            VBox nestedFunctionArgumentsContainer = (VBox) argumentBox.getChildren().get(2);
+            for (var nestedChild : nestedFunctionArgumentsContainer.getChildren()) {
+                if (nestedChild instanceof VBox) {
+                    nestedArgs.add(createFunctionArgument((VBox) nestedChild));
+                }
+            }
+
+            return new FunctionArgument(nestedOperation, nestedArgs);
+        } else {
+            TextField argumentField = (TextField) argumentBox.getChildren().get(1);
+            return new FunctionArgument(argumentType, argumentField.getText());
+        }
     }
 
     public String getInputType() {
@@ -140,7 +198,7 @@ public class UpdateValueController {
         return selectedOperation;
     }
 
-    public List<String> getOperationArguments() {
+    public List<FunctionArgument> getOperationArguments() {
         return functionArguments;
     }
 }
