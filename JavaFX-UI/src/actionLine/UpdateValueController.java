@@ -21,6 +21,7 @@ public class UpdateValueController {
     private Operation selectedOperation;
     private List<FunctionArgument> functionArguments;
     private CellDTO selectedCell;
+    private String generatedString;
 
     public UpdateValueController(CellDTO cellDTO) {
         this.selectedCell = cellDTO;
@@ -94,6 +95,7 @@ public class UpdateValueController {
 
     private void updateFunctionArgumentsContainer(VBox functionArgumentsContainer, String functionName) {
         functionArgumentsContainer.getChildren().clear();
+        selectedOperation = Operation.valueOf(functionName);
         if (functionName != null) {
             Operation operation = Operation.valueOf(functionName);
             for (int i = 0; i < operation.getNumArgs(); i++) {
@@ -113,10 +115,9 @@ public class UpdateValueController {
         argumentField.setPromptText(promptText);
 
         argumentBox.getChildren().add(argumentTypeComboBox);
-
-        // Default to showing only the TextField
         argumentBox.getChildren().add(argumentField);
 
+        // Initially, just display the TextField
         argumentTypeComboBox.setOnAction(e -> updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField));
 
         return argumentBox;
@@ -144,19 +145,29 @@ public class UpdateValueController {
 
     private void handleSubmit(String inputType, VBox dynamicContentArea, Stage window) {
         this.inputType = inputType;
+        generatedString = ""; // Reset the generatedString before new input
 
         if ("Function".equals(inputType)) {
             functionArguments = new ArrayList<>();
             for (var child : dynamicContentArea.getChildren()) {
                 if (child instanceof VBox) {
-                    VBox argumentBoxContainer = (VBox) child;
-                    for (var boxChild : argumentBoxContainer.getChildren()) {
-                        if (boxChild instanceof HBox) {
-                            functionArguments.add(createFunctionArgument((HBox) boxChild));
+                    VBox argumentBox = (VBox) child;
+                    // Process each VBox in dynamicContentArea
+                    for (var argChild : argumentBox.getChildren()) {
+                        if (argChild instanceof HBox) {
+                            functionArguments.add(createFunctionArgument((HBox) argChild));
                         }
                     }
                 }
             }
+
+            // Generate formatted string including the main function and its arguments
+            if (!functionArguments.isEmpty()) {
+                generatedString = generateFormattedString(functionArguments);
+                generatedString = "{" + selectedOperation.name() + "," + generatedString + "}";
+            }
+
+            System.out.println("Formatted String: " + generatedString);
         } else {
             selectedOperation = null;
             functionArguments = null;
@@ -181,10 +192,14 @@ public class UpdateValueController {
                 }
             }
 
+            // Create a FunctionArgument with an Operation and nested arguments
             return new FunctionArgument(nestedOperation, nestedArgs);
         } else {
             TextField argumentField = (TextField) argumentBox.getChildren().get(1);
-            return new FunctionArgument(argumentType, argumentField.getText());
+            String argumentValue = argumentField.getText();
+
+            // Return a FunctionArgument with the argument value
+            return new FunctionArgument(argumentValue);
         }
     }
 
@@ -198,5 +213,48 @@ public class UpdateValueController {
 
     public List<FunctionArgument> getOperationArguments() {
         return functionArguments;
+    }
+
+    public String generateFormattedString(List<FunctionArgument> functionArguments) {
+        if (functionArguments == null || functionArguments.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (FunctionArgument argument : functionArguments) {
+            sb.append(formatArgument(argument));
+            sb.append(",");
+        }
+
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 1);
+        }
+
+        return sb.toString();
+    }
+
+    private String formatArgument(FunctionArgument argument) {
+        if (argument.isFunction()) {
+            StringBuilder sb = new StringBuilder();
+            // Add the function name
+            sb.append("{");
+            sb.append(argument.getOperation().name()).append(",");
+
+            List<FunctionArgument> nestedArgs = argument.getNestedArguments();
+            if (nestedArgs != null && !nestedArgs.isEmpty()) {
+                // Recursively format nested arguments
+                sb.append(generateFormattedString(nestedArgs));
+                sb.append("}");
+            }
+
+            return sb.toString();
+        } else {
+            // For non-function arguments (Number or Text)
+            return formatNonFunctionArgument(argument.getValue());
+        }
+    }
+
+    private String formatNonFunctionArgument(String value) {
+        return value;
     }
 }

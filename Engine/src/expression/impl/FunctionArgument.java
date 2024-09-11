@@ -4,28 +4,30 @@ import expression.Operation;
 import java.util.List;
 
 public class FunctionArgument {
-    private String inputType;
-    private String value;
-    private Operation operation;
-    private List<FunctionArgument> nestedArguments;
 
-    public FunctionArgument(String inputType, String value) {
-        this.inputType = inputType;
-        this.value = value;
-    }
+    private final Operation operation;
+    private final List<FunctionArgument> nestedArguments;
+    private final String value;
+    private final boolean isFunction;
 
+    // Constructor for function arguments
     public FunctionArgument(Operation operation, List<FunctionArgument> nestedArguments) {
-        this.inputType = "Function";
         this.operation = operation;
         this.nestedArguments = nestedArguments;
+        this.value = null;
+        this.isFunction = true;
     }
 
-    public String getInputType() {
-        return inputType;
+    // Constructor for non-function arguments
+    public FunctionArgument(String value) {
+        this.operation = null;
+        this.nestedArguments = null;
+        this.value = value;
+        this.isFunction = false;
     }
 
-    public String getValue() {
-        return value;
+    public boolean isFunction() {
+        return isFunction;
     }
 
     public Operation getOperation() {
@@ -35,4 +37,11 @@ public class FunctionArgument {
     public List<FunctionArgument> getNestedArguments() {
         return nestedArguments;
     }
+
+    public String getValue() {
+        return value;
+    }
 }
+
+
+
