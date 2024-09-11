@@ -27,6 +27,10 @@ public class UpdateValueController {
         this.selectedCell = cellDTO;
     }
 
+    public String getGeneratedString() {
+        return generatedString;
+    }
+
     public void display() {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -143,38 +147,6 @@ public class UpdateValueController {
         }
     }
 
-    private void handleSubmit(String inputType, VBox dynamicContentArea, Stage window) {
-        this.inputType = inputType;
-        generatedString = ""; // Reset the generatedString before new input
-
-        if ("Function".equals(inputType)) {
-            functionArguments = new ArrayList<>();
-            for (var child : dynamicContentArea.getChildren()) {
-                if (child instanceof VBox) {
-                    VBox argumentBox = (VBox) child;
-                    // Process each VBox in dynamicContentArea
-                    for (var argChild : argumentBox.getChildren()) {
-                        if (argChild instanceof HBox) {
-                            functionArguments.add(createFunctionArgument((HBox) argChild));
-                        }
-                    }
-                }
-            }
-
-            // Generate formatted string including the main function and its arguments
-            if (!functionArguments.isEmpty()) {
-                generatedString = generateFormattedString(functionArguments);
-                generatedString = "{" + selectedOperation.name() + "," + generatedString + "}";
-            }
-
-            System.out.println("Formatted String: " + generatedString);
-        } else {
-            selectedOperation = null;
-            functionArguments = null;
-        }
-
-        window.close();
-    }
 
     private FunctionArgument createFunctionArgument(HBox argumentBox) {
         ComboBox<String> argumentTypeComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
@@ -215,7 +187,55 @@ public class UpdateValueController {
         return functionArguments;
     }
 
-    public String generateFormattedString(List<FunctionArgument> functionArguments) {
+
+    private String formatNonFunctionArgument(String value) {
+        return value;
+    }
+
+    private void handleSubmit(String inputType, VBox dynamicContentArea, Stage window) {
+        this.inputType = inputType;
+        generatedString = "";
+
+        if ("Function".equals(inputType)) {
+            // Set the selectedOperation based on the first function selected in the dynamic content area
+            ComboBox<String> functionChoiceBox = (ComboBox<String>) dynamicContentArea.getChildren().get(0);
+            selectedOperation = Operation.valueOf(functionChoiceBox.getValue());
+
+            functionArguments = new ArrayList<>();
+            VBox functionArgumentsContainer = (VBox) dynamicContentArea.getChildren().get(1);
+            for (Node child : functionArgumentsContainer.getChildren()) {
+                if (child instanceof HBox) {
+                    functionArguments.add(createFunctionArgument((HBox) child));
+                }
+            }
+
+            // Generate formatted string including the main function and its arguments
+            if (!functionArguments.isEmpty()) {
+                generatedString = formatOperation(selectedOperation, functionArguments);
+            }
+
+            System.out.println("Formatted String: " + generatedString);
+        } else {
+            selectedOperation = null;
+            functionArguments = null;
+            // Handle Number or Text input types
+            TextField inputField = (TextField) dynamicContentArea.getChildren().get(0);
+            generatedString = inputField.getText();
+        }
+        window.close();
+    }
+
+    private String formatOperation(Operation operation, List<FunctionArgument> functionArguments) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append(operation.name());
+        sb.append(",");
+        sb.append(generateFormattedString(functionArguments));
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private String generateFormattedString(List<FunctionArgument> functionArguments) {
         if (functionArguments == null || functionArguments.isEmpty()) {
             return "";
         }
@@ -236,16 +256,15 @@ public class UpdateValueController {
     private String formatArgument(FunctionArgument argument) {
         if (argument.isFunction()) {
             StringBuilder sb = new StringBuilder();
-            // Add the function name
-            sb.append("{");
-            sb.append(argument.getOperation().name()).append(",");
 
+            sb.append("{");
+            sb.append(argument.getOperation().name());
             List<FunctionArgument> nestedArgs = argument.getNestedArguments();
             if (nestedArgs != null && !nestedArgs.isEmpty()) {
-                // Recursively format nested arguments
+                sb.append(",");
                 sb.append(generateFormattedString(nestedArgs));
-                sb.append("}");
             }
+            sb.append("}");
 
             return sb.toString();
         } else {
@@ -254,7 +273,5 @@ public class UpdateValueController {
         }
     }
 
-    private String formatNonFunctionArgument(String value) {
-        return value;
-    }
 }
+

@@ -95,6 +95,11 @@ public class AppController extends Application {
         CellDTO cell = logic.getLatestSheet().getCell(coordinate.toString());
             actionLineComponentController.updateFields(coordinate,cell);
     }
+
+    public void setCell(CoordinateDTO coordinate, String value) {
+        logic.setCellValue(coordinate.toString(),value);
+        setSheet();
+    }
     public static void main(String[] args) {
         launch(args);
     }
