@@ -129,6 +129,17 @@ public class UpdateValueController {
             case "Text":
                 TextField textField = new TextField();
                 textField.setPromptText("Enter text");
+
+                // Add a TextFormatter to restrict input to non-numeric text
+                textField.setTextFormatter(new TextFormatter<>(change -> {
+                    String newText = change.getControlNewText();
+                    // Allow text with letters, numbers, and symbols, but reject purely numeric input
+                    if (newText.isEmpty() || newText.matches(".*[a-zA-Z].*") || !newText.matches("\\d*")) {
+                        return change;
+                    }
+                    return null; // Reject purely numeric input
+                }));
+
                 dynamicContentArea.getChildren().add(textField);
                 break;
             case "Function":
