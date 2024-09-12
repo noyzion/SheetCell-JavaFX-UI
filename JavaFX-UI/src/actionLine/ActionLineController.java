@@ -6,22 +6,18 @@ import expression.FunctionArgument;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mainContoroller.AppController;
 
 import java.util.List;
 
 public class ActionLineController {
 
-    @FXML
-    private TextField cellIdSelection;
-    @FXML
-    private TextField originalValueBox;
-    @FXML
-    private Button updateValue;
-    @FXML
-    private TextField showLastVersion;
-    @FXML
-    private Button versionSelector;
+    @FXML private TextField cellIdSelection;
+    @FXML private TextField originalValueBox;
+    @FXML private Button updateValue;
+    @FXML private TextField showLastVersion;
+    @FXML private Button versionSelector;
     private AppController mainController;
 
     private CellDTO selectedCell;
@@ -29,6 +25,7 @@ public class ActionLineController {
     @FXML
     private void initialize() {
         updateValue.setDisable(true);
+        versionSelector.setDisable(true);
     }
 
     public void clearUIComponents() {
@@ -36,14 +33,6 @@ public class ActionLineController {
         originalValueBox.clear();
         showLastVersion.clear();
         updateValue.setDisable(true);
-    }
-
-    private String getCellVersion(CellDTO cell) {
-        if (cell == null) {
-            return "1";
-        } else {
-            return String.valueOf(cell.getLastVersionUpdate());
-        }
     }
 
     public void updateFields(CoordinateDTO cord, CellDTO cell) {
@@ -61,8 +50,7 @@ public class ActionLineController {
 
     @FXML
     private void handleUpdateValueAction() {
-            openUpdateValueDialog(selectedCell);
-
+        openUpdateValueDialog(selectedCell);
     }
 
     public void openUpdateValueDialog(CellDTO cell) {
@@ -79,9 +67,8 @@ public class ActionLineController {
                     List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
                     String updatedValue = updateDialog.getGeneratedString();
                     cell = mainController.setCell(cellIdSelection.getText(), updatedValue);
-                    int x;
                     if (cell.getEffectiveValue().getValue() == null)
-                    cellValueWindow.show("empty cell", cell.getCoordinateDTO().toString());
+                        cellValueWindow.show("empty cell", cell.getCoordinateDTO().toString());
                     else
                         cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
 
@@ -95,13 +82,25 @@ public class ActionLineController {
         }
     }
 
-
     @FXML
     private void handleVersionSelectorAction() {
-        // Your code here
+        openVersionSelectorDialog();
+    }
+
+    public void openVersionSelectorDialog() {
+        VersionSelectorController cellValueWindow = new VersionSelectorController(mainController.getSheetVersion());
+        cellValueWindow.setMainController(mainController);
+        cellValueWindow.display();
     }
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+
+        // Setting the listener in the HeaderController to enable the versionSelector button when the sheet is loaded
+        mainController.getHeaderController().setSheetLoadedListener(event -> versionSelector.setDisable(false));
     }
+    public void enableVersionSelector() {
+        versionSelector.setDisable(false);
+    }
+
 }

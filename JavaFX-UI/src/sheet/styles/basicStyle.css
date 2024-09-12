@@ -2,20 +2,18 @@
 .label {
     -fx-padding: 10;
     -fx-font-size: 14px;
-    -fx-font-family: "Gisha"; /* Font set to Gisha */
-    -fx-text-fill: #000000; /* Black text color for contrast */
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000;
     -fx-alignment: center;
-    -fx-background-radius: 8;  /* Slightly rounded corners */
+    -fx-background-radius: 8;
     -fx-background-insets: 0;
-    -fx-background-color: #e0e0e0; /* Light gray background for cells */
-    -fx-border-color: #000000; /* Black border */
-    -fx-border-style: solid;   /* Solid border */
-    -fx-border-radius: 8;      /* Rounded corners for the border */
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #000000;
+    -fx-border-style: solid;
+    -fx-border-radius: 8;
     -fx-border-width: 1.5;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1); /* Subtle shadow effect */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
 }
-
-/* Column and row headers */
 .header {
     -fx-text-fill: #ffffff;          /* White text color for contrast */
     -fx-font-size: 16px;             /* Larger font size */
@@ -27,23 +25,39 @@
     -fx-border-color: #000000;       /* Black border */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.3, 3, 3); /* Soft shadow effect */
 }
-
 /* Hover effect for column and row headers */
 .header:hover {
     -fx-background-color: #4d4d4d; /* Slightly lighter dark gray background on hover */
     -fx-cursor: hand; /* Change mouse cursor to a hand */
 }
 
-/* Hover effect when the mouse is over the cell */
+
+/* Hover effect when the mouse is over the regular cell */
 .label:hover {
-    -fx-background-color: #c0c0c0; /* Slightly darker gray background on hover */
-    -fx-cursor: hand; /* Change mouse cursor to a hand */
+    -fx-background-color: #c0c0c0;
+    -fx-cursor: hand;
 }
 
-/* General style for GridPane */
-.grid-pane {
-    -fx-background-color: #ffffff; /* White background for the grid */
-    -fx-hgap: 20;  /* Increased horizontal gap */
-    -fx-vgap: 20;  /* Increased vertical gap */
-    -fx-padding: 20;
+/* Read-only style for cells */
+.read-only-label {
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000; /* Same as regular text */
+    -fx-alignment: center;
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-background-color: #e0e0e0; /* Same as regular background */
+    -fx-border-color: #000000; /* Same as regular border */
+    -fx-border-style: solid;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+    -fx-opacity: 1; /* Full opacity to match regular cells */
+}
+
+/* Disable hover effect for read-only cells */
+.read-only-label:hover {
+    -fx-background-color: #e0e0e0; /* Keep the background same as non-hovered */
+    -fx-cursor: default; /* Default cursor instead of hand */
 }

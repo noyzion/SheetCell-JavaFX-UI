@@ -16,13 +16,14 @@ import javafx.stage.StageStyle;
 import mainContoroller.AppController;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 public class HeaderController {
 
     @FXML private TextField currentFile;
     @FXML private TextField fileName;
     @FXML private Button loadFileButton;
-
+    private Consumer<Void> sheetLoadedListener;
     private AppController mainController;
     private String xmlFilePath;
     private String previousFilePath;
@@ -33,7 +34,9 @@ public class HeaderController {
         clearUIComponents();
         loadFileButton.setOnAction(event -> handleLoadFileButtonAction());
     }
-
+    public void setSheetLoadedListener(Consumer<Void> listener) {
+        this.sheetLoadedListener = listener;
+    }
     @FXML
     private void handleLoadFileButtonAction() {
         // Save the current file path and name before attempting to load a new file
@@ -108,6 +111,9 @@ public class HeaderController {
                 // Update UI to reflect the new file and name
                 currentFile.setText(xmlFilePath);
                 fileName.setText(file.getName());
+                if (sheetLoadedListener != null) {
+                    sheetLoadedListener.accept(null);
+                }
             } catch (Exception error) {
                 // Restore the previous file path and name on error
                 currentFile.setText(previousFilePath);

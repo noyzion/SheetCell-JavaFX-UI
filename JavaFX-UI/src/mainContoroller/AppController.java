@@ -21,6 +21,7 @@ import sheet.SheetController;
 import xmlParse.XmlSheetLoader;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AppController extends Application {
 
@@ -40,6 +41,8 @@ public class AppController extends Application {
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
             sheetComponentController.setMainController(this);
+            headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
+
         }
     }
     public List<String> getAllCellNames() {
@@ -77,6 +80,10 @@ public class AppController extends Application {
         });
     }
 
+    public int getSheetVersion()
+    {
+        return logic.getLatestSheet().getVersion();
+    }
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -114,7 +121,20 @@ public class AppController extends Application {
         AnchorPane.setRightAnchor(sheetComponentController.getGridPane(), 0.0);
         return logic.getLatestSheet().getCell(coordinate.toString());
     }
+
+    public SheetDTO getSheetByVersion(int version) {
+        return logic.getSheetByVersion(version);
+    }
+
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public HeaderController getHeaderController() {
+        return headerComponentController;
+    }
+
+    public ActionLineController getActionLineController() {
+        return actionLineComponentController;
     }
 }
