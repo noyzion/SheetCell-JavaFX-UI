@@ -36,8 +36,13 @@ public class UpdateValueController {
         window.setWidth(600);
         window.setHeight(800);
 
-        Label originalValueLabel = createLabel("Original Value: ", selectedCell != null ? selectedCell.getOriginalValue() : "cell is empty");
-        Label effectiveValueLabel = createLabel("Effective Value: ", selectedCell != null ? selectedCell.getEffectiveValue().getValue().toString() : "cell is empty");
+        Label originalValueLabel = createLabel("Original Value: ", selectedCell != null ? selectedCell.getOriginalValue() : "empty cell");
+        Label effectiveValueLabel = createLabel(
+                "Effective Value: ",
+                (selectedCell != null && selectedCell.getEffectiveValue().getValue() != null)
+                        ? selectedCell.getEffectiveValue().getValue().toString()
+                        : "empty cell"
+        );
 
         ComboBox<String> inputTypeComboBox = new ComboBox<>();
         inputTypeComboBox.getItems().addAll("Number", "Text", "Function");
@@ -142,13 +147,6 @@ public class UpdateValueController {
     private Node createFunctionArgumentComponent(String promptText, String operation) {
         HBox argumentBox = new HBox(5);
 
-        if ("REF".equals(operation)) {
-            ComboBox<String> refComboBox = new ComboBox<>();
-            refComboBox.getItems().addAll(cellNames);
-            refComboBox.setPromptText("Select a cell");
-            argumentBox.getChildren().add(refComboBox);
-
-        } else {
             ComboBox<String> argumentTypeComboBox = new ComboBox<>();
             argumentTypeComboBox.getItems().addAll("Number", "Text", "Function");
             argumentTypeComboBox.setValue("Number");
@@ -160,7 +158,7 @@ public class UpdateValueController {
             argumentBox.getChildren().add(argumentField);
 
             argumentTypeComboBox.setOnAction(e -> updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField));
-        }
+
 
         return argumentBox;
     }
@@ -182,7 +180,7 @@ public class UpdateValueController {
         argumentBox.getChildren().clear();
         argumentBox.getChildren().add(argumentTypeComboBox);
 
-        if ("Function".equals(selectedType) && selectedOperation != Operation.REF) {
+        if ("Function".equals(selectedType)){
             ComboBox<String> nestedFunctionChoiceBox = new ComboBox<>();
             nestedFunctionChoiceBox.getItems().addAll(Arrays.stream(Operation.values()).map(Operation::name).toList());
             nestedFunctionChoiceBox.setValue(Operation.values()[0].name());
@@ -199,7 +197,7 @@ public class UpdateValueController {
         ComboBox<String> argumentTypeComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
         String argumentType = argumentTypeComboBox.getValue();
         String argumentValue;
-        if ("Function".equals(argumentType) && selectedOperation != Operation.REF) {
+        if ("Function".equals(argumentType)) {
             ComboBox<String> nestedFunctionChoiceBox = (ComboBox<String>) argumentBox.getChildren().get(1);
             Operation nestedOperation = Operation.valueOf(nestedFunctionChoiceBox.getValue());
             List<FunctionArgument> nestedArgs = new ArrayList<>();
@@ -211,11 +209,7 @@ public class UpdateValueController {
                 }
             }
             return new FunctionArgument(nestedOperation, nestedArgs);
-        } else if (Operation.REF == selectedOperation) {
-            ComboBox<String> refComboBox = (ComboBox<String>) argumentBox.getChildren().get(0);
-            argumentValue = refComboBox.getValue(); // Get the selected cell reference
-            return new FunctionArgument(argumentValue);
-        } else {
+        }  else {
             TextField argumentField = (TextField) argumentBox.getChildren().get(1);
             argumentValue = argumentField.getText();
         }

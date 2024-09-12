@@ -54,6 +54,9 @@ public class SheetController {
                 String cellValue = " ";
 
                 if (cells.containsKey(coordinate)) {
+                    if(cells.get(coordinate).getEffectiveValue().getValue()== null)
+                        cellValue = " ";
+                    else
                     cellValue = cells.get(coordinate).getEffectiveValue().getValue().toString();
                 }
 

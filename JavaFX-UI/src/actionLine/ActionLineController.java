@@ -28,7 +28,6 @@ public class ActionLineController {
 
     @FXML
     private void initialize() {
-        // Initialize the "Update Value" button as disabled
         updateValue.setDisable(true);
     }
 
@@ -36,7 +35,6 @@ public class ActionLineController {
         cellIdSelection.clear();
         originalValueBox.clear();
         showLastVersion.clear();
-        // Disable the "Update Value" button
         updateValue.setDisable(true);
     }
 
@@ -81,8 +79,11 @@ public class ActionLineController {
                     List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
                     String updatedValue = updateDialog.getGeneratedString();
                     cell = mainController.setCell(cellIdSelection.getText(), updatedValue);
-
-                    cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
+                    int x;
+                    if (cell.getEffectiveValue().getValue() == null)
+                    cellValueWindow.show("empty cell", cell.getCoordinateDTO().toString());
+                    else
+                        cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
 
                     validInput = true;
                 } else {
