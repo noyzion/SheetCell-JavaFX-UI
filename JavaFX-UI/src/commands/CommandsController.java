@@ -30,7 +30,8 @@ public class CommandsController {
                 applyTheme(newValue);
             }
         });
-
+        backgroundColorPicker.setValue(Color.WHITE);
+        textColorPicker.setValue(Color.BLACK);
         setEditCellDisable(true);
     }
 
