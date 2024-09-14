@@ -5,12 +5,9 @@ import DTO.CellStyle;
 import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import commands.CommandsController;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -18,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import mainContoroller.AppController;
+import mainController.AppController;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -37,6 +34,7 @@ public class SheetController {
     private double startX, startY;
     private int resizingColumn, resizingRow;
     private Map<CoordinateDTO, CellStyle> cellStyles = new HashMap<>();
+    private Map<Integer, Pos> columnAlignments = new HashMap<>();
 
     public SheetController() {
     }
@@ -67,6 +65,10 @@ public class SheetController {
     }
 
     public void setColumnAlignment(int columnIndex, Pos alignment) {
+        if(columnAlignments.containsKey(columnIndex)) {
+            columnAlignments.remove(columnIndex);
+        }
+        columnAlignments.put(columnIndex, alignment);
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Label) {
                 Label label = (Label) node;
@@ -78,6 +80,7 @@ public class SheetController {
             }
         }
     }
+
 
     public void createGridFromSheetDTO() {
         gridPane.getChildren().clear();
@@ -117,6 +120,7 @@ public class SheetController {
 
                 String styleClass = readOnly ? "read-only-label" : "cell";
                 Label cellLabel = createCellLabel(cellValue, styleClass, coordinate);
+
                 if (cellStyles.containsKey(coordinate)) {
                     CellStyle cellStyle = cellStyles.get(coordinate);
                     cellLabel.setTextFill(cellStyle.getTextColor());
@@ -168,11 +172,15 @@ public class SheetController {
             styleClass = "header";
         }
 
+        if(coordinate != null) {
+            Pos alignment = columnAlignments.getOrDefault((coordinate.getColumn()+1), Pos.CENTER);
+            label.setAlignment(alignment);
+        }
+
         label.setPrefWidth(columnWidth);
         label.setPrefHeight(rowHeight);
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
-        label.setAlignment(Pos.CENTER);
         label.setPadding(new Insets(5));
         label.getStyleClass().add(styleClass);
 

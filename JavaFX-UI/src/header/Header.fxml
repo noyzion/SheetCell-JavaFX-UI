@@ -16,7 +16,7 @@
                 <Font name="Yu Gothic UI Light" size="40.0" />
             </font>
          <BorderPane.margin>
-            <Insets left="210.0" />
+            <Insets left="220.0" top="5.0" />
          </BorderPane.margin>
         </Text>
     </top>
@@ -32,6 +32,9 @@
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
+                     <padding>
+                        <Insets bottom="1.0" />
+                     </padding>
                   </Button>
                       <TextField fx:id="currentFile" editable="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pickOnBounds="false" prefHeight="27.0" prefWidth="344.0" promptText="file path">
                      <HBox.margin>
@@ -47,7 +50,7 @@
             </TextField>
          </children>
          <BorderPane.margin>
-            <Insets bottom="20.0" left="220.0" top="30.0" />
+            <Insets bottom="20.0" left="230.0" top="20.0" />
          </BorderPane.margin>
       </VBox>
     </center>

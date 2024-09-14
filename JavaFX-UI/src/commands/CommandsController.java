@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import mainContoroller.AppController;
+import mainController.AppController;
 import sheet.SheetController;
 import javafx.scene.paint.Color;
 

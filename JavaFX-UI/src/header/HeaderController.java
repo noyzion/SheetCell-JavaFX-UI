@@ -12,7 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mainContoroller.AppController;
+import mainController.AppController;
 
 import java.io.File;
 import java.util.function.Consumer;

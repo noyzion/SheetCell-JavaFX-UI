@@ -1,4 +1,4 @@
-package mainContoroller;
+package mainController;
 
 import DTO.CellDTO;
 import DTO.CoordinateDTO;
@@ -13,10 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import logic.Logic;
 import sheet.SheetController;
@@ -27,7 +26,7 @@ import java.util.List;
 public class AppController extends Application {
 
     @FXML private BorderPane headerComponent;
-    @FXML private ScrollPane actionLineComponent;
+    @FXML private HBox actionLineComponent;
     @FXML private AnchorPane sheetComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private ActionLineController actionLineComponentController;
@@ -102,6 +101,7 @@ public class AppController extends Application {
             Parent root = fxmlLoader.load();
             AppController controller = fxmlLoader.getController();
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/mainController/styles/GreenStyle.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("Sheet Cell Application");
             primaryStage.show();

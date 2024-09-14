@@ -6,8 +6,7 @@ import expression.FunctionArgument;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import mainContoroller.AppController;
+import mainController.AppController;
 
 import java.util.List;
 

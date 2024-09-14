@@ -52,12 +52,13 @@
 .read-only-label {
     -fx-padding: 10;
     -fx-font-size: 14px;
+    -fx-text-fill: #000000;
     -fx-font-family: "Gisha";
     -fx-alignment: center;
     -fx-background-radius: 8;
     -fx-background-insets: 0;
-    -fx-background-color: #e0e0e0; /* Same as regular background */
-    -fx-border-color: #000000; /* Same as regular border */
+    -fx-background-color: #e6f0ff; /* Same as regular background */
+    -fx-border-color: #003d7d; /* Same as regular border */
     -fx-border-style: solid;
     -fx-border-radius: 8;
     -fx-border-width: 1.5;

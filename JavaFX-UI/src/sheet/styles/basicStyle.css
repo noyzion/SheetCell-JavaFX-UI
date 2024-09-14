@@ -41,6 +41,7 @@
 /* Read-only style for cells */
 .read-only-label {
     -fx-padding: 10;
+    -fx-text-fill: #000000;          /* White text color for contrast */
     -fx-font-size: 14px;
     -fx-font-family: "Gisha";
     -fx-alignment: center;

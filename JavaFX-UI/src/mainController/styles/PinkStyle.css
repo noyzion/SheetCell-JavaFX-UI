@@ -1,0 +1,191 @@
+
+/* General style for buttons */
+.button {
+    -fx-font-family: "Gisha";
+    -fx-background-radius: 5; /* More rounded corners for buttons */
+    -fx-border-radius: 5;     /* Ensure border matches the background rounding */
+    -fx-background-color: #f48fb1; /* Light pink background for buttons */
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Hover effect for buttons */
+.button:hover {
+    -fx-background-color: #f06292; /* Slightly darker pink on hover */
+    -fx-cursor: hand;
+}
+
+/* Style for disabled buttons */
+.button:disabled {
+    -fx-background-color: #f8bbd0; /* Very light pink for disabled buttons */
+    -fx-text-fill: #d81b60; /* Darker pink text */
+}
+
+/* Styling for text fields */
+.text-field {
+    -fx-font-family: "Gisha";
+    -fx-background-color: #fce4ec; /* Very light pink background for text fields */
+    -fx-text-fill: #000000; /* Black text */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Focused state for text fields */
+.text-field:focused {
+    -fx-border-color: #f48fb1; /* Light pink border when focused */
+}
+
+/* ScrollPane styling */
+.scroll-pane {
+    -fx-background: #ffddea; /* Very light pink background */
+    -fx-border-color: #f8bbd0; /* Light pink border around the scroll area */
+    -fx-border-width: 2px;
+    -fx-background-insets: 0;
+}
+
+/* Style for ScrollBars inside ScrollPane */
+.scroll-bar {
+    -fx-background-color: #f8bbd0; /* Light pink for scrollbar track */
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #f476a1; /* Medium pink for scrollbar thumb */
+    -fx-background-radius: 8;
+}
+
+/* Style for tooltips */
+.tooltip {
+    -fx-background-color: #ec407a; /* Medium pink background */
+    -fx-text-fill: white; /* White text */
+    -fx-padding: 10;
+    -fx-font-family: "Gisha";
+    -fx-background-radius: 8;
+}
+
+/* Improved styling for Labels */
+.label {
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000; /* Black text for readability */
+    -fx-background-color: #fce4ec; /* Very light pink background for contrast */
+}
+
+/* Styling for checkboxes */
+.check-box {
+    -fx-text-fill: #000000;
+    -fx-background-color: #fce4ec; /* Very light pink */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+}
+
+/* Radio buttons styling */
+.radio-button {
+    -fx-text-fill: #000000;
+    -fx-background-color: #fce4ec; /* Very light pink */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+}
+
+/* Styling for sliders */
+.slider {
+    -fx-background-color: #fce4ec; /* Very light pink */
+}
+
+.slider .track {
+    -fx-background-color: #f8bbd0; /* Light pink for slider track */
+}
+
+.slider .thumb {
+    -fx-background-color: #ec407a; /* Medium pink for slider thumb */
+    -fx-background-radius: 8;
+}
+
+/* Styling for ColorPicker */
+.color-picker {
+    -fx-background-color: #fce4ec; /* Very light pink background */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-family: "Gisha";
+}
+
+/* ColorPicker button styling */
+.color-picker .color-picker-button {
+    -fx-background-color: #f48fb1; /* Light pink button background */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Hover effect for ColorPicker button */
+.color-picker .color-picker-button:hover {
+    -fx-background-color: #f06292; /* Slightly darker pink on hover */
+    -fx-cursor: hand;
+}
+
+/* Focused state for ColorPicker */
+.color-picker:focused {
+    -fx-border-color: #f48fb1; /* Light pink border when focused */
+}
+
+/* Style for ColorPicker pop-up */
+.color-picker .color-picker-popup {
+    -fx-background-color: #fce4ec; /* Very light pink background for pop-up */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+/* Styling for ComboBox */
+.combo-box {
+    -fx-background-radius: 8;
+    -fx-font-family: "Gisha";
+}
+
+/* ComboBox button styling */
+.combo-box .combo-box-button {
+    -fx-background-color: #f48fb1; /* Light pink button background */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Hover effect for ComboBox button */
+.combo-box .combo-box-button:hover {
+    -fx-background-color: #f06292; /* Slightly darker pink on hover */
+    -fx-cursor: hand;
+}
+
+/* Styling for ComboBox arrow */
+.combo-box .arrow-button {
+    -fx-background-color: #f48fb1; /* Light pink background for arrow button */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+/* Arrow button hover effect */
+.combo-box .arrow-button:hover {
+    -fx-background-color: #f06292; /* Slightly darker pink on hover */
+}
+
+/* ComboBox pop-up styling */
+.combo-box .combo-box-popup {
+    -fx-background-color: #fce4ec; /* Very light pink background for pop-up */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}

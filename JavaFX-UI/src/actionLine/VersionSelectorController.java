@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import mainContoroller.AppController;
+import mainController.AppController;
 import sheet.SheetController;
 
 import java.util.stream.IntStream;
