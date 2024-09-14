@@ -3,7 +3,6 @@
     -fx-padding: 10;
     -fx-font-size: 14px;
     -fx-font-family: "Gisha"; /* Font set to Gisha */
-    -fx-text-fill: #5c2a72; /* Darker pink text color for contrast */
     -fx-alignment: center;
     -fx-background-radius: 8;  /* Slightly rounded corners */
     -fx-background-insets: 0;
@@ -52,7 +51,6 @@
     -fx-padding: 10;
     -fx-font-size: 14px;
     -fx-font-family: "Gisha";
-    -fx-text-fill: #000000; /* Same as regular text */
     -fx-alignment: center;
     -fx-background-radius: 8;
     -fx-background-insets: 0;
