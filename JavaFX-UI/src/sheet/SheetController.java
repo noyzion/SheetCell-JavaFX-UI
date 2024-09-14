@@ -1,6 +1,7 @@
 package sheet;
 
 import DTO.CellDTO;
+import DTO.CellStyle;
 import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import commands.CommandsController;
@@ -8,15 +9,18 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import mainContoroller.AppController;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +35,7 @@ public class SheetController {
     private String sheetStyle = "/sheet/styles/basicStyle.css";
     private double startX, startY;
     private int resizingColumn, resizingRow;
+    private Map<CoordinateDTO, CellStyle> cellStyles = new HashMap<>();
 
     public SheetController() {
     }
@@ -59,6 +64,9 @@ public class SheetController {
         sheetStyle = newStyle;
         applyStyle();
     }
+
+
+
     public void createGridFromSheetDTO() {
         gridPane.getChildren().clear();
         gridPane.setHgap(10);
@@ -96,7 +104,11 @@ public class SheetController {
 
                 String styleClass = readOnly ? "read-only-label" : "label";
                 Label cellLabel = createCellLabel(cellValue, styleClass, coordinate);
-
+                if (cellStyles.containsKey(coordinate)) {
+                    CellStyle cellStyle = cellStyles.get(coordinate);
+                    cellLabel.setTextFill(cellStyle.getTextColor());
+                    cellLabel.setStyle("-fx-background-color: " + toRgbString(cellStyle.getBackgroundColor()));
+                }
                 gridPane.add(cellLabel, col + 1, row + 1);
             }
         }
@@ -104,6 +116,23 @@ public class SheetController {
         if (readOnly) {
             makeGridReadOnly();
         }
+    }
+    private String toRgbString(Color color) {
+        return String.format("rgb(%d,%d,%d)",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
+    }
+
+    public void updateCellStyle(CoordinateDTO coordinate, Color backgroundColor, Color textColor) {
+        CellStyle style = new CellStyle(backgroundColor,textColor);
+        cellStyles.put(coordinate, style);
+        createGridFromSheetDTO();
+    }
+
+    public void resetCellStyle(CoordinateDTO coordinate) {
+            cellStyles.remove(coordinate);
+            createGridFromSheetDTO();
     }
 
     public void clearGrid() {
