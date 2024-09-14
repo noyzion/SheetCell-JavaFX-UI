@@ -9,14 +9,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
     <top>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticel" textAlignment="CENTER" wrappingWidth="160.5791015625" BorderPane.alignment="CENTER">
             <font>
                 <Font name="Yu Gothic UI Light" size="40.0" />
             </font>
          <BorderPane.margin>
-            <Insets left="150.0" />
+            <Insets left="210.0" />
          </BorderPane.margin>
         </Text>
     </top>
@@ -33,7 +33,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                      <TextField fx:id="currentFile" editable="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pickOnBounds="false" prefHeight="27.0" prefWidth="384.0" promptText="file path">
+                      <TextField fx:id="currentFile" editable="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pickOnBounds="false" prefHeight="27.0" prefWidth="344.0" promptText="file path">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -42,12 +42,12 @@
             </HBox>
             <TextField fx:id="fileName" alignment="CENTER" editable="false" maxWidth="-Infinity" prefHeight="31.0" prefWidth="170.0" promptText="file name">
                <VBox.margin>
-                  <Insets left="190.0" top="5.0" />
+                  <Insets left="160.0" top="5.0" />
                </VBox.margin>
             </TextField>
          </children>
          <BorderPane.margin>
-            <Insets bottom="20.0" left="110.0" top="30.0" />
+            <Insets bottom="20.0" left="220.0" top="30.0" />
          </BorderPane.margin>
       </VBox>
     </center>

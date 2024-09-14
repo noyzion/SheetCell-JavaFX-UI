@@ -44,10 +44,8 @@ public class AppController extends Application {
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
             sheetComponentController.setMainController(this);
-            headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
             commandComponentController.setMainController(this);
-
-
+            headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
         }
     }
     public List<String> getAllCellNames() {
@@ -56,7 +54,6 @@ public class AppController extends Application {
 
 
     public void setSheetByXML() {
-
         String xmlFilePath = headerComponentController.getXmlFilePath();
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
@@ -65,7 +62,6 @@ public class AppController extends Application {
     }
 
     public void showSheet(SheetDTO sheet) {
-
         actionLineComponentController.clearUIComponents();
         sheetComponentController.clearGrid();
         sheetComponentController.setSheetDTO(sheet);

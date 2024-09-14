@@ -19,9 +19,6 @@ public class CommandsController {
         themeComboBox.setValue("Basic");
         String currentTheme = themeComboBox.getValue();
 
-        applyTheme(currentTheme);
-
-
         themeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 applyTheme(newValue);
@@ -35,7 +32,7 @@ public class CommandsController {
     }
 
     private void applyTheme(String themeName) {
-       // SheetController sheetController = mainController.getSheetComponentController();
-      //  sheetController.setSheetStyle(themeName);
+       SheetController sheetController = mainController.getSheetComponentController();
+        sheetController.setSheetStyle(themeName);
     }
 }
