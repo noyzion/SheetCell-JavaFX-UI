@@ -9,6 +9,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -65,7 +66,18 @@ public class SheetController {
         applyStyle();
     }
 
+    public void setColumnAlignment(int columnIndex, Pos alignment) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Label) {
+                Label label = (Label) node;
+                Integer colIndex = GridPane.getColumnIndex(label);
 
+                if (colIndex != null && colIndex == columnIndex && label.getStyleClass().contains("cell")) {
+                    label.setAlignment(alignment);
+                }
+            }
+        }
+    }
 
     public void createGridFromSheetDTO() {
         gridPane.getChildren().clear();
@@ -83,32 +95,34 @@ public class SheetController {
 
         for (int col = 0; col < columns; col++) {
             String colHeader = String.valueOf((char) ('A' + col));
-            Label colLabel = createCellLabel(colHeader, "header", null);
+            Label colLabel = createCellLabel(colHeader, "header-col", null);
             gridPane.add(colLabel, col + 1, 0);
             addColumnResizeHandle(col + 1);
         }
 
         for (int row = 0; row < rows; row++) {
             String rowHeader = String.valueOf(row + 1);
-            Label rowLabel = createCellLabel(rowHeader, "header", null);
+            Label rowLabel = createCellLabel(rowHeader, "header-row", null);
             gridPane.add(rowLabel, 0, row + 1);
             addRowResizeHandle(row + 1);
         }
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
+
                 CoordinateDTO coordinate = new CoordinateDTO(row, col);
                 String cellValue = cells.containsKey(coordinate) && cells.get(coordinate).getEffectiveValue().getValue() != null
                         ? cells.get(coordinate).getEffectiveValue().getValue().toString()
                         : " ";
 
-                String styleClass = readOnly ? "read-only-label" : "label";
+                String styleClass = readOnly ? "read-only-label" : "cell";
                 Label cellLabel = createCellLabel(cellValue, styleClass, coordinate);
                 if (cellStyles.containsKey(coordinate)) {
                     CellStyle cellStyle = cellStyles.get(coordinate);
                     cellLabel.setTextFill(cellStyle.getTextColor());
                     cellLabel.setStyle("-fx-background-color: " + toRgbString(cellStyle.getBackgroundColor()));
                 }
+
                 gridPane.add(cellLabel, col + 1, row + 1);
             }
         }
@@ -144,6 +158,16 @@ public class SheetController {
         double columnWidth = sheetDTO.getColumnWidthUnits();
         double rowHeight = sheetDTO.getRowsHeightUnits();
 
+        if (!readOnly && "cell".equals(styleClass)) {
+            label.setOnMouseClicked(event -> handleCellClick(coordinate));
+        } else if (!readOnly && "header-col".equals(styleClass)) {
+            label.setOnMouseClicked(event -> handleColumnHeaderClick(GridPane.getColumnIndex(label)));
+        }
+
+        if ("header-col".equals(styleClass) || "header-row".equals(styleClass)) {
+            styleClass = "header";
+        }
+
         label.setPrefWidth(columnWidth);
         label.setPrefHeight(rowHeight);
         label.setMaxWidth(Double.MAX_VALUE);
@@ -152,11 +176,16 @@ public class SheetController {
         label.setPadding(new Insets(5));
         label.getStyleClass().add(styleClass);
 
-        if (!readOnly && "label".equals(styleClass)) {
-            label.setOnMouseClicked(event -> handleCellClick(coordinate));
+        return label;
+    }
+
+    private void handleColumnHeaderClick(int columnIndex) {
+        if(!readOnly) {
+            CommandsController commandsController = mainController.getCommandsController();
+            commandsController.setAligmentButtonsDisable(false);
+            commandsController.updateColumn(columnIndex);
         }
 
-        return label;
     }
 
     private void handleCellClick(CoordinateDTO coordinate) {

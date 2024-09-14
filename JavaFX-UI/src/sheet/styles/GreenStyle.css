@@ -1,5 +1,5 @@
 /* General style for cells */
-.label {
+.cell {
     -fx-padding: 10;
     -fx-font-size: 14px;
     -fx-font-family: "Gisha"; /* Font set to Gisha */
@@ -23,12 +23,14 @@
     -fx-alignment: center;
     -fx-padding: 0px;
     -fx-background-color: #27ae60;   /* Dark green background */
-    -fx-border-color: #1e8449;       /* Darker green border */
+    -fx-border-color: #1e8449;
+    -fx-background-radius: 8;        /* Rounded corners */
+    -fx-border-radius: 8;            /* Rounded corners */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.3, 3, 3); /* Soft shadow effect */
 }
 
 /* Hover effect for column and row headers */
-.header:hover {
+.cell:hover {
     -fx-background-color: #2ecc71; /* Slightly lighter green background on hover */
     -fx-cursor: hand; /* Change mouse cursor to a hand */
 }
