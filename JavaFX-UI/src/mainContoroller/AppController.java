@@ -62,6 +62,7 @@ public class AppController extends Application {
     }
 
     public void showSheet(SheetDTO sheet) {
+        commandComponentController.setEditCellDisable(true);
         actionLineComponentController.clearUIComponents();
         sheetComponentController.clearGrid();
         sheetComponentController.setSheetDTO(sheet);
