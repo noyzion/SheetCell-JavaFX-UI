@@ -4,27 +4,30 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="712.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainContoroller.AppController">
+<BorderPane prefHeight="712.0" prefWidth="1003.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainContoroller.AppController">
    <top>
-      <VBox prefHeight="240.0" prefWidth="911.0" BorderPane.alignment="CENTER">
-         <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
-         <ScrollPane prefHeight="61.0" prefWidth="912.0">
+      <VBox prefHeight="221.0" prefWidth="1005.0" BorderPane.alignment="CENTER">
+         <HBox prefHeight="124.0" prefWidth="1003.0">
+            <children>
+               <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
+            </children>
+         </HBox>
+         <ScrollPane prefHeight="108.0" prefWidth="1003.0">
             <fx:include fx:id="actionLineComponent" source="../actionLine/actionLine.fxml" />
-            <VBox.margin>
-               <Insets />
-            </VBox.margin>
          </ScrollPane>
       </VBox>
    </top>
    <center>
-      <AnchorPane fx:id="sheetComponent" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+      <AnchorPane fx:id="sheetComponent" prefHeight="491.0" prefWidth="966.0" BorderPane.alignment="CENTER">
          <padding>
-            <Insets left="90.0" />
-         </padding></AnchorPane>
+            <Insets left="90.0" top="40.0" />
+         </padding>
+      </AnchorPane>
    </center>
+   <left>
+      <fx:include fx:id="commandComponent" source="../commands/commands.fxml" />
+   </left>
 </BorderPane>

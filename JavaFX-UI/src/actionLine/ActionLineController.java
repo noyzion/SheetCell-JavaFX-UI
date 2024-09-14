@@ -18,7 +18,9 @@ public class ActionLineController {
     @FXML private Button updateValue;
     @FXML private TextField showLastVersion;
     @FXML private Button versionSelector;
+    @FXML private Button lastVersionButton;
     private AppController mainController;
+    private boolean versionSelected = false; // Track whether a version is selected
 
     private CellDTO selectedCell;
 
@@ -26,6 +28,7 @@ public class ActionLineController {
     private void initialize() {
         updateValue.setDisable(true);
         versionSelector.setDisable(true);
+        lastVersionButton.setDisable(true);
     }
 
     public void clearUIComponents() {
@@ -45,6 +48,26 @@ public class ActionLineController {
         } else {
             originalValueBox.setText(cell.getOriginalValue().toString());
             showLastVersion.setText(Integer.toString(cell.getLastVersionUpdate()));
+        }
+    }
+
+    public void enableLastVersionButton() {
+        lastVersionButton.setDisable(false);
+        versionSelected = true;
+    }
+
+    public void disableLastVersionButton() {
+        lastVersionButton.setDisable(true);
+        versionSelected = false;
+    }
+
+    @FXML
+    private void handleLastVersionButton() {
+        if (versionSelected) {
+            mainController.getSheetComponentController().setSheetDTO(mainController.getLatestSheet());
+            mainController.getSheetComponentController().setReadOnly(false);
+            mainController.showSheet(mainController.getLatestSheet());
+            disableLastVersionButton();
         }
     }
 
@@ -88,7 +111,7 @@ public class ActionLineController {
     }
 
     public void openVersionSelectorDialog() {
-        VersionSelectorController cellValueWindow = new VersionSelectorController(mainController.getSheetVersion());
+        VersionSelectorController cellValueWindow = new VersionSelectorController(mainController.getSheetVersion(),this);
         cellValueWindow.setMainController(mainController);
         cellValueWindow.display();
     }

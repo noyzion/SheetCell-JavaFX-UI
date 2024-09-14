@@ -27,7 +27,7 @@ public class SheetController {
     private GridPane gridPane = new GridPane();
     private AppController mainController;
     private boolean readOnly = false;  // Flag to indicate read-only state
-
+private String sheetStyle = "/sheet/styles/basicStyle.css";
     private double startX, startY;
     private int resizingColumn, resizingRow;
 
@@ -41,7 +41,23 @@ public class SheetController {
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
+    private void applyStyle() {
+        gridPane.getStylesheets().clear();
+        URL cssUrl = getClass().getResource(sheetStyle);
+        gridPane.getStylesheets().add(cssUrl.toExternalForm());
+    }
 
+    public void setSheetStyle(String styleName) {
+        String newStyle = switch (styleName) {
+            case "Basic" ->  "/sheet/styles/basicStyle.css";
+            case "Pink" -> "/sheet/styles/PinkStyle.css";
+            case "Blue" -> "/sheet/styles/BlueStyle.css";
+            case "Green" -> "/sheet/styles/GreenStyle.css";
+            default -> "/sheet/styles/basicStyle.css";
+        };
+        sheetStyle = newStyle;
+        applyStyle();
+    }
     public void createGridFromSheetDTO() {
         gridPane.getChildren().clear();
         gridPane.setHgap(10);
@@ -55,8 +71,7 @@ public class SheetController {
         initializeColumnConstraints(columns);
         initializeRowConstraints(rows);
 
-        URL cssUrl = getClass().getResource("/sheet/styles/BasicStyle.css");
-        gridPane.getStylesheets().add(cssUrl.toExternalForm());
+        applyStyle();
 
         // Create column headers
         for (int col = 0; col < columns; col++) {
@@ -187,7 +202,7 @@ public class SheetController {
         resizeLine.setStartX(0);
         resizeLine.setEndX(0);
         resizeLine.setStartY(0);
-        resizeLine.setEndY(gridPane.getHeight());
+        resizeLine.setEndY(0);
         resizeLine.setStroke(javafx.scene.paint.Color.GRAY);
         resizeLine.setStrokeWidth(5);
         resizeLine.setCursor(javafx.scene.Cursor.H_RESIZE);
@@ -209,7 +224,7 @@ public class SheetController {
     private void addRowResizeHandle(int rowIndex) {
         Line resizeLine = new Line();
         resizeLine.setStartX(0);
-        resizeLine.setEndX(gridPane.getWidth());
+        resizeLine.setEndX(0);
         resizeLine.setStartY(0);
         resizeLine.setEndY(0);
         resizeLine.setStroke(javafx.scene.paint.Color.GRAY);

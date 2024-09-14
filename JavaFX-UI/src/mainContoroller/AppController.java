@@ -4,6 +4,7 @@ import DTO.CellDTO;
 import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import actionLine.ActionLineController;
+import commands.CommandsController;
 import header.HeaderController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -15,13 +16,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.Logic;
 import sheet.SheetController;
 import xmlParse.XmlSheetLoader;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class AppController extends Application {
 
@@ -30,34 +31,44 @@ public class AppController extends Application {
     @FXML private AnchorPane sheetComponent;
     @FXML private HeaderController headerComponentController;
     @FXML private ActionLineController actionLineComponentController;
+    @FXML private BorderPane commandComponent;
+    @FXML private CommandsController commandComponentController;
     private SheetController sheetComponentController;
 
     private Logic logic = new Logic();
 
     @FXML
     public void initialize() {
-        if (headerComponentController != null && actionLineComponentController != null) {
+        if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
             sheetComponentController.setMainController(this);
             headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
+            commandComponentController.setMainController(this);
+
 
         }
     }
     public List<String> getAllCellNames() {
        return sheetComponentController.getAllCellNames();
     }
-    public void setSheet() {
+
+
+    public void setSheetByXML() {
 
         String xmlFilePath = headerComponentController.getXmlFilePath();
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
         }
+       showSheet(logic.getLatestSheet());
+    }
+
+    public void showSheet(SheetDTO sheet) {
+
         actionLineComponentController.clearUIComponents();
         sheetComponentController.clearGrid();
-        SheetDTO latestSheet = logic.getLatestSheet();
-        sheetComponentController.setSheetDTO(latestSheet);
+        sheetComponentController.setSheetDTO(sheet);
         sheetComponentController.createGridFromSheetDTO();
         sheetComponent.getChildren().clear();
         sheetComponent.getChildren().add(sheetComponentController.getGridPane());
@@ -69,7 +80,6 @@ public class AppController extends Application {
 
 
     }
-
     public void showErrorDialog(String title, String header, String content) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -83,6 +93,10 @@ public class AppController extends Application {
     public int getSheetVersion()
     {
         return logic.getLatestSheet().getVersion();
+    }
+
+    public SheetDTO getLatestSheet() {
+        return logic.getLatestSheet();
     }
     @Override
     public void start(Stage primaryStage) {
@@ -107,18 +121,7 @@ public class AppController extends Application {
 
     public CellDTO setCell(String coordinate, String value) {
         logic.setCellValue(coordinate.toString(),value);
-        actionLineComponentController.clearUIComponents();
-        sheetComponentController.clearGrid();
-        SheetDTO latestSheet = logic.getLatestSheet();
-        sheetComponentController.setSheetDTO(latestSheet);
-        sheetComponentController.createGridFromSheetDTO();
-        sheetComponent.getChildren().clear();
-        sheetComponent.getChildren().add(sheetComponentController.getGridPane());
-
-        AnchorPane.setTopAnchor(sheetComponentController.getGridPane(), 0.0);
-        AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
-        AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);
-        AnchorPane.setRightAnchor(sheetComponentController.getGridPane(), 0.0);
+        showSheet(logic.getLatestSheet());
         return logic.getLatestSheet().getCell(coordinate.toString());
     }
 
@@ -136,5 +139,10 @@ public class AppController extends Application {
 
     public ActionLineController getActionLineController() {
         return actionLineComponentController;
+    }
+
+    public SheetController getSheetComponentController()
+    {
+        return sheetComponentController;
     }
 }

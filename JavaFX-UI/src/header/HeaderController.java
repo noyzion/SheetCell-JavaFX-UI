@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -107,7 +106,7 @@ public class HeaderController {
             progressStage.close();
 
             try {
-                mainController.setSheet();
+                mainController.setSheetByXML();
                 // Update UI to reflect the new file and name
                 currentFile.setText(xmlFilePath);
                 fileName.setText(file.getName());
