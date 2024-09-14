@@ -113,6 +113,7 @@ public class AppController extends Application {
     public void updateActionLineFields(CoordinateDTO coordinate) {
         CellDTO cell = logic.getLatestSheet().getCell(coordinate.toString());
             actionLineComponentController.updateFields(coordinate,cell);
+
     }
 
     public CellDTO setCell(String coordinate, String value) {
@@ -140,5 +141,9 @@ public class AppController extends Application {
     public SheetController getSheetComponentController()
     {
         return sheetComponentController;
+    }
+
+    public CommandsController getCommandsController() {
+        return commandComponentController;
     }
 }

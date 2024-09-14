@@ -1,5 +1,6 @@
 package commands;
 
+import DTO.CoordinateDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -29,8 +30,20 @@ public class CommandsController {
                 applyTheme(newValue);
             }
         });
+       setEditCellDisable(true);
+
     }
 
+    public void setEditCellDisable(boolean disable)
+    {
+        backgroundColorPicker.setDisable(disable);
+        textColorPicker.setDisable(disable);
+        applyStylesButton.setDisable(disable);
+        resetStylesButton.setDisable(disable);
+    }
+    public void updateCellCoordinate(CoordinateDTO coordinate) {
+        selectedCellLabel.setText(coordinate.toString());
+    }
     @FXML
     private void handleApplyStylesButtonHandle() {
 

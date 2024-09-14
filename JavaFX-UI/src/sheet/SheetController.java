@@ -3,6 +3,7 @@ package sheet;
 import DTO.CellDTO;
 import DTO.CoordinateDTO;
 import DTO.SheetDTO;
+import commands.CommandsController;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,8 +27,8 @@ public class SheetController {
     private SheetDTO sheetDTO;
     private GridPane gridPane = new GridPane();
     private AppController mainController;
-    private boolean readOnly = false;  // Flag to indicate read-only state
-private String sheetStyle = "/sheet/styles/basicStyle.css";
+    private boolean readOnly = false;
+    private String sheetStyle = "/sheet/styles/basicStyle.css";
     private double startX, startY;
     private int resizingColumn, resizingRow;
 
@@ -67,29 +68,25 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
         int rows = sheetDTO.getRowSize();
         int columns = sheetDTO.getColumnSize();
 
-        // Initialize constraints
         initializeColumnConstraints(columns);
         initializeRowConstraints(rows);
 
         applyStyle();
 
-        // Create column headers
         for (int col = 0; col < columns; col++) {
             String colHeader = String.valueOf((char) ('A' + col));
             Label colLabel = createCellLabel(colHeader, "header", null);
             gridPane.add(colLabel, col + 1, 0);
-            addColumnResizeHandle(col + 1); // Add resize handle to the right of each column header
+            addColumnResizeHandle(col + 1);
         }
 
-        // Create row headers
         for (int row = 0; row < rows; row++) {
             String rowHeader = String.valueOf(row + 1);
             Label rowLabel = createCellLabel(rowHeader, "header", null);
             gridPane.add(rowLabel, 0, row + 1);
-            addRowResizeHandle(row + 1); // Add resize handle to the bottom of each row header
+            addRowResizeHandle(row + 1);
         }
 
-        // Create cell labels
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 CoordinateDTO coordinate = new CoordinateDTO(row, col);
@@ -97,7 +94,6 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
                         ? cells.get(coordinate).getEffectiveValue().getValue().toString()
                         : " ";
 
-                // Apply different style based on read-only state
                 String styleClass = readOnly ? "read-only-label" : "label";
                 Label cellLabel = createCellLabel(cellValue, styleClass, coordinate);
 
@@ -119,7 +115,6 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
         double columnWidth = sheetDTO.getColumnWidthUnits();
         double rowHeight = sheetDTO.getRowsHeightUnits();
 
-        // Set explicit sizes to see if it helps
         label.setPrefWidth(columnWidth);
         label.setPrefHeight(rowHeight);
         label.setMaxWidth(Double.MAX_VALUE);
@@ -138,6 +133,9 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
     private void handleCellClick(CoordinateDTO coordinate) {
         if (!readOnly) {
             mainController.updateActionLineFields(coordinate);
+            CommandsController commandsController = mainController.getCommandsController();
+                commandsController.updateCellCoordinate(coordinate);
+                commandsController.setEditCellDisable(false);
         }
     }
 
@@ -161,7 +159,6 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
         this.sheetDTO = sheetDTO;
     }
 
-    // Method to set the read-only mode
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         if (readOnly) {
@@ -175,11 +172,11 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
         gridPane.getChildren().forEach(node -> {
             if (node instanceof Label) {
                 Label label = (Label) node;
-                label.getStyleClass().add("read-only-label");  // Add the read-only style
-                label.setOnMouseClicked(null);  // Remove click events
+                label.getStyleClass().add("read-only-label");
+                label.setOnMouseClicked(null);
             } else if (node instanceof TextField) {
                 TextField textField = (TextField) node;
-                textField.setEditable(false);  // Disable TextField if present
+                textField.setEditable(false);
             }
         });
     }
@@ -217,8 +214,7 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
             endColumnResize();
         });
 
-        // Place the line to the right of the column header
-        gridPane.add(resizeLine, colIndex, 0); // Adjust position as needed
+        gridPane.add(resizeLine, colIndex, 0);
     }
 
     private void addRowResizeHandle(int rowIndex) {
@@ -241,7 +237,6 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
             endRowResize();
         });
 
-        // Place the line below the row header
         gridPane.add(resizeLine, 0, rowIndex); // Adjust position as needed
     }
 
@@ -258,7 +253,6 @@ private String sheetStyle = "/sheet/styles/basicStyle.css";
             ColumnConstraints constraints = columnConstraintsList.get(colIndex);
             double newWidth = constraints.getPrefWidth() + deltaX;
 
-            // Ensure newWidth is not nvaegative
             if (newWidth < 0) {
                 newWidth = 0;
             }
