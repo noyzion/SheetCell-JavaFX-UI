@@ -10,8 +10,7 @@ public class CommandsController {
 
     private AppController mainController;
 
-    @FXML
-    private ComboBox<String> themeComboBox;
+    @FXML private ComboBox<String> themeComboBox;
 
     @FXML
     private void initialize() {
