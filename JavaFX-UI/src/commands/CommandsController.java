@@ -108,8 +108,6 @@ public class CommandsController {
             Color backgroundColor = backgroundColorPicker.getValue();
             Color textColor = textColorPicker.getValue();
             sheetController.updateCellStyle(selectedCellCoordinate, backgroundColor, textColor);
-            backgroundColorPicker.setValue(Color.WHITE);
-            textColorPicker.setValue(Color.BLACK);
         }
     }
 

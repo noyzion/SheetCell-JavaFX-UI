@@ -26,8 +26,7 @@ public class VersionSelectorController {
 
     private void showSheetVersion(int versionNumber, Stage stage) {
         SheetDTO selectedSheet = mainController.getSheetByVersion(versionNumber);
-        mainController.showSheet(selectedSheet);
-        mainController.getSheetComponentController().setReadOnly(true);
+        mainController.showSheet(selectedSheet,true);
         actionLineController.enableLastVersionButton();
 
         stage.close();
@@ -75,13 +74,4 @@ public class VersionSelectorController {
         return versionListView;
     }
 
-    private BorderPane createBorderPaneWithGrid(SheetController sheetController) {
-        BorderPane borderPane = new BorderPane();
-        GridPane gridPane = sheetController.getGridPane();
-
-        gridPane.setPrefSize(600, 400);
-        borderPane.setCenter(gridPane);
-
-        return borderPane;
-    }
 }

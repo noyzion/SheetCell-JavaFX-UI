@@ -23,6 +23,7 @@ import sheet.SheetController;
 import xmlParse.XmlSheetLoader;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppController extends Application {
@@ -61,18 +62,18 @@ public class AppController extends Application {
         if (xmlFilePath != null && !xmlFilePath.isEmpty()) {
             logic.addSheet(XmlSheetLoader.fromXmlFileToObject(xmlFilePath));
         }
-        showSheet(logic.getLatestSheet());
+        showSheet(logic.getLatestSheet(),false);
     }
 
-    public void showSheet(SheetDTO sheet) {
-        commandComponentController.setEditCellDisable(true);
-        actionLineComponentController.clearUIComponents();
-        sheetComponentController.clearGrid();
-        sheetComponentController.setSheetDTO(sheet);
-        sheetComponentController.createGridFromSheetDTO();
-        sheetComponent.getChildren().clear();
-        sheetComponent.getChildren().add(sheetComponentController.getGridPane());
-
+    public void showSheet(SheetDTO sheet, boolean readonly) {
+            commandComponentController.setEditCellDisable(true);
+            actionLineComponentController.clearUIComponents();
+            sheetComponentController.clearGrid();
+            sheetComponentController.setSheetDTO(sheet);
+            sheetComponentController.setReadOnly(readonly);
+            sheetComponentController.createGridFromSheetDTO();
+            sheetComponent.getChildren().clear();
+            sheetComponent.getChildren().add(sheetComponentController.getGridPane());
         AnchorPane.setTopAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);
@@ -110,7 +111,7 @@ public class AppController extends Application {
 
     public CellDTO setCell(String coordinate, String value) {
         logic.setCellValue(coordinate.toString(), value);
-        showSheet(logic.getLatestSheet());
+        showSheet(logic.getLatestSheet(),false);
         return logic.getLatestSheet().getCell(coordinate.toString());
     }
 
@@ -172,5 +173,12 @@ public class AppController extends Application {
             alert.setContentText(content);
             alert.showAndWait();
         });
+    }
+    public List<CoordinateDTO> getDependentCells(CoordinateDTO cell) {
+        return logic.getLatestSheet().getCell(cell.toString()).getRelatedCells();
+    }
+
+    public List<CoordinateDTO> getAffectedCells(CoordinateDTO cell) {
+        return logic.getLatestSheet().getCell(cell.toString()).getAffectedCells();
     }
 }

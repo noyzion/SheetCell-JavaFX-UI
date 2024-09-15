@@ -15,7 +15,6 @@ public class CellStyle {
         return backgroundColor;
     }
 
-
     public Color getTextColor() {
         return textColor;
     }

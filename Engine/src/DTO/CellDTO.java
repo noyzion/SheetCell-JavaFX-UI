@@ -8,10 +8,10 @@ public class CellDTO {
     private final String originalValue;
     private final EffectiveValue effectiveValue;
     private final int lastVersionUpdate;
-    private final List<Coordinate> relatedCells;
-    private final List<Coordinate> affectedCells;
+    private final List<CoordinateDTO> relatedCells;
+    private final List<CoordinateDTO> affectedCells;
 
-    public CellDTO(CoordinateDTO coordinate, String originalValue, EffectiveValue effectiveValue, int lastVersionUpdate, List<Coordinate> relatedCells, List<Coordinate> affectedCells) {
+    public CellDTO(CoordinateDTO coordinate, String originalValue, EffectiveValue effectiveValue, int lastVersionUpdate, List<CoordinateDTO> relatedCells, List<CoordinateDTO> affectedCells) {
         this.coordinate = coordinate;
         this.originalValue = originalValue;
         this.effectiveValue = effectiveValue;
@@ -39,11 +39,11 @@ public class CellDTO {
         return lastVersionUpdate;
     }
 
-    public List<Coordinate> getRelatedCells() {
+    public List<CoordinateDTO> getRelatedCells() {
         return relatedCells;
     }
 
-    public List<Coordinate> getAffectedCells() {
+    public List<CoordinateDTO> getAffectedCells() {
         return affectedCells;
     }
 

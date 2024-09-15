@@ -67,20 +67,6 @@
     -fx-background-radius: 8;
 }
 
-/* Style for Labels */
-.label {
-    -fx-font-family: "Gisha";
-    -fx-text-fill: #000000;
-}
-
-/* Hover effect for labels */
-.label:hover {
-    -fx-background-color: #c0c0c0;
-    -fx-cursor: hand;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-}
-
 /* Styling for checkboxes */
 .check-box {
     -fx-text-fill: #000000;

@@ -15,6 +15,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import mainController.AppController;
+import sheet.coordinate.Coordinate;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -121,10 +122,13 @@ public class SheetController {
                 String styleClass = readOnly ? "read-only-label" : "cell";
                 Label cellLabel = createCellLabel(cellValue, styleClass, coordinate);
 
-                if (cellStyles.containsKey(coordinate)) {
+                if (cellStyles.containsKey(coordinate) && !readOnly) {
+                    if(cellLabel.getStyleClass().contains("label")) {
+                        cellLabel.getStyleClass().remove("label");
+                    }
                     CellStyle cellStyle = cellStyles.get(coordinate);
                     cellLabel.setTextFill(cellStyle.getTextColor());
-                    cellLabel.setStyle("-fx-background-color: " + toRgbString(cellStyle.getBackgroundColor()));
+                    cellLabel.setStyle("-fx-background-color: " + toRgbString(cellStyle.getBackgroundColor()) + ";");
                 }
 
                 gridPane.add(cellLabel, col + 1, row + 1);
@@ -135,6 +139,7 @@ public class SheetController {
             makeGridReadOnly();
         }
     }
+
     private String toRgbString(Color color) {
         return String.format("rgb(%d,%d,%d)",
                 (int) (color.getRed() * 255),
@@ -143,14 +148,39 @@ public class SheetController {
     }
 
     public void updateCellStyle(CoordinateDTO coordinate, Color backgroundColor, Color textColor) {
-        CellStyle style = new CellStyle(backgroundColor,textColor);
+        CellStyle style = new CellStyle(backgroundColor, textColor);
+        if(cellStyles.containsKey(coordinate)) {
+            cellStyles.remove(coordinate);
+        }
         cellStyles.put(coordinate, style);
-        createGridFromSheetDTO();
+        applyStylesToCell(coordinate, style);
+    }
+
+    private void applyStylesToCell(CoordinateDTO coordinate, CellStyle cellStyle) {
+        Label cell = (Label) getCellNode(coordinate);
+        if(cell.getStyleClass().contains("label")) {
+            cell.getStyleClass().remove("label");
+        }
+        cell.setTextFill(cellStyle.getTextColor());
+        cell.setStyle("-fx-background-color: " + toRgbString(cellStyle.getBackgroundColor()) + ";");
+    }
+
+    private Node getCellNode(CoordinateDTO coordinate) {
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof Label) {
+                Label label = (Label) node;
+                CoordinateDTO coord = (CoordinateDTO) label.getUserData();
+                if (coordinate.equals(coord)) {
+                    return node;
+                }
+            }
+        }
+        return null;
     }
 
     public void resetCellStyle(CoordinateDTO coordinate) {
-            cellStyles.remove(coordinate);
-            createGridFromSheetDTO();
+        cellStyles.remove(coordinate);
+        createGridFromSheetDTO();
     }
 
     public void clearGrid() {
@@ -161,7 +191,9 @@ public class SheetController {
         Label label = new Label(text);
         double columnWidth = sheetDTO.getColumnWidthUnits();
         double rowHeight = sheetDTO.getRowsHeightUnits();
-
+        if (coordinate != null) {
+            label.setUserData(coordinate);
+        }
         if (!readOnly && "cell".equals(styleClass)) {
             label.setOnMouseClicked(event -> handleCellClick(coordinate));
         } else if (!readOnly && "header-col".equals(styleClass)) {
@@ -200,8 +232,8 @@ public class SheetController {
         if (!readOnly) {
             mainController.updateActionLineFields(coordinate);
             CommandsController commandsController = mainController.getCommandsController();
-                commandsController.updateCellCoordinate(coordinate);
-                commandsController.setEditCellDisable(false);
+            commandsController.updateCellCoordinate(coordinate);
+            commandsController.setEditCellDisable(false);
         }
     }
 
@@ -238,6 +270,7 @@ public class SheetController {
         gridPane.getChildren().forEach(node -> {
             if (node instanceof Label) {
                 Label label = (Label) node;
+                label.getStyleClass().clear();
                 label.getStyleClass().add("read-only-label");
                 label.setOnMouseClicked(null);
             } else if (node instanceof TextField) {

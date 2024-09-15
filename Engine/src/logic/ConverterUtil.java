@@ -6,6 +6,8 @@ import DTO.SheetDTO;
 import sheet.api.SheetReadActions;
 import sheet.cell.api.Cell;
 import sheet.coordinate.Coordinate;
+
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,15 +24,29 @@ public class ConverterUtil {
         if (cell == null) {
             throw new IllegalArgumentException("Cell cannot be null.");
         }
+
+        // Convert Coordinate to CoordinateDTO
+        CoordinateDTO cellCoordinateDTO = toCoordinateDTO(cell.getCoordinate());
+
+        // Convert lists of Coordinate to lists of CoordinateDTO
+        List<CoordinateDTO> relatedCellsDTO = cell.getRelatedCells().stream()
+                .map(ConverterUtil::toCoordinateDTO)
+                .collect(Collectors.toList());
+
+        List<CoordinateDTO> affectedCellsDTO = cell.getAffectedCells().stream()
+                .map(ConverterUtil::toCoordinateDTO)
+                .collect(Collectors.toList());
+
         return new CellDTO(
-                toCoordinateDTO(cell.getCoordinate()),
+                cellCoordinateDTO,
                 cell.getOriginalValue(),
                 cell.getEffectiveValue() != null ? cell.getEffectiveValue() : null,
                 cell.getVersion(),
-                cell.getRelatedCells(),
-                cell.getAffectedCells()
+                relatedCellsDTO,
+                affectedCellsDTO
         );
     }
+
 
     public static SheetDTO toSheetDTO(SheetReadActions sheet) {
         Map<CoordinateDTO, CellDTO> cellDTOs = sheet.getCells().entrySet().stream()

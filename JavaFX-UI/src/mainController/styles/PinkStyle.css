@@ -70,8 +70,6 @@
 /* Improved styling for Labels */
 .label {
     -fx-font-family: "Gisha";
-    -fx-text-fill: #000000; /* Black text for readability */
-    -fx-background-color: #fce4ec; /* Very light pink background for contrast */
 }
 
 /* Styling for checkboxes */

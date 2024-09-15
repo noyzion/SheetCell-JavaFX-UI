@@ -96,7 +96,6 @@
 /* Style for Labels */
 .label {
     -fx-font-family: "Gisha";
-    -fx-text-fill: #000000; /* Black text */
 }
 
 /* Hover effect for labels */

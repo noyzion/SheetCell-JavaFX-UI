@@ -64,8 +64,7 @@ public class ActionLineController {
     private void handleLastVersionButton() {
         if (versionSelected) {
             mainController.getSheetComponentController().setSheetDTO(mainController.getLatestSheet());
-            mainController.getSheetComponentController().setReadOnly(false);
-            mainController.showSheet(mainController.getLatestSheet());
+            mainController.showSheet(mainController.getLatestSheet(),false);
             disableLastVersionButton();
         }
     }

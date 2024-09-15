@@ -157,17 +157,17 @@ public class UpdateValueController {
     private Node createFunctionArgumentComponent(String promptText, String operation) {
         HBox argumentBox = new HBox(5);
 
-            ComboBox<String> argumentTypeComboBox = new ComboBox<>();
-            argumentTypeComboBox.getItems().addAll("Number", "Text", "Function");
-            argumentTypeComboBox.setValue("Number");
+        ComboBox<String> argumentTypeComboBox = new ComboBox<>();
+        argumentTypeComboBox.getItems().addAll("Number", "Text", "Function");
+        argumentTypeComboBox.setValue("Number");
 
-            TextField argumentField = new TextField();
-            argumentField.setPromptText(promptText);
+        TextField argumentField = new TextField();
+        argumentField.setPromptText(promptText);
 
-            argumentBox.getChildren().add(argumentTypeComboBox);
-            argumentBox.getChildren().add(argumentField);
+        argumentBox.getChildren().add(argumentTypeComboBox);
+        argumentBox.getChildren().add(argumentField);
 
-            argumentTypeComboBox.setOnAction(e -> updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField));
+        argumentTypeComboBox.setOnAction(e -> updateArgumentBox(argumentBox, argumentTypeComboBox, argumentField));
 
 
         return argumentBox;
