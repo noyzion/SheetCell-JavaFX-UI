@@ -37,7 +37,7 @@ public class AppController extends Application {
     @FXML private CommandsController commandComponentController;
     private SheetController sheetComponentController;
     private String sheetStyle = "/mainController/styles/BasicStyle.css";
-    private Scene primaryScene;  // Scene for dynamic styling
+    private Scene primaryScene;
 
     private Logic logic = new Logic();
 
@@ -174,6 +174,7 @@ public class AppController extends Application {
             alert.showAndWait();
         });
     }
+
     public List<CoordinateDTO> getDependentCells(CoordinateDTO cell) {
         return logic.getLatestSheet().getCell(cell.toString()).getRelatedCells();
     }

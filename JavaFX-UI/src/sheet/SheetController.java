@@ -180,6 +180,10 @@ public class SheetController {
     public void resetCellStyle(CoordinateDTO coordinate) {
         cellStyles.remove(coordinate);
         createGridFromSheetDTO();
+        if (mainController.getLatestSheet().getCell(coordinate.toString()) != null) {
+            highlightAffectedCells(coordinate);
+            highlightDependentCells(coordinate);
+        }
     }
 
     public void clearGrid() {
