@@ -1,6 +1,7 @@
 package commands;
 
 import DTO.CoordinateDTO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -93,6 +94,7 @@ public class CommandsController {
         selectedCellLabel.setText(coordinate.toString());
         this.selectedCellCoordinate = coordinate;
     }
+
     public void updateColumn(int column) {
         String colHeader = String.valueOf((char) ('A' + column-1));
         selectedColumnIndex = column;
@@ -124,10 +126,18 @@ public class CommandsController {
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
-
     private void applyTheme(String themeName) {
-        SheetController sheetController = mainController.getSheetComponentController();
-        sheetController.setSheetStyle(themeName);
+        if (mainController != null) {
+            Platform.runLater(() -> {
+                mainController.setSheetStyle(themeName);
+                SheetController sheetController = mainController.getSheetComponentController();
+                if (sheetController != null) {
+                    sheetController.setSheetStyle(themeName);
+                }
+            });
+        } else {
+            System.err.println("MainController is not set. Cannot apply theme.");
+        }
     }
 
 }

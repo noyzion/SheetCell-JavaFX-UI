@@ -151,3 +151,54 @@
     -fx-background-color: #cce0ff; /* Light blue background on hover */
     -fx-cursor: hand; /* Change mouse cursor to a hand */
 }
+/* Styling for ComboBox */
+.combo-box {
+    -fx-background-color: #e6f0ff; /* Very light blue background for ComboBox */
+    -fx-border-color: #004c99; /* Dark blue border to match the theme */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000; /* Black text for consistency */
+}
+
+/* ComboBox button styling */
+.combo-box .combo-box-button {
+    -fx-background-color: #004c99; /* Dark blue background for the button */
+    -fx-border-color: #003d7d; /* Slightly darker blue border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Hover effect for ComboBox button */
+.combo-box .combo-box-button:hover {
+    -fx-background-color: #003d7d; /* Slightly darker blue on hover */
+    -fx-cursor: hand;
+}
+
+/* Styling for ComboBox arrow */
+.combo-box .arrow-button {
+    -fx-background-color: #004c99; /* Dark blue background for arrow button */
+    -fx-border-color: #003d7d; /* Slightly darker blue border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-text-fill: #ffffff;
+}
+
+/* Arrow button hover effect */
+.combo-box .arrow-button:hover {
+    -fx-background-color: #003d7d; /* Slightly darker blue on hover */
+}
+
+/* ComboBox pop-up styling */
+.combo-box .combo-box-popup {
+    -fx-background-color: #e6f0ff; /* Very light blue background for the pop-up */
+    -fx-border-color: #004c99; /* Dark blue border for the pop-up */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}

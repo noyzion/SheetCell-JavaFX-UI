@@ -68,6 +68,6 @@
 
 /* Disable hover effect for read-only cells */
 .read-only-label:hover {
-    -fx-background-color: #e0e0e0; /* Keep the background same as non-hovered */
+    -fx-background-color: #e9f5e1; /* Keep the background same as non-hovered */
     -fx-cursor: default; /* Default cursor instead of hand */
 }

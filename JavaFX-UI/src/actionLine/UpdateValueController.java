@@ -3,6 +3,7 @@ package actionLine;
 import DTO.CellDTO;
 import expression.FunctionArgument;
 import expression.Operation;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -282,7 +283,15 @@ public class UpdateValueController {
         }
         window.close();
     }
-
+    private void showErrorDialog(String title, String header, String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.setContentText(content);
+            alert.showAndWait();
+        });
+    }
     private boolean isValidNumber(String text) {
         try {
             Double.parseDouble(text);
@@ -339,11 +348,4 @@ public class UpdateValueController {
         }
     }
 
-    private void showErrorDialog(String title, String message, String s) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }

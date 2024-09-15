@@ -114,7 +114,6 @@ public class HeaderController {
                     sheetLoadedListener.accept(null);
                 }
             } catch (Exception error) {
-                // Restore the previous file path and name on error
                 currentFile.setText(previousFilePath);
                 fileName.setText(previousFileName);
                 mainController.showErrorDialog("File Load Error", "An error occurred while loading the file.", error.getMessage());

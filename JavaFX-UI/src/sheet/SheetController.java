@@ -1,5 +1,4 @@
 package sheet;
-
 import DTO.CellDTO;
 import DTO.CellStyle;
 import DTO.CoordinateDTO;
@@ -43,9 +42,6 @@ public class SheetController {
         this.sheetDTO = sheetDTO;
     }
 
-    public void setMainController(AppController mainController) {
-        this.mainController = mainController;
-    }
     private void applyStyle() {
         gridPane.getStylesheets().clear();
         URL cssUrl = getClass().getResource(sheetStyle);
@@ -62,6 +58,10 @@ public class SheetController {
         };
         sheetStyle = newStyle;
         applyStyle();
+    }
+
+    public void setMainController(AppController mainController) {
+        this.mainController = mainController;
     }
 
     public void setColumnAlignment(int columnIndex, Pos alignment) {
