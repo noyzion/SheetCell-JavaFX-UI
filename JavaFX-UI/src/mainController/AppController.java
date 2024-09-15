@@ -66,14 +66,14 @@ public class AppController extends Application {
     }
 
     public void showSheet(SheetDTO sheet, boolean readonly) {
-            commandComponentController.setEditCellDisable(true);
-            actionLineComponentController.clearUIComponents();
-            sheetComponentController.clearGrid();
-            sheetComponentController.setSheetDTO(sheet);
-            sheetComponentController.setReadOnly(readonly);
-            sheetComponentController.createGridFromSheetDTO();
-            sheetComponent.getChildren().clear();
-            sheetComponent.getChildren().add(sheetComponentController.getGridPane());
+        commandComponentController.setEditCellDisable(true);
+        actionLineComponentController.clearUIComponents();
+        sheetComponentController.clearGrid();
+        sheetComponentController.setSheetDTO(sheet);
+        sheetComponentController.setReadOnly(readonly);
+        sheetComponentController.createGridFromSheetDTO();
+        sheetComponent.getChildren().clear();
+        sheetComponent.getChildren().add(sheetComponentController.getGridPane());
         AnchorPane.setTopAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setBottomAnchor(sheetComponentController.getGridPane(), 0.0);
         AnchorPane.setLeftAnchor(sheetComponentController.getGridPane(), 0.0);

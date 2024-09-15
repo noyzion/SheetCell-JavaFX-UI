@@ -15,7 +15,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import mainController.AppController;
-import sheet.coordinate.Coordinate;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -231,11 +230,33 @@ public class SheetController {
     private void handleCellClick(CoordinateDTO coordinate) {
         if (!readOnly) {
             mainController.updateActionLineFields(coordinate);
+
             CommandsController commandsController = mainController.getCommandsController();
             commandsController.updateCellCoordinate(coordinate);
             commandsController.setEditCellDisable(false);
+            clearHighlightedCells();
+
+            if (mainController.getLatestSheet().getCell(coordinate.toString()) != null) {
+                highlightAffectedCells(coordinate);
+                highlightDependentCells(coordinate);
+          }
         }
     }
+
+    private void clearHighlightedCells() {
+        gridPane.getChildren().forEach(node -> {
+            if (node instanceof Label) {
+                Label label = (Label) node;
+                CoordinateDTO coord = (CoordinateDTO) label.getUserData();
+                label.setStyle(null);
+                if (coord != null && cellStyles.containsKey(coord)) {
+                    applyStylesToCell(coord, cellStyles.get(coord));
+                }
+            }
+        });
+    }
+
+
 
     public List<String> getAllCellNames() {
         int numRows = sheetDTO.getRowSize();
@@ -264,6 +285,27 @@ public class SheetController {
         } else {
             restoreEditable();
         }
+    }
+    private void highlightAffectedCells(CoordinateDTO coordinate) {
+        List<CoordinateDTO> supportCoordinates = mainController.getAffectedCells(coordinate);
+        supportCoordinates.forEach(supportCoord -> {
+            Label cellLabel = (Label) getCellNode(supportCoord);
+            if (cellLabel != null) {
+                cellLabel.setTextFill(Color.BLACK);
+                cellLabel.setStyle("-fx-background-color: lightgreen;");
+            }
+        });
+    }
+
+    private void highlightDependentCells(CoordinateDTO coordinate) {
+        List<CoordinateDTO> dependentCoordinates = mainController.getDependentCells(coordinate);
+        dependentCoordinates.forEach(dependentCoord -> {
+            Label cellLabel = (Label) getCellNode(dependentCoord);
+            if (cellLabel != null) {
+                cellLabel.setTextFill(Color.BLACK);
+                cellLabel.setStyle("-fx-background-color: lightblue;");
+            }
+        });
     }
 
     private void makeGridReadOnly() {
@@ -336,7 +378,7 @@ public class SheetController {
             endRowResize();
         });
 
-        gridPane.add(resizeLine, 0, rowIndex); // Adjust position as needed
+        gridPane.add(resizeLine, 0, rowIndex);
     }
 
     private void startColumnResize(int colIndex, double startX) {
@@ -393,7 +435,7 @@ public class SheetController {
         gridPane.getColumnConstraints().clear();
         for (int i = 0; i < numColumns + 1; i++) {
             ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setPrefWidth(sheetDTO.getColumnWidthUnits()); // Ensure this returns a valid value
+            columnConstraints.setPrefWidth(sheetDTO.getColumnWidthUnits());
             gridPane.getColumnConstraints().add(columnConstraints);
         }
     }
@@ -402,7 +444,7 @@ public class SheetController {
         gridPane.getRowConstraints().clear();
         for (int i = 0; i < numRows + 1; i++) {
             RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setPrefHeight(sheetDTO.getRowsHeightUnits()); // Ensure this returns a valid value
+            rowConstraints.setPrefHeight(sheetDTO.getRowsHeightUnits());
             gridPane.getRowConstraints().add(rowConstraints);
         }
     }
