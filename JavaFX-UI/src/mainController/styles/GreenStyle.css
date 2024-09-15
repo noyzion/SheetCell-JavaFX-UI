@@ -95,20 +95,6 @@
     -fx-border-radius: 8;
     -fx-background-radius: 8;
 }
-
-/* Style for Labels */
-.label {
-    -fx-font-family: "Gisha";
-}
-
-/* Hover effect for labels */
-.label:hover {
-    -fx-background-color: #d4f0d0; /* Light green background */
-    -fx-cursor: hand;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-}
-
 /* Styling for checkboxes */
 .check-box {
     -fx-text-fill: #000000;
@@ -181,13 +167,7 @@
     -fx-background-radius: 5; /* Rounded corners */
 }
 
-/* ComboBox popup */
-.combo-box .popup {
-    -fx-background-color: #ffffff; /* White background for popup */
-    -fx-border-color: #27ae60; /* Dark green border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 8;
-}
+
 
 /* ComboBox items */
 .combo-box .item {

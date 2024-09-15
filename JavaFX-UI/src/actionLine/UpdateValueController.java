@@ -18,6 +18,7 @@ import java.util.List;
 
 public class UpdateValueController {
 
+    private String coord;
     private String inputType;
     private Operation selectedOperation;
     private List<FunctionArgument> functionArguments;
@@ -37,6 +38,7 @@ public class UpdateValueController {
         window.setWidth(600);
         window.setHeight(800);
 
+        Label cellIdLabel = createLabel("Cell ID: ", coord);
         Label originalValueLabel = createLabel("Original Value: ", selectedCell != null ? selectedCell.getOriginalValue() : "empty cell");
         Label effectiveValueLabel = createLabel(
                 "Effective Value: ",
@@ -80,7 +82,7 @@ public class UpdateValueController {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
         layout.getStyleClass().add("window");
-        layout.getChildren().addAll(originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, buttonBox);
+        layout.getChildren().addAll(cellIdLabel,originalValueLabel, effectiveValueLabel, new Label("Choose input type:"), inputTypeComboBox, dynamicContentArea, buttonBox);
 
         Scene scene = new Scene(layout);
         scene.getStylesheets().add(getClass().getResource("/actionLine/style/UpdateValueStyle.css").toExternalForm()); // Load CSS file
@@ -94,9 +96,10 @@ public class UpdateValueController {
     }
 
 
-    public UpdateValueController(CellDTO cellDTO, List<String> cellNames) {
+    public UpdateValueController(CellDTO cellDTO, String coord, List<String> cellNames) {
         this.cellNames = cellNames;
         this.selectedCell = cellDTO;
+        this.coord = coord;
     }
 
     public String getGeneratedString() {

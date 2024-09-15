@@ -296,7 +296,7 @@ public class SheetController {
             Label cellLabel = (Label) getCellNode(supportCoord);
             if (cellLabel != null) {
                 cellLabel.setTextFill(Color.BLACK);
-                cellLabel.setStyle("-fx-background-color: lightgreen;");
+                cellLabel.setStyle("-fx-background-color: #90EE90;");
             }
         });
     }
@@ -307,7 +307,7 @@ public class SheetController {
             Label cellLabel = (Label) getCellNode(dependentCoord);
             if (cellLabel != null) {
                 cellLabel.setTextFill(Color.BLACK);
-                cellLabel.setStyle("-fx-background-color: lightblue;");
+                cellLabel.setStyle("-fx-background-color: #ADD8E6;");
             }
         });
     }

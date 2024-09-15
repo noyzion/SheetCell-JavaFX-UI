@@ -28,6 +28,7 @@ public class ActionLineController {
         updateValue.setDisable(true);
         versionSelector.setDisable(true);
         lastVersionButton.setDisable(true);
+        originalValueBox.setEditable(false);
     }
 
     public void clearUIComponents() {
@@ -35,12 +36,30 @@ public class ActionLineController {
         originalValueBox.clear();
         showLastVersion.clear();
         updateValue.setDisable(true);
+        originalValueBox.setEditable(false);
+    }
+    @FXML
+    private void handleUpdateValueTextFieldAction() {
+        CellValueWindow cellValueWindow = new CellValueWindow();
+        String newValue = originalValueBox.getText();
+        try {
+          CellDTO cell =  mainController.setCell(cellIdSelection.getText(), newValue);
+            if (cell.getEffectiveValue().getValue() == null)
+                cellValueWindow.show("empty cell", cell.getCoordinateDTO().toString());
+            else
+                cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
+
+        } catch (Exception e) {
+            mainController.showErrorDialog("Error", "Failed to update cell", e.getMessage());
+        }
+
     }
 
     public void updateFields(CoordinateDTO cord, CellDTO cell) {
         cellIdSelection.setText(cord.toString());
         selectedCell = cell;
         updateValue.setDisable(false);
+        originalValueBox.setEditable(true);
         if (cell == null) {
             originalValueBox.setText("empty cell");
             showLastVersion.setText("1");
@@ -79,7 +98,7 @@ public class ActionLineController {
         CellValueWindow cellValueWindow = new CellValueWindow();
         while (!validInput) {
             try {
-                UpdateValueController updateDialog = new UpdateValueController(cell, mainController.getAllCellNames());
+                UpdateValueController updateDialog = new UpdateValueController(cell,cellIdSelection.getText(), mainController.getAllCellNames());
                 updateDialog.display();
 
                 if (updateDialog.isConfirmed()) {

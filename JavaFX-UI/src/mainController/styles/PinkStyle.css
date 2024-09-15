@@ -67,11 +67,6 @@
     -fx-background-radius: 8;
 }
 
-/* Improved styling for Labels */
-.label {
-    -fx-font-family: "Gisha";
-}
-
 /* Styling for checkboxes */
 .check-box {
     -fx-text-fill: #000000;
@@ -142,48 +137,31 @@
     -fx-background-radius: 8;
     -fx-border-radius: 8;
 }
-/* Styling for ComboBox */
+/* Styling for ComboBox in pink theme */
 .combo-box {
+    -fx-background-color: #fce4ec; /* Very light pink background */
+    -fx-border-color: #ec407a; /* Medium pink border */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-font-family: "Gisha";
 }
 
-/* ComboBox button styling */
-.combo-box .combo-box-button {
-    -fx-background-color: #f48fb1; /* Light pink button background */
-    -fx-border-color: #ec407a; /* Medium pink border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-text-fill: #ffffff; /* White text */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+/* ComboBox arrow in pink theme */
+.combo-box .arrow {
+    -fx-background-color: #ec407a; /* Medium pink background for the arrow */
+    -fx-background-radius: 5; /* Rounded corners */
 }
 
-/* Hover effect for ComboBox button */
-.combo-box .combo-box-button:hover {
-    -fx-background-color: #f06292; /* Slightly darker pink on hover */
+/* ComboBox items in pink theme */
+.combo-box .item {
+    -fx-background-color: #fce4ec; /* Very light pink for items */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+/* Hover effect for ComboBox items in pink theme */
+.combo-box .item:hover {
+    -fx-background-color: #f8bbd0; /* Light pink on hover */
     -fx-cursor: hand;
 }
 
-/* Styling for ComboBox arrow */
-.combo-box .arrow-button {
-    -fx-background-color: #f48fb1; /* Light pink background for arrow button */
-    -fx-border-color: #ec407a; /* Medium pink border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-}
-
-/* Arrow button hover effect */
-.combo-box .arrow-button:hover {
-    -fx-background-color: #f06292; /* Slightly darker pink on hover */
-}
-
-/* ComboBox pop-up styling */
-.combo-box .combo-box-popup {
-    -fx-background-color: #fce4ec; /* Very light pink background for pop-up */
-    -fx-border-color: #ec407a; /* Medium pink border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-}

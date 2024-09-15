@@ -137,50 +137,30 @@
     -fx-border-radius: 8;
 }
 
-/* Styling for ComboBox */
+/* Styling for ComboBox in basic theme */
 .combo-box {
+    -fx-background-color: #e0e0e0; /* Very light grey background */
+    -fx-border-color: #757575; /* Medium grey border */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-font-family: "Gisha";
 }
 
-/* ComboBox button styling */
-.combo-box .combo-box-button {
-    -fx-background-color: #4d4d4d; /* Dark grey background */
-    -fx-border-color: #000000; /* Black border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-text-fill: #ffffff; /* White text */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+/* ComboBox arrow in basic theme */
+.combo-box .arrow {
+    -fx-background-color: #757575; /* Medium grey background for the arrow */
+    -fx-background-radius: 5; /* Rounded corners */
 }
 
-/* Hover effect for ComboBox button */
-.combo-box .combo-box-button:hover {
-    -fx-background-color: #666666; /* Slightly lighter grey on hover */
+/* ComboBox items in basic theme */
+.combo-box .item {
+    -fx-background-color: #e0e0e0; /* Very light grey for items */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+/* Hover effect for ComboBox items in basic theme */
+.combo-box .item:hover {
+    -fx-background-color: #bdbdbd; /* Light grey on hover */
     -fx-cursor: hand;
 }
-
-/* Styling for ComboBox arrow */
-.combo-box .arrow-button {
-    -fx-background-color: #4d4d4d; /* Dark grey background */
-    -fx-border-color: #000000; /* Black border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-}
-
-/* Arrow button hover effect */
-.combo-box .arrow-button:hover {
-    -fx-background-color: #666666; /* Slightly lighter grey on hover */
-}
-
-/* ComboBox pop-up styling */
-.combo-box .combo-box-popup {
-    -fx-background-color: #4d4d4d; /* Dark grey background */
-    -fx-border-color: #000000; /* Black border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-}
-
-
