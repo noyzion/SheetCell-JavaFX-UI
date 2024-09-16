@@ -47,7 +47,7 @@ public class ActionLineController {
             if (cell.getEffectiveValue().getValue() == null)
                 cellValueWindow.show("empty cell", cell.getCoordinateDTO().toString());
             else
-                cellValueWindow.show(cell.getEffectiveValue().getValue().toString(), cell.getCoordinateDTO().toString());
+                cellValueWindow.show(cell.getEffectiveValue().toString(), cell.getCoordinateDTO().toString());
 
         } catch (Exception e) {
             mainController.showErrorDialog("Error", "Failed to update cell", e.getMessage());

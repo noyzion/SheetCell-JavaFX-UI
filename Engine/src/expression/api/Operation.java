@@ -14,7 +14,7 @@ public enum Operation {
     AVERAGE(1),
     SUM(1),
     IF(3),
-    EQUL(2),
+    EQUAL(2),
     NOT(1),
     BIGGER(2),
     LESS(2),

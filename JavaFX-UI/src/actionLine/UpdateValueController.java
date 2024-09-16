@@ -55,10 +55,8 @@ public class UpdateValueController {
         dynamicContentArea.setPadding(new Insets(10));
         dynamicContentArea.getStyleClass().add("vbox");
 
-        // Initial update of dynamic content
         updateDynamicContent(dynamicContentArea, inputTypeComboBox.getValue());
 
-        // Update dynamic content on input type change
         inputTypeComboBox.setOnAction(e -> updateDynamicContent(dynamicContentArea, inputTypeComboBox.getValue()));
 
         Button submitButton = new Button("Submit");

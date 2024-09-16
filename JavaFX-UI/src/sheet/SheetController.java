@@ -115,7 +115,7 @@ public class SheetController {
 
                 CoordinateDTO coordinate = new CoordinateDTO(row, col);
                 String cellValue = cells.containsKey(coordinate) && cells.get(coordinate).getEffectiveValue().getValue() != null
-                        ? cells.get(coordinate).getEffectiveValue().getValue().toString()
+                        ? cells.get(coordinate).getEffectiveValue().toString()
                         : " ";
 
                 String styleClass = readOnly ? "read-only-label" : "cell";

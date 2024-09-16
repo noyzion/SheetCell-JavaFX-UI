@@ -2,6 +2,7 @@ package sheet.cell.impl;
 
 import expression.api.Expression;
 import expression.api.ExpressionFactory;
+import expression.impl.BooleanExpression;
 import expression.impl.ExpressionFactoryImpl;
 import expression.impl.NumberExpression;
 import expression.impl.Operations.Ref;
@@ -55,7 +56,7 @@ public class EffectiveValueImp implements EffectiveValue, Serializable {
             if (this.value == null)
                 this.value = expr.evaluate();
         } else {
-            numOrString(originalValue);
+            numOrStringOrBoolean(originalValue);
         }
     }
 
@@ -142,18 +143,27 @@ public class EffectiveValueImp implements EffectiveValue, Serializable {
             try {
                 return new NumberExpression(Double.parseDouble(input));
             } catch (NumberFormatException e) {
-                return new StringExpression(input);
-            }
+                if ("true".equalsIgnoreCase(input) || "false".equalsIgnoreCase(input)) {
+                    return new BooleanExpression(Boolean.parseBoolean(input));
+                } else {
+                    return new StringExpression(input);
+                }}
         }
     }
 
-    private void numOrString(String value) {
+    private void numOrStringOrBoolean(String value) {
         try {
             this.value = Double.parseDouble(value);
             this.cellType = CellType.NUMERIC;
         } catch (NumberFormatException e) {
-            this.value = value;
-            this.cellType = CellType.STRING;
+            if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false")) {
+                this.cellType = CellType.BOOLEAN;
+                this.value = value.toUpperCase();
+            }
+            else{
+                this.cellType = CellType.STRING;
+                this.value = value;
+            }
         }
     }
 
@@ -173,5 +183,12 @@ public class EffectiveValueImp implements EffectiveValue, Serializable {
         return Objects.hash(cellType, value);
     }
 
+    @Override
+    public String toString()
+    {
+        if(value.getClass() == Boolean.class)
+            return value.toString().toUpperCase();
+        return value.toString();
+    }
 
 }

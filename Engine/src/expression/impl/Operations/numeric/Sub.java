@@ -30,7 +30,7 @@ public class Sub extends TrinaryExpression {
             throw new IllegalArgumentException("Second argument cannot be empty.");
         }
         if (evaluate3 == null) {
-            throw new IllegalArgumentException("Second argument cannot be empty.");
+            throw new IllegalArgumentException("Third argument cannot be empty.");
         }
         if (!(evaluate1 instanceof String str1) || !(evaluate2 instanceof Double num2) || !(evaluate3 instanceof Double num3) ) {
             return "!UNDEFINED!";
