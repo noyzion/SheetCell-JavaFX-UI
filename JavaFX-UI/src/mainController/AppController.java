@@ -17,9 +17,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.Logic;
 import sheet.SheetController;
+import sort.SortController;
 import xmlParse.XmlSheetLoader;
 
 import java.net.URL;
@@ -35,6 +37,8 @@ public class AppController extends Application {
     @FXML private ActionLineController actionLineComponentController;
     @FXML private BorderPane commandComponent;
     @FXML private CommandsController commandComponentController;
+    @FXML private VBox sortComponent;
+    @FXML private SortController sortComponentController;
     private SheetController sheetComponentController;
     private String sheetStyle = "/mainController/styles/BasicStyle.css";
     private Scene primaryScene;
@@ -43,12 +47,13 @@ public class AppController extends Application {
 
     @FXML
     public void initialize() {
-        if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null) {
+        if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null && sortComponent != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
             sheetComponentController.setMainController(this);
             commandComponentController.setMainController(this);
+            sortComponentController.setMainController(this);
             headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
         }
     }
