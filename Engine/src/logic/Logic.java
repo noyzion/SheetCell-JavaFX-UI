@@ -1,10 +1,12 @@
 package logic;
 
+import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.impl.CellImpl;
 import sheet.coordinate.Coordinate;
+import sheet.coordinate.CoordinateImpl;
 import sheet.coordinate.CoordinateParser;
 import sheet.impl.Edge;
 import sheet.impl.SheetImpl;
@@ -71,6 +73,14 @@ public class Logic implements Serializable {
             newSheet.addEdge(newEdge);
         }
         return newSheet;
+    }
+
+    public SheetDTO sortSheet(CoordinateDTO start, CoordinateDTO end, List<String> selectedColumns)
+    {
+        Coordinate startCord = new CoordinateImpl(start.getRow(), start.getColumn());
+        Coordinate endCord = new CoordinateImpl(end.getRow(), end.getColumn());
+        Sheet lastSheet = versionManager.getVersionedSheets().getLast().sortSheet(startCord, endCord, selectedColumns);
+        return new ConverterUtil().toSheetDTO(lastSheet);
     }
 
 }

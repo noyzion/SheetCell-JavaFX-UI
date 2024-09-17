@@ -7,6 +7,8 @@ import sheet.cell.impl.CellImpl;
 import sheet.cell.impl.EffectiveValueImp;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateFactory;
+import sheet.coordinate.CoordinateImpl;
+import sheet.coordinate.CoordinateParser;
 
 import java.io.Serializable;
 import java.util.*;
@@ -31,7 +33,6 @@ public class SheetImpl implements Sheet, Serializable {
         this.columnWidthUnits = columnWidthUnits;
         this.rowsHeightUnits = rowsHeightUnits;
         this.version = version++;
-
     }
 
     @Override
@@ -116,11 +117,9 @@ public class SheetImpl implements Sheet, Serializable {
                 counterChangedCells++;
             updateCells(coordinate);
             cell.setOriginalValue(originalValue);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             cell.setOriginalValue(previousOriginalValue);
             cell.setEffectiveValue(previousEffectiveValue);
             updateCells(coordinate);
@@ -147,8 +146,8 @@ public class SheetImpl implements Sheet, Serializable {
                 }
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("error while updating cell at " +
-                        cell.getCoordinate().getStringCord()  +
-                         " because " + e.getMessage());
+                        cell.getCoordinate().getStringCord() +
+                        " because " + e.getMessage());
             }
         }
     }
@@ -229,5 +228,80 @@ public class SheetImpl implements Sheet, Serializable {
             this.removeEdge(new Edge(cord, cell.getCoordinate()));
         }
         cell.getRelatedCells().clear();
+    }
+
+    @Override
+    public Sheet sortSheet(Coordinate start, Coordinate end, List<String> selectedColumns) {
+        if (selectedColumns.isEmpty()) {
+            throw new IllegalArgumentException("No columns selected for sorting.");
+        }
+
+        List<Integer> columnIndices = new ArrayList<>();
+        for (String column : selectedColumns) {
+            int columnIndex = column.charAt(0) - 'A';
+             columnIndices.add(columnIndex);
+        }
+
+        if (columnIndices.isEmpty() || start.getRow() > end.getRow() || start.getColumn() > end.getColumn()) {
+            throw new IllegalArgumentException("Invalid sorting range or columns.");
+        }
+
+        List<List<Cell>> rows = new ArrayList<>();
+        for (int row = start.getRow(); row <= end.getRow(); row++) {
+            List<Cell> rowCells = new ArrayList<>();
+            for (int col = start.getColumn(); col <= end.getColumn(); col++) {
+                Coordinate coordinate = new CoordinateImpl(row,col);
+                Cell cell = getCell(coordinate);
+                if (cell != null) {
+                    rowCells.add(cell);
+                }
+            }
+            rows.add(rowCells);
+        }
+
+       rows.sort((row1, row2) -> {
+            for (int index : columnIndices) {
+               if (index < row1.size() && index < row2.size()) {
+                    Cell cell1 = row1.get(index);
+                    Cell cell2 = row2.get(index);
+
+                    double value1 = getEffectiveNumericValue(cell1);
+                    double value2 = getEffectiveNumericValue(cell2);
+
+                    if(value1 != -1 && value2 != -1) {
+                        int comparison = Double.compare(value1, value2);
+                        if (comparison != 0) {
+                            return comparison;
+                        }
+                    }
+                }
+            }
+            return 0;
+        });
+
+ for (int row = start.getRow(); row <= end.getRow(); row++) {
+            List<Cell> sortedRow = rows.get(row - start.getRow());
+            for (int col = start.getColumn(); col <= end.getColumn(); col++) {
+                Coordinate coordinate = new CoordinateImpl(row,col);
+                if (col - start.getColumn() < sortedRow.size()) {
+                    Cell sortedCell = sortedRow.get(col - start.getColumn());
+                    addCell(sortedCell);
+                }
+            }
+        }
+
+        updateVersion();
+        return this;
+    }
+
+    private double getEffectiveNumericValue(Cell cell) {
+        if (cell != null && cell.getEffectiveValue() != null) {
+            try {
+                return Double.parseDouble(cell.getEffectiveValue().toString()); // Assuming the effective value can be parsed to a double
+            } catch (NumberFormatException e) {
+                return -1;
+            }
+        }
+        return -1;
     }
 }

@@ -4,6 +4,8 @@ import sheet.cell.api.Cell;
 import sheet.coordinate.Coordinate;
 import sheet.impl.Edge;
 
+import java.util.List;
+
 public interface SheetUpdateActions {
     void addCell(Cell newCell);
 
@@ -16,4 +18,6 @@ public interface SheetUpdateActions {
     void updateVersion();
 
     void setCounter(int counter);
+
+    Sheet sortSheet(Coordinate start, Coordinate end, List<String> selectedColumns);
 }

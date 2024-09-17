@@ -72,6 +72,7 @@ public class AppController extends Application {
 
     public void showSheet(SheetDTO sheet, boolean readonly) {
         commandComponentController.setEditCellDisable(true);
+        sortComponentController.enableSort();
         actionLineComponentController.clearUIComponents();
         sheetComponentController.clearGrid();
         sheetComponentController.setSheetDTO(sheet);
@@ -187,4 +188,11 @@ public class AppController extends Application {
     public List<CoordinateDTO> getAffectedCells(CoordinateDTO cell) {
         return logic.getLatestSheet().getCell(cell.toString()).getAffectedCells();
     }
+
+    public void sortSheet(CoordinateDTO start, CoordinateDTO end, List<String> selectedColumns)
+    {
+     SheetDTO sortSheet = logic.sortSheet(start, end, selectedColumns);
+     showSheet(sortSheet,true);
+    }
+
 }
