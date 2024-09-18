@@ -302,7 +302,7 @@ public class SheetImpl implements Sheet, Serializable {
 
         Sheet newSheet = new SheetImpl(sheetName, rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
 
-        for (int row = start.getRow(); row <= end.getRow(); row++) {
+            for (int row =0; row <= end.getRow(); row++) {
             List<Cell> sortedRow = rows.get(row - start.getRow());
             for (int col = start.getColumn(); col <= end.getColumn(); col++) {
                 if (col - start.getColumn() < sortedRow.size()) {
