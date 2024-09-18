@@ -35,6 +35,10 @@ public class SortController {
         addInputListeners();
     }
 
+    public void clearUIComponents() {
+        startCell.clear();
+        endCell.clear();
+    }
     @FXML
     private void handleSortAction() {
         sort = true;
@@ -45,7 +49,6 @@ public class SortController {
             CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
             CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellText);
 
-            // Collect selected columns from checkboxes
             List<String> selectedColumns = new ArrayList<>();
             for (CheckBox checkBox : columnCheckBoxes) {
                 if (checkBox.isSelected()) {
@@ -58,9 +61,9 @@ public class SortController {
                 return;
             }
 
-            // Perform sorting with the selected columns
             SheetDTO sheet = mainController.getLatestSheet();
             mainController.sortSheet(startCoordinate, endCoordinate, selectedColumns);
+            cancelSortButton.setDisable(false);
 
         } catch (Exception e) {
             String errorTitle = "Sorting Error";
@@ -87,7 +90,6 @@ public class SortController {
     }
 
     public void enableSort() {
-        cancelSortButton.setDisable(false);
         startCell.setDisable(false);
         endCell.setDisable(false);
         sort = true;
@@ -124,7 +126,7 @@ public class SortController {
 
             for (String column : columns) {
                 CheckBox checkBox = new CheckBox(column);
-                checkBox.setOnAction(event -> checkIfSortCanBeEnabled()); // Add listener for each checkbox
+                checkBox.setOnAction(event -> checkIfSortCanBeEnabled());
                 columnCheckBoxes.add(checkBox);
                 checkboxContainer.getChildren().add(checkBox);
             }
@@ -135,21 +137,13 @@ public class SortController {
 
             mainController.showErrorDialog(errorTitle, errorHeader, errorMessage);
         }
-        checkIfSortCanBeEnabled(); // Initial check
+        checkIfSortCanBeEnabled();
     }
 
-    /**
-     * Check if the sort button should be enabled
-     * The sort button is enabled only if both startCell and endCell are non-empty
-     * and at least one checkbox is selected
-     */
+
     private void checkIfSortCanBeEnabled() {
         boolean canEnable = !startCell.getText().isEmpty() && !endCell.getText().isEmpty();
-
-        // Check if at least one checkbox is selected
         boolean anyColumnSelected = columnCheckBoxes.stream().anyMatch(CheckBox::isSelected);
-
-        // Enable sort button only if both cells are non-empty and at least one checkbox is selected
         sortButton.setDisable(!(canEnable && anyColumnSelected));
     }
 }

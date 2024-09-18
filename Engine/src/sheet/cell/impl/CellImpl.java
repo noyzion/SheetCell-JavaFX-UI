@@ -12,7 +12,7 @@ import java.util.List;
 public class CellImpl implements Cell, Serializable {
     private EffectiveValue effectiveValue;
     private String originalValue;
-    private final Coordinate coordinate;
+    private Coordinate coordinate;
     private List<Coordinate> relatedCells = new ArrayList<>();
     private List<Coordinate> affectedCells = new ArrayList<>();
     private int lastVersionUpdate = 1;
@@ -41,6 +41,10 @@ public class CellImpl implements Cell, Serializable {
         this.columnWidthUnits = other.getColumnWidthUnits();
     }
 
+    @Override
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
     @Override
     public void setVersion(int version) {
         this.lastVersionUpdate = version;

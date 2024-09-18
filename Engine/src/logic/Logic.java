@@ -79,8 +79,8 @@ public class Logic implements Serializable {
     {
         Coordinate startCord = new CoordinateImpl(start.getRow(), start.getColumn());
         Coordinate endCord = new CoordinateImpl(end.getRow(), end.getColumn());
-        Sheet lastSheet = versionManager.getVersionedSheets().getLast().sortSheet(startCord, endCord, selectedColumns);
-        return new ConverterUtil().toSheetDTO(lastSheet);
+        Sheet sortedSheet = versionManager.getVersionedSheets().getLast().sortSheet(startCord, endCord, selectedColumns);
+        return new ConverterUtil().toSheetDTO(sortedSheet);
     }
 
 }

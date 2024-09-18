@@ -8,7 +8,6 @@ import sheet.cell.impl.EffectiveValueImp;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateImpl;
-import sheet.coordinate.CoordinateParser;
 
 import java.io.Serializable;
 import java.util.*;
@@ -239,7 +238,7 @@ public class SheetImpl implements Sheet, Serializable {
         List<Integer> columnIndices = new ArrayList<>();
         for (String column : selectedColumns) {
             int columnIndex = column.charAt(0) - 'A';
-             columnIndices.add(columnIndex);
+            columnIndices.add(columnIndex);
         }
 
         if (columnIndices.isEmpty() || start.getRow() > end.getRow() || start.getColumn() > end.getColumn()) {
@@ -250,58 +249,88 @@ public class SheetImpl implements Sheet, Serializable {
         for (int row = start.getRow(); row <= end.getRow(); row++) {
             List<Cell> rowCells = new ArrayList<>();
             for (int col = start.getColumn(); col <= end.getColumn(); col++) {
-                Coordinate coordinate = new CoordinateImpl(row,col);
+                Coordinate coordinate = new CoordinateImpl(row, col);
                 Cell cell = getCell(coordinate);
                 if (cell != null) {
                     rowCells.add(cell);
                 }
             }
-            rows.add(rowCells);
+            if (!rowCells.isEmpty()) {
+                rows.add(rowCells);
+            }
         }
 
-       rows.sort((row1, row2) -> {
-            for (int index : columnIndices) {
-               if (index < row1.size() && index < row2.size()) {
-                    Cell cell1 = row1.get(index);
-                    Cell cell2 = row2.get(index);
+        if (rows.isEmpty()) {
+            throw new IllegalArgumentException("No rows found in the specified range.");
+        }
 
-                    double value1 = getEffectiveNumericValue(cell1);
-                    double value2 = getEffectiveNumericValue(cell2);
 
-                    if(value1 != -1 && value2 != -1) {
-                        int comparison = Double.compare(value1, value2);
-                        if (comparison != 0) {
-                            return comparison;
+            for (int i = 0; i < columnIndices.size() - 1; i++) {
+                int currentColIndex = columnIndices.get(i);
+                int nextColIndex = columnIndices.get(i + 1);
+                for (int row = 0; row < rows.size(); row++) {
+                        Cell cell1 = null;
+                        Cell cell2 = null;
+
+                        for (Cell cell : rows.get(row)) {
+                            if (cell.getCoordinate().getColumn() == currentColIndex) {
+                                cell1 = cell;
+                                break;
+                            }
+                        }
+
+                        for (Cell cell : rows.get(row)) {
+                            if (cell.getCoordinate().getColumn() == nextColIndex) {
+                                cell2 = cell;
+                                break;
+                            }
+                        }
+
+                        if (cell1 != null && cell2 != null) {
+                            double value1 = getEffectiveNumericValue(cell1);
+                            double value2 = getEffectiveNumericValue(cell2);
+
+                            if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
+                                if (value1 > value2) {
+                                    // Swap rows
+                                   swapCells(cell1, cell2);
+                                }
+                            }
                         }
                     }
                 }
-            }
-            return 0;
-        });
 
- for (int row = start.getRow(); row <= end.getRow(); row++) {
+        Sheet newSheet = new SheetImpl(sheetName, rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
+
+        for (int row = start.getRow(); row <= end.getRow(); row++) {
             List<Cell> sortedRow = rows.get(row - start.getRow());
             for (int col = start.getColumn(); col <= end.getColumn(); col++) {
-                Coordinate coordinate = new CoordinateImpl(row,col);
                 if (col - start.getColumn() < sortedRow.size()) {
                     Cell sortedCell = sortedRow.get(col - start.getColumn());
-                    addCell(sortedCell);
+                    Coordinate coordinate = new CoordinateImpl(row, col);
+                    newSheet.addCell(sortedCell);
                 }
             }
         }
 
-        updateVersion();
-        return this;
+        return newSheet;
+    }
+
+    private void swapCells(Cell cell1, Cell cell2) {
+        Coordinate temp = cell1.getCoordinate();
+        cell1.setCoordinate(cell2.getCoordinate());
+        cell2.setCoordinate(temp);
     }
 
     private double getEffectiveNumericValue(Cell cell) {
         if (cell != null && cell.getEffectiveValue() != null) {
             try {
-                return Double.parseDouble(cell.getEffectiveValue().toString()); // Assuming the effective value can be parsed to a double
+                return Double.parseDouble(cell.getEffectiveValue().toString());
             } catch (NumberFormatException e) {
-                return -1;
+                return Double.NaN;
             }
         }
-        return -1;
+        return Double.NaN;
     }
+
 }

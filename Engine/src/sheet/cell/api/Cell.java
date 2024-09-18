@@ -32,4 +32,5 @@ public interface Cell {
 
     void setVersion(int version);
 
+    void setCoordinate(Coordinate coordinate);
 }
