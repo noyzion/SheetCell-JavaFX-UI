@@ -1,0 +1,73 @@
+/* General style for cells */
+.cell {
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Gisha"; /* Font set to Gisha */
+    -fx-alignment: center;
+    -fx-background-radius: 8;  /* Slightly rounded corners */
+    -fx-background-insets: 0;
+    -fx-background-color: #fbeef7; /* Very light pink background for cells */
+    -fx-border-color: #e6a5c8; /* Medium pink border */
+    -fx-border-style: solid;   /* Solid border */
+    -fx-border-radius: 8;      /* Rounded corners for the border */
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Column and row headers */
+.header {
+    -fx-text-fill: #ffffff;          /* White text color for contrast */
+    -fx-font-size: 16px;             /* Larger font size */
+    -fx-font-family: "Gisha";        /* Font set to Gisha */
+    -fx-font-weight: bold;           /* Bold text */
+    -fx-alignment: center;
+    -fx-padding: 0px;
+    -fx-background-color: #e74c8c;   /* Dark pink background */
+    -fx-border-color: #d43f60;       /* Darker pink border */
+    -fx-background-radius: 8;        /* Rounded corners */
+    -fx-border-radius: 8;            /* Rounded corners */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.3, 3, 3); /* Soft shadow effect */
+}
+
+/* Hover effect for column and row headers */
+.header:hover {
+    -fx-background-color: #ec6d89; /* Slightly lighter pink background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
+}
+
+/* Hover effect when the mouse is over the cell */
+.cell:hover {
+    -fx-background-color: #f5c6d4; /* Light pink background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
+}
+
+/* General style for GridPane */
+.grid-pane {
+    -fx-background-color: #ffffff; /* White background for the grid */
+    -fx-hgap: 20;  /* Increased horizontal gap */
+    -fx-vgap: 20;  /* Increased vertical gap */
+    -fx-padding: 20;
+}
+/* Read-only style for cells */
+.read-only-label {
+    -fx-text-fill: #000000;          /* White text color for contrast */
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Gisha";
+    -fx-alignment: center;
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-background-color: #fbeef7; /* Very light pink background for cells */
+    -fx-border-color: #e6a5c8; /* Medium pink border */
+    -fx-border-style: solid;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+    -fx-opacity: 1; /* Full opacity to match regular cells */
+}
+
+/* Disable hover effect for read-only cells */
+.read-only-label:hover {
+    -fx-background-color: #fbeef7; /* Keep the background same as non-hovered */
+    -fx-cursor: default; /* Default cursor instead of hand */
+}

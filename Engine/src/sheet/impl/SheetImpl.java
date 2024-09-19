@@ -317,7 +317,8 @@ public class SheetImpl implements Sheet, Serializable {
                         if (value1 > value2) {
                             swapRows(rows.get(cell1.getCoordinate().getRow()), rows.get(cell2.getCoordinate().getRow()));
                         } else if (value1 == value2)
-                            sortRowsByCol(columnIndices, index + 1, rows);
+                            if (index + 1 < columnIndices.size())
+                                sortRowsByCol(columnIndices, index + 1, rows);
                     }
                 }
             }

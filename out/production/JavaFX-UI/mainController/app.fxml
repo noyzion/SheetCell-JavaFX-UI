@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane prefHeight="779.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
+   <content>
+      <BorderPane prefHeight="758.0" prefWidth="1011.0">
+         <top>
+            <VBox prefHeight="212.0" prefWidth="942.0" BorderPane.alignment="CENTER">
+               <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
+               <fx:include fx:id="actionLineComponent" source="../actionLine/actionLine.fxml" />
+            </VBox>
+         </top>
+         <left>
+            <fx:include fx:id="commandComponent" source="../commands/commands.fxml" />
+         </left>
+         <padding>
+            <Insets left="25.0" />
+         </padding>
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane fx:id="sheetComponent" prefHeight="546.0" prefWidth="653.0">
+                     <padding>
+                        <Insets left="20.0" top="40.0" />
+                     </padding>
+                  </AnchorPane>
+                  <fx:include fx:id="sortComponent" source="../sort/sort.fxml" />
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </content>
+</ScrollPane>

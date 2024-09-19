@@ -1,0 +1,166 @@
+
+/* General style for buttons */
+.button {
+    -fx-font-family: "Gisha";
+    -fx-background-radius: 5; /* More rounded corners for buttons */
+    -fx-border-radius: 5;     /* Ensure border matches the background rounding */
+    -fx-background-color: #4d4d4d; /* Dark grey background for buttons */
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-border-color: #000000; /* Black border */
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Hover effect for buttons */
+.button:hover {
+    -fx-background-color: #666666; /* Slightly lighter grey on hover */
+    -fx-cursor: hand;
+}
+
+/* Style for disabled buttons */
+.button:disabled {
+    -fx-background-color: #b3b3b3; /* Lighter grey for disabled buttons */
+    -fx-text-fill: #666666; /* Greyed out text */
+}
+
+/* Styling for text fields */
+.text-field {
+    -fx-font-family: "Gisha";
+    -fx-background-color: #e0e0e0; /* Light grey background for text fields */
+    -fx-text-fill: #000000; /* Black text */
+    -fx-border-color: #000000;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Focused state for text fields */
+.text-field:focused {
+    -fx-border-color: #4d4d4d; /* Darker grey border when focused */
+}
+
+/* ScrollPane styling */
+.scroll-pane {
+    -fx-background: #dfdfdf; /* Light grey background */
+    -fx-border-color: #b3b3b3; /* Grey border around the scroll area */
+    -fx-border-width: 2px;
+    -fx-background-insets: 0;
+}
+
+/* Style for ScrollBars inside ScrollPane */
+.scroll-bar {
+    -fx-background-color: #b3b3b3; /* Grey for scrollbar track */
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #4d4d4d; /* Dark grey for scrollbar thumb */
+    -fx-background-radius: 8;
+}
+
+/* Style for tooltips */
+.tooltip {
+    -fx-background-color: #4d4d4d; /* Dark grey background */
+    -fx-text-fill: white; /* White text */
+    -fx-padding: 10;
+    -fx-font-family: "Gisha";
+    -fx-background-radius: 8;
+}
+
+/* Styling for checkboxes */
+.check-box {
+    -fx-text-fill: #000000;
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #b3b3b3;
+    -fx-border-width: 1.5;
+}
+
+/* Radio buttons styling */
+.radio-button {
+    -fx-text-fill: #000000;
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #b3b3b3;
+    -fx-border-width: 1.5;
+}
+
+/* Styling for sliders */
+.slider {
+    -fx-background-color: #e0e0e0;
+}
+
+.slider .track {
+    -fx-background-color: #b3b3b3;
+}
+
+.slider .thumb {
+    -fx-background-color: #4d4d4d;
+    -fx-background-radius: 8;
+}
+/* General style for ColorPicker */
+.color-picker {
+    -fx-background-color: #e0e0e0; /* Light grey background */
+    -fx-border-color: #b3b3b3; /* Grey border */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-family: "Gisha";
+}
+
+/* ColorPicker button styling */
+.color-picker .color-picker-button {
+    -fx-background-color: #4d4d4d; /* Dark grey background */
+    -fx-border-color: #000000; /* Black border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Hover effect for ColorPicker button */
+.color-picker .color-picker-button:hover {
+    -fx-background-color: #666666; /* Slightly lighter grey on hover */
+    -fx-cursor: hand;
+}
+
+/* Focused state for ColorPicker */
+.color-picker:focused {
+    -fx-border-color: #4d4d4d; /* Darker grey border when focused */
+}
+
+/* Style for ColorPicker pop-up */
+.color-picker .color-picker-popup {
+    -fx-background-color: #4d4d4d; /* Dark grey background */
+    -fx-border-color: #000000; /* Black border */
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* Styling for ComboBox in basic theme */
+.combo-box {
+    -fx-background-color: #e0e0e0; /* Very light grey background */
+    -fx-border-color: #757575; /* Medium grey border */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-family: "Gisha";
+}
+
+/* ComboBox arrow in basic theme */
+.combo-box .arrow {
+    -fx-background-color: #757575; /* Medium grey background for the arrow */
+    -fx-background-radius: 5; /* Rounded corners */
+}
+
+/* ComboBox items in basic theme */
+.combo-box .item {
+    -fx-background-color: #e0e0e0; /* Very light grey for items */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+/* Hover effect for ComboBox items in basic theme */
+.combo-box .item:hover {
+    -fx-background-color: #bdbdbd; /* Light grey on hover */
+    -fx-cursor: hand;
+}

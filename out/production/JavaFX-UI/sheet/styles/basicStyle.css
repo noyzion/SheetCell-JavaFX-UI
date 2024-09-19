@@ -1,0 +1,63 @@
+/* General style for cells */
+.cell {
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Gisha";
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #000000;
+    -fx-border-style: solid;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+   -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+.header {
+    -fx-text-fill: #ffffff;          /* White text color for contrast */
+    -fx-font-size: 16px;             /* Larger font size */
+    -fx-font-family: "Gisha";        /* Font set to Gisha */
+    -fx-font-weight: bold;           /* Bold text */
+    -fx-alignment: center;
+    -fx-padding: 0px;
+    -fx-background-color: #333333;   /* Dark gray background */
+    -fx-border-color: #000000;       /* Black border */
+    -fx-background-radius: 8;        /* Rounded corners */
+    -fx-border-radius: 8;            /* Rounded corners */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.3, 3, 3); /* Soft shadow effect */
+}
+/* Hover effect for column and row headers */
+.header:hover {
+    -fx-background-color: #4d4d4d; /* Slightly lighter dark gray background on hover */
+    -fx-cursor: hand; /* Change mouse cursor to a hand */
+}
+
+
+/* Hover effect when the mouse is over the regular cell */
+.cell:hover {
+    -fx-background-color: #c0c0c0;
+    -fx-cursor: hand;
+}
+
+/* Read-only style for cells */
+.read-only-label {
+    -fx-padding: 10;
+    -fx-text-fill: #000000;          /* White text color for contrast */
+    -fx-font-size: 14px;
+    -fx-font-family: "Gisha";
+    -fx-alignment: center;
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-background-color: #e0e0e0; /* Same as regular background */
+    -fx-border-color: #000000; /* Same as regular border */
+    -fx-border-style: solid;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+    -fx-opacity: 1; /* Full opacity to match regular cells */
+}
+
+/* Disable hover effect for read-only cells */
+.read-only-label:hover {
+    -fx-background-color: #e0e0e0; /* Keep the background same as non-hovered */
+    -fx-cursor: default; /* Default cursor instead of hand */
+}

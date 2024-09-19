@@ -1,0 +1,39 @@
+/* Updated CSS for Cell Value Window */
+
+.cell-id-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333; /* Dark gray for text */
+    -fx-padding: 5px; /* Add some padding for better spacing */
+}
+
+.cell-value-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff0000; /* Blue color for value */
+    -fx-padding: 5px;
+}
+
+.close-button {
+    -fx-padding: 12px 24px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-color: #00ff40; /* Blue color */
+    -fx-text-fill: white;
+    -fx-border-width: 0;
+    -fx-border-radius: 6px; /* Slightly more rounded corners */
+    -fx-cursor: hand; /* Pointer cursor for button */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 2); /* Shadow effect for depth */
+    -fx-background-radius: 6px; /* Rounded background corners */
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+}
+
+.close-button:hover {
+    -fx-background-color: #00b33f; /* Darker blue for hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 3); /* More pronounced shadow on hover */
+}
+
+.close-button:pressed {
+    -fx-background-color: #0e6c04; /* Even darker blue for pressed state */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 6, 0, 0, 4); /* Deeper shadow for pressed effect */
+}
