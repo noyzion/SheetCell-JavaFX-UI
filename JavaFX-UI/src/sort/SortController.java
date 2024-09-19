@@ -109,7 +109,7 @@ public class SortController {
         checkboxContainer.getChildren().clear();
         columnCheckBoxes.clear();
 
-        if (start == null || end == null ) {
+        if (start == null || end == null) {
             return;
         }
 
@@ -147,6 +147,7 @@ public class SortController {
         boolean anyColumnSelected = columnCheckBoxes.stream().anyMatch(CheckBox::isSelected);
         sortButton.setDisable(!(canEnable && anyColumnSelected));
     }
+
     private void addInputListeners() {
         startCell.valueProperty().addListener((observable, oldValue, newValue) -> {
             populateEndCell(newValue);
@@ -157,26 +158,24 @@ public class SortController {
             generateColumnCheckBoxes(startCell.getValue(), newValue);
         });
     }
+
     private void populateEndCell(String startCellValue) {
         if (startCellValue != null) {
             CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
             List<String> endCells = new ArrayList<>();
             int row = startCoordinate.getRow() + 2;
-            // Populate endCells from the selected start cell to the end of the sheet
             for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
                 while (row <= mainController.getLatestSheet().getRowSize()) {
                     String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
                     endCells.add(endCellValue);
                     row++;
                 }
-row = 1;
+                row = 1;
             }
 
-            // Clear and update endCell ComboBox
             endCell.getItems().clear();
             endCell.getItems().addAll(endCells);
 
-            // Optionally, select the first available end cell
             if (!endCells.isEmpty()) {
                 endCell.getSelectionModel().selectFirst();
             }

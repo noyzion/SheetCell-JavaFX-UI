@@ -294,8 +294,11 @@ public class SheetImpl implements Sheet, Serializable {
 
                 Cell cell1 = null;
                 Cell cell2 = null;
+                List<Cell> row1 = null;
+                List<Cell> row2 = null;
 
                 for (Cell cell : rows.get(row)) {
+                    row1 = rows.get(row);
                     if (cell.getCoordinate().getColumn() == columnIndices.get(index)) {
                         cell1 = cell;
                         break;
@@ -303,6 +306,7 @@ public class SheetImpl implements Sheet, Serializable {
                 }
 
                 for (Cell cell : rows.get(nextRow)) {
+                    row2 = rows.get(nextRow);
                     if (cell.getCoordinate().getColumn() == columnIndices.get(index)) {
                         cell2 = cell;
                         break;
@@ -314,7 +318,7 @@ public class SheetImpl implements Sheet, Serializable {
                     double value2 = getEffectiveNumericValue(cell2);
                     if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
                         if (value1 > value2) {
-                            swapRows(rows.get(cell1.getCoordinate().getRow()), rows.get(cell2.getCoordinate().getRow()));
+                            swapRows(row1, row2);
                         } else if (value1 == value2)
                             if (index + 1 < columnIndices.size())
                                 sortRowsByCol(columnIndices, index + 1, rows);
