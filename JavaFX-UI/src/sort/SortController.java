@@ -42,6 +42,8 @@ public class SortController {
     }
 
     public void clearUIComponents() {
+        startCell.getItems().clear();
+        endCell.getItems().clear();
         startCell.getSelectionModel().clearSelection();
         endCell.getSelectionModel().clearSelection();
     }
@@ -103,13 +105,6 @@ public class SortController {
         sort = true;
     }
 
-    private void addInputListeners() {
-
-        endCell.valueProperty().addListener((observable, oldValue, newValue) -> {
-            generateColumnCheckBoxes(startCell.getValue(), newValue);
-        });
-    }
-
     private void generateColumnCheckBoxes(String start, String end) {
         checkboxContainer.getChildren().clear();
         columnCheckBoxes.clear();
@@ -152,6 +147,42 @@ public class SortController {
         boolean anyColumnSelected = columnCheckBoxes.stream().anyMatch(CheckBox::isSelected);
         sortButton.setDisable(!(canEnable && anyColumnSelected));
     }
+    private void addInputListeners() {
+        startCell.valueProperty().addListener((observable, oldValue, newValue) -> {
+            populateEndCell(newValue);
+            generateColumnCheckBoxes(newValue, endCell.getValue());
+        });
+
+        endCell.valueProperty().addListener((observable, oldValue, newValue) -> {
+            generateColumnCheckBoxes(startCell.getValue(), newValue);
+        });
+    }
+    private void populateEndCell(String startCellValue) {
+        if (startCellValue != null) {
+            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
+            List<String> endCells = new ArrayList<>();
+            int row = startCoordinate.getRow() + 2;
+            // Populate endCells from the selected start cell to the end of the sheet
+            for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
+                while (row <= mainController.getLatestSheet().getRowSize()) {
+                    String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
+                    endCells.add(endCellValue);
+                    row++;
+                }
+row = 1;
+            }
+
+            // Clear and update endCell ComboBox
+            endCell.getItems().clear();
+            endCell.getItems().addAll(endCells);
+
+            // Optionally, select the first available end cell
+            if (!endCells.isEmpty()) {
+                endCell.getSelectionModel().selectFirst();
+            }
+        }
+    }
+
 
     private void populateComboBoxWithCells() {
 

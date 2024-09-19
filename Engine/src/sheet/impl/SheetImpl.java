@@ -312,7 +312,6 @@ public class SheetImpl implements Sheet, Serializable {
                 if (cell1 != null && cell2 != null) {
                     double value1 = getEffectiveNumericValue(cell1);
                     double value2 = getEffectiveNumericValue(cell2);
-
                     if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
                         if (value1 > value2) {
                             swapRows(rows.get(cell1.getCoordinate().getRow()), rows.get(cell2.getCoordinate().getRow()));
