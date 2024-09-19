@@ -5,6 +5,7 @@ import DTO.SheetDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import mainController.AppController;
@@ -18,14 +19,19 @@ public class SortController {
 
     private AppController mainController;
 
-    @FXML private Button sortButton;
-    @FXML private Button cancelSortButton;
-    @FXML private TextField startCell;
-    @FXML private TextField endCell;
-    @FXML private VBox checkboxContainer;
-
+    @FXML
+    private Button sortButton;
+    @FXML
+    private Button cancelSortButton;
+    @FXML
+    private ComboBox<String> startCell;
+    @FXML
+    private ComboBox<String> endCell;
+    @FXML
+    private VBox checkboxContainer;
     private boolean sort;
-    private List<CheckBox> columnCheckBoxes = new ArrayList<>(); // Store checkboxes
+    private List<CheckBox> columnCheckBoxes = new ArrayList<>();
+
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -36,14 +42,15 @@ public class SortController {
     }
 
     public void clearUIComponents() {
-        startCell.clear();
-        endCell.clear();
+        startCell.getSelectionModel().clearSelection();
+        endCell.getSelectionModel().clearSelection();
     }
+
     @FXML
     private void handleSortAction() {
         sort = true;
-        String startCellText = startCell.getText();
-        String endCellText = endCell.getText();
+        String startCellText = startCell.getValue();
+        String endCellText = endCell.getValue();
 
         try {
             CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
@@ -90,17 +97,16 @@ public class SortController {
     }
 
     public void enableSort() {
+        populateComboBoxWithCells();
         startCell.setDisable(false);
         endCell.setDisable(false);
         sort = true;
     }
 
     private void addInputListeners() {
-        startCell.textProperty().addListener((observable, oldValue, newValue) -> {
-            generateColumnCheckBoxes(newValue, endCell.getText());
-        });
-        endCell.textProperty().addListener((observable, oldValue, newValue) -> {
-            generateColumnCheckBoxes(startCell.getText(), newValue);
+
+        endCell.valueProperty().addListener((observable, oldValue, newValue) -> {
+            generateColumnCheckBoxes(startCell.getValue(), newValue);
         });
     }
 
@@ -108,7 +114,7 @@ public class SortController {
         checkboxContainer.getChildren().clear();
         columnCheckBoxes.clear();
 
-        if (start.isEmpty() || end.isEmpty()) {
+        if (start == null || end == null ) {
             return;
         }
 
@@ -142,8 +148,20 @@ public class SortController {
 
 
     private void checkIfSortCanBeEnabled() {
-        boolean canEnable = !startCell.getText().isEmpty() && !endCell.getText().isEmpty();
+        boolean canEnable = !startCell.getValue().isEmpty() && !endCell.getValue().isEmpty();
         boolean anyColumnSelected = columnCheckBoxes.stream().anyMatch(CheckBox::isSelected);
         sortButton.setDisable(!(canEnable && anyColumnSelected));
+    }
+
+    private void populateComboBoxWithCells() {
+
+        for (char column = 0; column < mainController.getLatestSheet().getColumnSize(); column++) {
+            for (int row = 1; row <= mainController.getLatestSheet().getRowSize(); row++) {
+                String ch = CoordinateFactory.convertIndexToColumnLetter(column);
+                String cell = "" + ch + row;
+                startCell.getItems().add(cell);
+                endCell.getItems().add(cell);
+            }
+        }
     }
 }

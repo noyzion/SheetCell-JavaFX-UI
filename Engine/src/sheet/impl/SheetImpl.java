@@ -265,50 +265,54 @@ public class SheetImpl implements Sheet, Serializable {
         }
 
 
-            for (int i = 0; i < columnIndices.size() - 1; i++) {
-                int currentColIndex = columnIndices.get(i);
-                int nextColIndex = columnIndices.get(i + 1);
-                for (int row = 0; row < rows.size(); row++) {
-                        Cell cell1 = null;
-                        Cell cell2 = null;
+        for (int i = 0; i < columnIndices.size() - 1; i++) {
+            int currentColIndex = columnIndices.get(i);
+            int nextColIndex = columnIndices.get(i + 1);
+            for (int row = 0; row < rows.size(); row++) {
+                Cell cell1 = null;
+                Cell cell2 = null;
 
-                        for (Cell cell : rows.get(row)) {
-                            if (cell.getCoordinate().getColumn() == currentColIndex) {
-                                cell1 = cell;
-                                break;
-                            }
-                        }
-
-                        for (Cell cell : rows.get(row)) {
-                            if (cell.getCoordinate().getColumn() == nextColIndex) {
-                                cell2 = cell;
-                                break;
-                            }
-                        }
-
-                        if (cell1 != null && cell2 != null) {
-                            double value1 = getEffectiveNumericValue(cell1);
-                            double value2 = getEffectiveNumericValue(cell2);
-
-                            if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
-                                if (value1 > value2) {
-                                    // Swap rows
-                                   swapCells(cell1, cell2);
-                                }
-                            }
-                        }
+                for (Cell cell : rows.get(row)) {
+                    if (cell.getCoordinate().getColumn() == currentColIndex) {
+                        cell1 = cell;
+                        break;
                     }
                 }
 
-        Sheet newSheet = new SheetImpl(sheetName, rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
+                for (Cell cell : rows.get(row)) {
+                    if (cell.getCoordinate().getColumn() == nextColIndex) {
+                        cell2 = cell;
+                        break;
+                    }
+                }
 
-            for (int row =0; row <= end.getRow(); row++) {
-            List<Cell> sortedRow = rows.get(row - start.getRow());
-            for (int col = start.getColumn(); col <= end.getColumn(); col++) {
-                if (col - start.getColumn() < sortedRow.size()) {
-                    Cell sortedCell = sortedRow.get(col - start.getColumn());
-                    Coordinate coordinate = new CoordinateImpl(row, col);
-                    newSheet.addCell(sortedCell);
+                if (cell1 != null && cell2 != null) {
+                    double value1 = getEffectiveNumericValue(cell1);
+                    double value2 = getEffectiveNumericValue(cell2);
+
+                    if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
+                        if (value1 > value2) {
+                            swapCells(cell1, cell2);
+                        }
+                    }
+                }
+            }
+        }
+
+        Sheet newSheet = new SheetImpl(sheetName, rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
+        for (int row = 0; row < rowSize; row++) {
+            for (int col = 0; col < columnSize; col++) {
+                Coordinate coordinate = new CoordinateImpl(row, col);
+                if (row >= start.getRow() && row <= end.getRow() && col >= start.getColumn() && col <= end.getColumn()) {
+                    List<Cell> sortedRow = rows.get(row - start.getRow());
+                    if (col - start.getColumn() < sortedRow.size()) {
+                        Cell sortedCell = sortedRow.get(col - start.getColumn());
+                        newSheet.addCell(sortedCell);
+                    }
+                } else {
+                    Cell originalCell = this.getCell(coordinate); // assuming getCell(coordinate) fetches the cell from the original sheet
+                    if (originalCell != null)
+                        newSheet.addCell(originalCell);
                 }
             }
         }
