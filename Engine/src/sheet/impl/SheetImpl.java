@@ -245,6 +245,7 @@ public class SheetImpl implements Sheet, Serializable {
             throw new IllegalArgumentException("Invalid sorting range or columns.");
         }
 
+
         List<List<Cell>> rows = new ArrayList<>();
         for (int row = start.getRow(); row <= end.getRow(); row++) {
             List<Cell> rowCells = new ArrayList<>();
@@ -264,40 +265,7 @@ public class SheetImpl implements Sheet, Serializable {
             throw new IllegalArgumentException("No rows found in the specified range.");
         }
 
-
-        for (int i = 0; i < columnIndices.size() - 1; i++) {
-            int currentColIndex = columnIndices.get(i);
-            int nextColIndex = columnIndices.get(i + 1);
-            for (int row = 0; row < rows.size(); row++) {
-                Cell cell1 = null;
-                Cell cell2 = null;
-
-                for (Cell cell : rows.get(row)) {
-                    if (cell.getCoordinate().getColumn() == currentColIndex) {
-                        cell1 = cell;
-                        break;
-                    }
-                }
-
-                for (Cell cell : rows.get(row)) {
-                    if (cell.getCoordinate().getColumn() == nextColIndex) {
-                        cell2 = cell;
-                        break;
-                    }
-                }
-
-                if (cell1 != null && cell2 != null) {
-                    double value1 = getEffectiveNumericValue(cell1);
-                    double value2 = getEffectiveNumericValue(cell2);
-
-                    if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
-                        if (value1 > value2) {
-                            swapCells(cell1, cell2);
-                        }
-                    }
-                }
-            }
-        }
+        sortRowsByCol(columnIndices, 0, rows);
 
         Sheet newSheet = new SheetImpl(sheetName, rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
         for (int row = 0; row < rowSize; row++) {
@@ -310,7 +278,7 @@ public class SheetImpl implements Sheet, Serializable {
                         newSheet.addCell(sortedCell);
                     }
                 } else {
-                    Cell originalCell = this.getCell(coordinate); // assuming getCell(coordinate) fetches the cell from the original sheet
+                    Cell originalCell = this.getCell(coordinate);
                     if (originalCell != null)
                         newSheet.addCell(originalCell);
                 }
@@ -320,11 +288,71 @@ public class SheetImpl implements Sheet, Serializable {
         return newSheet;
     }
 
-    private void swapCells(Cell cell1, Cell cell2) {
-        Coordinate temp = cell1.getCoordinate();
-        cell1.setCoordinate(cell2.getCoordinate());
-        cell2.setCoordinate(temp);
+    private void sortRowsByCol(List<Integer> columnIndices, int index, List<List<Cell>> rows) {
+        for (int row = 0; row < rows.size() - 1; row++) {
+            for (int nextRow = row + 1; nextRow < rows.size(); nextRow++) {
+
+                Cell cell1 = null;
+                Cell cell2 = null;
+
+                for (Cell cell : rows.get(row)) {
+                    if (cell.getCoordinate().getColumn() == columnIndices.get(index)) {
+                        cell1 = cell;
+                        break;
+                    }
+                }
+
+                for (Cell cell : rows.get(nextRow)) {
+                    if (cell.getCoordinate().getColumn() == columnIndices.get(index)) {
+                        cell2 = cell;
+                        break;
+                    }
+                }
+
+                if (cell1 != null && cell2 != null) {
+                    double value1 = getEffectiveNumericValue(cell1);
+                    double value2 = getEffectiveNumericValue(cell2);
+
+                    if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
+                        if (value1 > value2) {
+                            swapRows(rows.get(cell1.getCoordinate().getRow()), rows.get(cell2.getCoordinate().getRow()));
+                        } else if (value1 == value2)
+                            sortRowsByCol(columnIndices, index + 1, rows);
+                    }
+                }
+            }
+        }
     }
+
+    private void swapRows(List<Cell> rowOfCell1, List<Cell> rowOfCell2) {
+        int row1Index = rowOfCell1.get(0).getCoordinate().getRow();
+        int row2Index = rowOfCell2.get(0).getCoordinate().getRow();
+
+        List<Cell> newRow1 = new ArrayList<>();
+        List<Cell> newRow2 = new ArrayList<>();
+
+        for (Cell cell : rowOfCell1) {
+            Coordinate oldCoordinate = cell.getCoordinate();
+            Coordinate newCoordinate = new CoordinateImpl(row2Index, oldCoordinate.getColumn());
+            Cell newCell = new CellImpl(cell);
+            newCell.setCoordinate(newCoordinate);
+            newRow1.add(newCell);
+        }
+
+        for (Cell cell : rowOfCell2) {
+            Coordinate oldCoordinate = cell.getCoordinate();
+            Coordinate newCoordinate = new CoordinateImpl(row1Index, oldCoordinate.getColumn());
+            Cell newCell = new CellImpl(cell);
+            newCell.setCoordinate(newCoordinate);
+            newRow2.add(newCell);
+        }
+        rowOfCell1.clear();
+        rowOfCell2.clear();
+        rowOfCell1.addAll(newRow1);
+        rowOfCell2.addAll(newRow2);
+
+    }
+
 
     private double getEffectiveNumericValue(Cell cell) {
         if (cell != null && cell.getEffectiveValue() != null) {
@@ -336,5 +364,4 @@ public class SheetImpl implements Sheet, Serializable {
         }
         return Double.NaN;
     }
-
 }
