@@ -19,16 +19,11 @@ public class SortController {
 
     private AppController mainController;
 
-    @FXML
-    private Button sortButton;
-    @FXML
-    private Button cancelSortButton;
-    @FXML
-    private ComboBox<String> startCell;
-    @FXML
-    private ComboBox<String> endCell;
-    @FXML
-    private VBox checkboxContainer;
+    @FXML private Button sortButton;
+    @FXML private Button cancelSortButton;
+    @FXML private ComboBox<String> startCell;
+    @FXML private ComboBox<String> endCell;
+    @FXML private VBox checkboxContainer;
     private boolean sort;
     private List<CheckBox> columnCheckBoxes = new ArrayList<>();
 

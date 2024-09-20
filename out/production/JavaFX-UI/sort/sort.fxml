@@ -52,6 +52,10 @@
             </ComboBox>
          </children>
       </HBox>
+      <Label text="sort by the columns:">
+         <VBox.margin>
+            <Insets bottom="4.0" left="18.0" />
+         </VBox.margin></Label>
       <VBox fx:id="checkboxContainer" spacing="5.0">
          <VBox.margin>
             <Insets />
