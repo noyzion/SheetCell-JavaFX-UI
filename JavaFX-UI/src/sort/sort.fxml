@@ -40,12 +40,12 @@
       </HBox>
       <HBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="151.0">
          <children>
-            <ComboBox fx:id="startCell" prefHeight="31.0" prefWidth="66.0">
+            <ComboBox fx:id="startCell" editable="true" prefHeight="31.0" prefWidth="66.0">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
             </ComboBox>
-            <ComboBox fx:id="endCell" prefHeight="31.0" prefWidth="67.0">
+            <ComboBox fx:id="endCell" editable="true" prefHeight="31.0" prefWidth="67.0">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>

@@ -245,8 +245,7 @@ public class SheetImpl implements Sheet, Serializable {
             throw new IllegalArgumentException("Invalid sorting range or columns.");
         }
 
-
-        List<List<Cell>> rows = new ArrayList<>();
+        Map<Integer, List<Cell>> rows = new HashMap<>();
         for (int row = start.getRow(); row <= end.getRow(); row++) {
             List<Cell> rowCells = new ArrayList<>();
             for (int col = start.getColumn(); col <= end.getColumn(); col++) {
@@ -257,12 +256,12 @@ public class SheetImpl implements Sheet, Serializable {
                 }
             }
             if (!rowCells.isEmpty()) {
-                rows.add(rowCells);
+                rows.put(row, rowCells);
             }
         }
 
         if (rows.isEmpty()) {
-            throw new IllegalArgumentException("No rows found in the specified range.");
+            return this;
         }
 
         sortRowsByCol(columnIndices, 0, rows);
@@ -272,8 +271,8 @@ public class SheetImpl implements Sheet, Serializable {
             for (int col = 0; col < columnSize; col++) {
                 Coordinate coordinate = new CoordinateImpl(row, col);
                 if (row >= start.getRow() && row <= end.getRow() && col >= start.getColumn() && col <= end.getColumn()) {
-                    List<Cell> sortedRow = rows.get(row - start.getRow());
-                    if (col - start.getColumn() < sortedRow.size()) {
+                    List<Cell> sortedRow = rows.get(row);
+                    if (sortedRow != null && col - start.getColumn() < sortedRow.size()) {
                         Cell sortedCell = sortedRow.get(col - start.getColumn());
                         newSheet.addCell(sortedCell);
                     }
@@ -288,25 +287,27 @@ public class SheetImpl implements Sheet, Serializable {
         return newSheet;
     }
 
-    private void sortRowsByCol(List<Integer> columnIndices, int index, List<List<Cell>> rows) {
-        for (int row = 0; row < rows.size() - 1; row++) {
-            for (int nextRow = row + 1; nextRow < rows.size(); nextRow++) {
+    private void sortRowsByCol(List<Integer> columnIndices, int index, Map<Integer, List<Cell>> rows) {
+        List<Integer> rowNumbers = new ArrayList<>(rows.keySet());
+        for (int i = 0; i < rowNumbers.size() - 1; i++) {
+            for (int j = i + 1; j < rowNumbers.size(); j++) {
+                int row1Num = rowNumbers.get(i);
+                int row2Num = rowNumbers.get(j);
 
                 Cell cell1 = null;
                 Cell cell2 = null;
-                List<Cell> row1 = null;
-                List<Cell> row2 = null;
 
-                for (Cell cell : rows.get(row)) {
-                    row1 = rows.get(row);
+                List<Cell> row1 = rows.get(row1Num);
+                List<Cell> row2 = rows.get(row2Num);
+
+                for (Cell cell : row1) {
                     if (cell.getCoordinate().getColumn() == columnIndices.get(index)) {
                         cell1 = cell;
                         break;
                     }
                 }
 
-                for (Cell cell : rows.get(nextRow)) {
-                    row2 = rows.get(nextRow);
+                for (Cell cell : row2) {
                     if (cell.getCoordinate().getColumn() == columnIndices.get(index)) {
                         cell2 = cell;
                         break;
@@ -318,26 +319,28 @@ public class SheetImpl implements Sheet, Serializable {
                     double value2 = getEffectiveNumericValue(cell2);
                     if (!Double.isNaN(value1) && !Double.isNaN(value2)) {
                         if (value1 > value2) {
-                            swapRows(row1, row2);
-                        } else if (value1 == value2)
-                            if (index + 1 < columnIndices.size())
+                            swapRows(row1Num, row2Num, rows);
+                        } else if (value1 == value2) {
+                            if (index + 1 < columnIndices.size()) {
                                 sortRowsByCol(columnIndices, index + 1, rows);
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    private void swapRows(List<Cell> rowOfCell1, List<Cell> rowOfCell2) {
-        int row1Index = rowOfCell1.get(0).getCoordinate().getRow();
-        int row2Index = rowOfCell2.get(0).getCoordinate().getRow();
+    private void swapRows(int row1Num, int row2Num, Map<Integer, List<Cell>> rows) {
+        List<Cell> rowOfCell1 = rows.get(row1Num);
+        List<Cell> rowOfCell2 = rows.get(row2Num);
 
         List<Cell> newRow1 = new ArrayList<>();
         List<Cell> newRow2 = new ArrayList<>();
 
         for (Cell cell : rowOfCell1) {
             Coordinate oldCoordinate = cell.getCoordinate();
-            Coordinate newCoordinate = new CoordinateImpl(row2Index, oldCoordinate.getColumn());
+            Coordinate newCoordinate = new CoordinateImpl(row2Num, oldCoordinate.getColumn());
             Cell newCell = new CellImpl(cell);
             newCell.setCoordinate(newCoordinate);
             newRow1.add(newCell);
@@ -345,16 +348,14 @@ public class SheetImpl implements Sheet, Serializable {
 
         for (Cell cell : rowOfCell2) {
             Coordinate oldCoordinate = cell.getCoordinate();
-            Coordinate newCoordinate = new CoordinateImpl(row1Index, oldCoordinate.getColumn());
+            Coordinate newCoordinate = new CoordinateImpl(row1Num, oldCoordinate.getColumn());
             Cell newCell = new CellImpl(cell);
             newCell.setCoordinate(newCoordinate);
             newRow2.add(newCell);
         }
-        rowOfCell1.clear();
-        rowOfCell2.clear();
-        rowOfCell1.addAll(newRow1);
-        rowOfCell2.addAll(newRow2);
 
+        rows.put(row1Num, newRow2);
+        rows.put(row2Num, newRow1);
     }
 
 

@@ -35,6 +35,7 @@ public class SortController {
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+
         startCell.setDisable(true);
         endCell.setDisable(true);
         disableSort();
