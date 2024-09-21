@@ -4,6 +4,7 @@ import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import actionLine.ActionLineController;
 import commands.CommandsController;
+import filter.FilterController;
 import header.HeaderController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -39,6 +40,8 @@ public class AppController extends Application {
     @FXML private CommandsController commandComponentController;
     @FXML private VBox sortComponent;
     @FXML private SortController sortComponentController;
+    @FXML private VBox filterComponent;
+    @FXML private FilterController filterComponentController;
     private SheetController sheetComponentController;
     private String sheetStyle = "/mainController/styles/BasicStyle.css";
     private Scene primaryScene;
@@ -47,13 +50,15 @@ public class AppController extends Application {
 
     @FXML
     public void initialize() {
-        if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null && sortComponent != null) {
+        if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null
+                && sortComponent != null && filterComponent != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
             sheetComponentController.setMainController(this);
             commandComponentController.setMainController(this);
             sortComponentController.setMainController(this);
+            filterComponentController.setMainController(this);
             headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
         }
     }
@@ -72,6 +77,8 @@ public class AppController extends Application {
 
     public void showSheet(SheetDTO sheet, boolean readonly) {
         commandComponentController.setEditCellDisable(true);
+        filterComponentController.clearUIComponents();
+        filterComponentController.enableFilter();
         sortComponentController.clearUIComponents();
         sortComponentController.enableSort();
         actionLineComponentController.clearUIComponents();

@@ -98,7 +98,6 @@ public class SortController {
         populateComboBoxWithCells();
         startCell.setDisable(false);
         endCell.setDisable(false);
-        sort = true;
     }
 
     private void generateColumnCheckBoxes(String start, String end) {
