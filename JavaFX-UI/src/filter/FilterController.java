@@ -19,12 +19,11 @@ public class FilterController {
 
     private AppController mainController;
 
-    @FXML private Button filterButton;
     @FXML private Button cancelFilterButton;
     @FXML private ComboBox<String> chooseColumn;
     @FXML private ComboBox<String> startCell;
     @FXML private ComboBox<String> endCell;
-    @FXML private ListView<CheckBox> valueListView = new ListView<>();
+    private ListView<CheckBox> valueListView = new ListView<>();
     private boolean filter;
 
     public void setMainController(AppController mainController) {
@@ -56,7 +55,6 @@ public class FilterController {
     }
 
     public void disableFilter() {
-        filterButton.setDisable(true);
         cancelFilterButton.setDisable(true);
         filter = false;
     }
@@ -115,34 +113,34 @@ public class FilterController {
         startCell.valueProperty().addListener((observable, oldValue, newValue) -> {
             populateEndCell(newValue);
         });
-
-
         chooseColumn.valueProperty().addListener((observable, oldValue, newValue) -> validateAndPopulateValues());
-
-        // Add listener for valueListView dynamically
-        valueListView.getItems().addListener((ListChangeListener<CheckBox>) change -> validateInputs());
     }
+
+    private boolean isProcessing = false;
 
     private void validateAndPopulateValues() {
-        boolean isColumnSelected = chooseColumn.getSelectionModel().getSelectedItem() != null;
-        boolean isStartCellSelected = startCell.getSelectionModel().getSelectedItem() != null;
-        boolean isEndCellSelected = endCell.getSelectionModel().getSelectedItem() != null;
+        if (isProcessing) return; // Prevent re-entrance
 
-        // Populate values and show the popup if all conditions are met
-        if (isColumnSelected && isStartCellSelected && isEndCellSelected) {
-            String startCellText = startCell.getValue();
-            String endCellText = endCell.getValue();
-            String selectedColumn = chooseColumn.getValue();
-            populateUniqueValuesAndShowPopup(startCellText, endCellText, selectedColumn);
+        isProcessing = true; // Set flag to indicate processing has started
+        try {
+            boolean isColumnSelected = chooseColumn.getSelectionModel().getSelectedItem() != null;
+            boolean isStartCellSelected = startCell.getSelectionModel().getSelectedItem() != null;
+            boolean isEndCellSelected = endCell.getSelectionModel().getSelectedItem() != null;
+
+            if (isColumnSelected && isStartCellSelected && isEndCellSelected) {
+                String startCellText = startCell.getValue();
+                String endCellText = endCell.getValue();
+                String selectedColumn = chooseColumn.getValue();
+
+                if (selectedColumn != null && !selectedColumn.isEmpty()) {
+                    populateUniqueValuesAndShowPopup(startCellText, endCellText, selectedColumn);
+                }
+            }
+        } finally {
+            isProcessing = false; // Reset the flag
         }
     }
-    private void validateInputs() {
-        boolean isColumnSelected = chooseColumn.getSelectionModel().getSelectedItem() != null;
-        boolean isStartCellSelected = startCell.getSelectionModel().getSelectedItem() != null;
-        boolean isEndCellSelected = endCell.getSelectionModel().getSelectedItem() != null;
-        boolean isValueSelected = valueListView.getItems().stream().anyMatch(CheckBox::isSelected);
-        filterButton.setDisable(!(isColumnSelected && isStartCellSelected && isEndCellSelected && isValueSelected));
-    }
+
     private void populateUniqueValuesAndShowPopup(String startCellText, String endCellText, String selectedColumn) {
         CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
         CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellText);
@@ -190,7 +188,7 @@ public class FilterController {
         dialog.showAndWait();
     }
 
-    @FXML
+
     private void handleFilterButtonAction() {
         filter = true;
         String startCellText = startCell.getValue();
