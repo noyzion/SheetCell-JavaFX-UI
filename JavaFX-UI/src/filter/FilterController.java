@@ -19,16 +19,20 @@ public class FilterController {
 
     private AppController mainController;
 
-    @FXML private Button filterButton;
-    @FXML private Button cancelFilterButton;
-    @FXML private ComboBox<String> chooseColumn;
-    @FXML private ComboBox<String> startCell;
-    @FXML private ComboBox<String> endCell;
+    @FXML
+    private Button filterButton;
+    @FXML
+    private Button cancelFilterButton;
+    @FXML
+    private ComboBox<String> chooseColumn;
+    @FXML
+    private ComboBox<String> startCell;
+    @FXML
+    private ComboBox<String> endCell;
     private ListView<CheckBox> valueListView = new ListView<>();
     private boolean filter;
     private boolean isProcessing = false;
-    private String selectedColumn; // Add this member variable
-
+    private String selectedColumn;
 
 
     public void setMainController(AppController mainController) {
@@ -124,12 +128,14 @@ public class FilterController {
             validateAndPopulateValues();
         });
     }
+
     private void validateInputs() {
         boolean isColumnSelected = chooseColumn.getSelectionModel().getSelectedItem() != null;
         boolean isStartCellSelected = startCell.getSelectionModel().getSelectedItem() != null;
         boolean isEndCellSelected = endCell.getSelectionModel().getSelectedItem() != null;
         filterButton.setDisable(!(isColumnSelected && isStartCellSelected && isEndCellSelected));
     }
+
     private void validateAndPopulateValues() {
         if (isProcessing) return;
         isProcessing = true;
@@ -172,11 +178,10 @@ public class FilterController {
 
         for (int row = start.getRow(); row <= end.getRow(); row++) {
             CoordinateDTO cord = new CoordinateDTO(row, columnIndex);
-            if (sheet.getCell(cord.toString()) != null)
-            {
+            if (sheet.getCell(cord.toString()) != null) {
                 String cellValue = sheet.getCell(cord.toString()).getEffectiveValue().toString();
-            if (cellValue != null && !cellValue.isEmpty())
-                uniqueValues.add(cellValue);
+                if (cellValue != null && !cellValue.isEmpty())
+                    uniqueValues.add(cellValue);
             }
         }
         return new ArrayList<>(uniqueValues);
@@ -207,33 +212,40 @@ public class FilterController {
     }
 
 
-@FXML
+    @FXML
     private void handleFilterButtonAction() {
         filter = true;
         String startCellText = startCell.getValue();
         String endCellText = endCell.getValue();
-
-        if (startCellText == null || endCellText == null || selectedColumn == null) {
-            mainController.showErrorDialog("Input Error", "Invalid input", "Please specify a range and a column.");
-            return;
-        }
-        showFilterPopup();
-
-        List<String> selectedValues = new ArrayList<>();
-        for (CheckBox checkBox : valueListView.getItems()) {
-            if (checkBox.isSelected()) {
-                selectedValues.add(checkBox.getText());
+        try {
+            if (startCellText == null || endCellText == null || selectedColumn == null) {
+                mainController.showErrorDialog("Input Error", "Invalid input", "Please specify a range and a column.");
+                return;
             }
-        }
+            showFilterPopup();
 
-        if (selectedValues.isEmpty()) {
-            mainController.showErrorDialog("Filter Error", "No values selected", "Please select at least one value to filter.");
-            return;
-        }
+            List<String> selectedValues = new ArrayList<>();
+            for (CheckBox checkBox : valueListView.getItems()) {
+                if (checkBox.isSelected()) {
+                    selectedValues.add(checkBox.getText());
+                }
+            }
 
-        CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
-        CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellText);
-        mainController.filterSheet(startCoordinate, endCoordinate, selectedColumn.charAt(0), selectedValues);
-    cancelFilterButton.setDisable(false);
-}
+            if (selectedValues.isEmpty()) {
+                mainController.showErrorDialog("Filter Error", "No values selected", "Please select at least one value to filter.");
+                return;
+            }
+
+            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
+            CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellText);
+            mainController.filterSheet(startCoordinate, endCoordinate, selectedColumn.charAt(0), selectedValues);
+            cancelFilterButton.setDisable(false);
+        } catch (Exception e) {
+            String errorTitle = "Error";
+            String errorHeader = "Failed to filter the selected cells";
+            String errorMessage = "An error occurred during the filter: " + e.getMessage();
+
+            mainController.showErrorDialog(errorTitle, errorHeader, errorMessage);
+        }
+    }
 }
