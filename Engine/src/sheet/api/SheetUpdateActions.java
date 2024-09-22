@@ -20,4 +20,6 @@ public interface SheetUpdateActions {
     void setCounter(int counter);
 
     Sheet sortSheet(Coordinate start, Coordinate end, List<String> selectedColumns);
+
+    Sheet applyFilter(Coordinate startCell, Coordinate endCell, char selectedColumn, List<String> selectedValues);
 }

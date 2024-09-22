@@ -1,5 +1,6 @@
 package sheet.impl;
 
+import DTO.CoordinateDTO;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.api.EffectiveValue;
@@ -368,5 +369,37 @@ public class SheetImpl implements Sheet, Serializable {
             }
         }
         return Double.NaN;
+    }
+
+    @Override
+    public Sheet applyFilter(Coordinate startCell, Coordinate endCell, char selectedColumn, List<String> selectedValues) {
+        // Create a new sheet to hold the filtered results
+        Sheet filteredSheet = new SheetImpl(sheetName + " - Filtered", rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
+
+        // Get the index of the selected column
+        int columnIndex = selectedColumn - 'A';
+
+        // Iterate through the specified range
+        for (int row = startCell.getRow(); row <= endCell.getRow(); row++) {
+            Coordinate currentCoordinate = new CoordinateImpl(row, columnIndex);
+            Cell cell = getCell(currentCoordinate);
+
+            // Check if the cell exists and if its value is in the selected values
+            if (cell != null) {
+                String cellValue = cell.getEffectiveValue() != null ? cell.getEffectiveValue().toString() : "";
+                if (selectedValues.contains(cellValue)) {
+                    // If it matches, add the entire row to the filtered sheet
+                    for (int col = 0; col < columnSize; col++) {
+                        Coordinate newCoordinate = new CoordinateImpl(row, col);
+                        Cell originalCell = getCell(newCoordinate);
+                        if (originalCell != null) {
+                            filteredSheet.addCell(originalCell);
+                        }
+                    }
+                }
+            }
+        }
+
+        return filteredSheet;
     }
 }

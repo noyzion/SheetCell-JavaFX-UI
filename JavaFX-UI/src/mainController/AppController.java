@@ -202,5 +202,9 @@ public class AppController extends Application {
      SheetDTO sortSheet = logic.sortSheet(start, end, selectedColumns);
      showSheet(sortSheet,true);
     }
-
+    public void filterSheet(CoordinateDTO start, CoordinateDTO end,char col, List<String> values)
+    {
+        SheetDTO filteredSheet = logic.filterSheet(start, end, col,values);
+        showSheet(filteredSheet,true);
+    }
 }

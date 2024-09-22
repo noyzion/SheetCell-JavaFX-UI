@@ -82,5 +82,13 @@ public class Logic implements Serializable {
         Sheet sortedSheet = versionManager.getVersionedSheets().getLast().sortSheet(startCord, endCord, selectedColumns);
         return new ConverterUtil().toSheetDTO(sortedSheet);
     }
+    public SheetDTO filterSheet(CoordinateDTO start, CoordinateDTO end, char col, List<String> values)
+    {
+        Coordinate startCord = new CoordinateImpl(start.getRow(), start.getColumn());
+        Coordinate endCord = new CoordinateImpl(end.getRow(), end.getColumn());
+        Sheet filteredSheet = versionManager.getVersionedSheets().getLast().applyFilter(startCord, endCord, col, values);
+        return new ConverterUtil().toSheetDTO(filteredSheet);
+    }
+
 
 }
