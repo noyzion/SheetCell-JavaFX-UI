@@ -9,6 +9,9 @@ import sheet.cell.impl.EffectiveValueImp;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateImpl;
+import sheet.range.Range;
+import sheet.range.RangeFactory;
+import sheet.range.RangeImpl;
 
 import java.io.Serializable;
 import java.util.*;
@@ -23,6 +26,7 @@ public class SheetImpl implements Sheet, Serializable {
     private final int columnWidthUnits;
     private final int rowsHeightUnits;
     private int counterChangedCells = 0;
+    private Map<String, Range> ranges;
 
 
     public SheetImpl(String sheetName, int rowSize, int columnSize, int columnWidthUnits, int rowsHeightUnits, int version) {
@@ -373,22 +377,14 @@ public class SheetImpl implements Sheet, Serializable {
 
     @Override
     public Sheet applyFilter(Coordinate startCell, Coordinate endCell, char selectedColumn, List<String> selectedValues) {
-        // Create a new sheet to hold the filtered results
         Sheet filteredSheet = new SheetImpl(sheetName + " - Filtered", rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
-
-        // Get the index of the selected column
         int columnIndex = selectedColumn - 'A';
-
-        // Iterate through the specified range
         for (int row = startCell.getRow(); row <= endCell.getRow(); row++) {
             Coordinate currentCoordinate = new CoordinateImpl(row, columnIndex);
             Cell cell = getCell(currentCoordinate);
-
-            // Check if the cell exists and if its value is in the selected values
             if (cell != null) {
                 String cellValue = cell.getEffectiveValue() != null ? cell.getEffectiveValue().toString() : "";
                 if (selectedValues.contains(cellValue)) {
-                    // If it matches, add the entire row to the filtered sheet
                     for (int col = 0; col < columnSize; col++) {
                         Coordinate newCoordinate = new CoordinateImpl(row, col);
                         Cell originalCell = getCell(newCoordinate);
@@ -399,7 +395,16 @@ public class SheetImpl implements Sheet, Serializable {
                 }
             }
         }
-
         return filteredSheet;
+    }
+
+    @Override
+    public void addRange(String rangeCells, String name) throws Exception {
+        RangeFactory.addRange(name,rangeCells);
+    }
+
+    @Override
+    public void deleteRange(String name)  throws Exception{
+        RangeFactory.removeRange(name);
     }
 }

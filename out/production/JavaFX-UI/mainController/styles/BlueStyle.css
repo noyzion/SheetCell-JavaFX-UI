@@ -165,16 +165,6 @@
     -fx-cursor: hand;
 }
 
-/* Styling for ComboBox arrow */
-.combo-box .arrow-button {
-    -fx-background-color: #004c99; /* Dark blue background for arrow button */
-    -fx-border-color: #003d7d; /* Slightly darker blue border */
-    -fx-border-width: 1.5;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-text-fill: #ffffff;
-}
-
 /* Arrow button hover effect */
 .combo-box .arrow-button:hover {
     -fx-background-color: #003d7d; /* Slightly darker blue on hover */
