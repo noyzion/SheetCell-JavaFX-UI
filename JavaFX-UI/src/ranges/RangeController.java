@@ -25,7 +25,7 @@ public class RangeController {
     @FXML
     Button addRangeButton;
     @FXML
-    TableView rangeTable;
+    TableView rangesTable;
     @FXML
     private TableColumn<Range, String> nameColumn;
     @FXML
@@ -66,10 +66,7 @@ public class RangeController {
             String range = end + ".." + start;
             mainController.addRangeForSheet(name, range);
             Range newRange = new RangeImpl(name, range);
-            rangeTable.getItems().add(newRange);
-            startCell.setValue(null);
-            endCell.setValue(null);
-            rangeName.clear();
+            rangesTable.getItems().add(newRange);
         } catch (Exception e) {
             mainController.showErrorDialog("An error occurred while adding the range.", e.getMessage(), "Please try again or check your input.");
         }
@@ -89,6 +86,9 @@ public class RangeController {
             populateEndCell(newValue);
         });
         endCell.valueProperty().addListener((observable, oldValue, newValue) -> {
+            checkIfAddRangeCanBeEnabled();
+        });
+        rangeName.textProperty().addListener((observable, oldValue, newValue) -> {
             checkIfAddRangeCanBeEnabled();
         });
     }
