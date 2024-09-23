@@ -165,3 +165,124 @@
     -fx-cursor: hand;
 }
 
+/* Style for the TitledPane (collapsed or unexpanded state) */
+.titled-pane {
+    -fx-background-color: #fce4ec;  /* Very light pink background */
+    -fx-border-color: #ec407a;      /* Medium pink border for TitledPane */
+    -fx-border-width: 0.5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000;          /* Black text for the title */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Hover effect for the TitledPane */
+.titled-pane:hover {
+    -fx-background-color: #f8bbd0;  /* Light pink background when hovering */
+}
+
+/* Style for the expanded TitledPane */
+.titled-pane:expanded {
+    -fx-background-color: #f8bbd0;  /* Light pink background when expanded */
+}
+
+/* Style for the content inside the TitledPane */
+.titled-pane > .content {
+    -fx-background-color: #ffffff;  /* White background for the content */
+    -fx-border-color: #ec407a;      /* Medium pink border around the content */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Style for the title text */
+.titled-pane > .title {
+    -fx-background-color: #facbdb;  /* Medium pink background for the title */
+    -fx-text-fill: white;           /* White text for the title */
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the title */
+.titled-pane > .title:hover {
+    -fx-background-color: #d81b60;  /* Slightly darker pink when hovered */
+}
+
+/* Style for the arrow icon */
+.titled-pane > .arrow-button {
+    -fx-background-color: #ec407a;  /* Medium pink background for the arrow button */
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the arrow icon */
+.titled-pane > .arrow-button:hover {
+    -fx-background-color: #d81b60;  /* Slightly darker pink when hovered */
+}
+/* Style for the Accordion */
+.accordion {
+    -fx-background-color: #ffeef8; /* Very light pink background for the Accordion */
+    -fx-border-color: #ff69b4;     /* Lighter pink border around the Accordion */
+    -fx-border-width: 2px;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+}
+
+/* Style for the TitledPane (collapsed or unexpanded state) */
+.titled-pane {
+    -fx-background-color: #ffeef8;  /* Very light pink background */
+    -fx-border-color: #ff69b4;      /* Lighter pink border for TitledPane */
+    -fx-border-width: 0.5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000;          /* Black text for the title */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Hover effect for the TitledPane */
+.titled-pane:hover {
+    -fx-background-color: #f7c2d6;  /* Light pink background when hovering */
+}
+
+/* Style for the expanded TitledPane */
+.titled-pane:expanded {
+    -fx-background-color: #f7c2d6;  /* Light pink background when expanded */
+}
+
+/* Style for the content inside the TitledPane */
+.titled-pane > .content {
+    -fx-background-color: #ffffff;  /* White background for the content */
+    -fx-border-color: #ff69b4;      /* Lighter pink border around the content */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0.1, 1, 1);
+}
+
+/* Style for the title text */
+.titled-pane > .title {
+    -fx-background-color: #f7a3b2;  /* Medium pink background for the title */
+    -fx-text-fill: white;           /* White text for the title */
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the title */
+.titled-pane > .title:hover {
+    -fx-background-color: #d81b60;  /* Slightly darker pink when hovered */
+}
+
+/* Style for the arrow icon */
+.titled-pane > .arrow-button {
+    -fx-background-color: #ff69b4;  /* Lighter pink background for the arrow button */
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the arrow icon */
+.titled-pane > .arrow-button:hover {
+    -fx-background-color: #d81b60;  /* Slightly darker pink when hovered */
+}

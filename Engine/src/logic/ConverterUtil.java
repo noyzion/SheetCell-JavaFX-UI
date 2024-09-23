@@ -62,7 +62,8 @@ public class ConverterUtil {
                 sheet.getRowsHeightUnits(),
                 cellDTOs,
                 sheet.getEdges(),
-                sheet.getCounterChangedCells());
+                sheet.getCounterChangedCells(),
+                sheet.getRanges());
     }
 
 }

@@ -13,7 +13,7 @@ public class RangeImpl implements Range {
     private Coordinate start;
     private Coordinate end;
     private List<Coordinate> cells;
-private boolean isUsedInFunction;
+    private boolean isUsedInFunction;
 
     public RangeImpl(String name, String range) {
         this.name = name;
@@ -26,6 +26,17 @@ private boolean isUsedInFunction;
         return name;
     }
 
+    @Override
+    public String getStart()
+    {
+        return start.toString();
+    }
+
+    @Override
+    public String getEnd()
+    {
+        return end.toString();
+    }
     @Override
     public String getRange() {
         return range;

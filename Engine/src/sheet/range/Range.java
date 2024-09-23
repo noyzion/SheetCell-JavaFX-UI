@@ -12,6 +12,7 @@ public interface Range {
     boolean overlaps(Range other);
     boolean getIsUsedInFunction();
     void setIsUsedInFunction(boolean isUsedInFunction);
-
+    String getStart();
+    String getEnd();
 
 }

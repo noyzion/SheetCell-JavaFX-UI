@@ -3,6 +3,7 @@ package DTO;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
 import sheet.impl.Edge;
+import sheet.range.Range;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,13 @@ public class SheetDTO {
     private final int rowsHeightUnits;
     private final Map<CoordinateDTO, CellDTO> cells;
     private final List<Edge> edges;
-    private int counterChangedCells;
+    private final int counterChangedCells;
+    private final Map<String, Range> ranges;
 
     public SheetDTO(String sheetName, int version, int rowSize, int columnSize,
                     int columnWidthUnits, int rowsHeightUnits,
-                    Map<CoordinateDTO, CellDTO> cells, List<Edge> edges,int counterChangedCells) {
+                    Map<CoordinateDTO, CellDTO> cells, List<Edge> edges,int counterChangedCells,
+                    Map<String, Range> ranges) {
         this.sheetName = sheetName;
         this.version = version;
         this.rowSize = rowSize;
@@ -31,6 +34,7 @@ public class SheetDTO {
         this.cells = cells;
         this.edges = edges;
         this.counterChangedCells = counterChangedCells;
+        this.ranges = ranges;
     }
 
     public Map<CoordinateDTO, CellDTO> getCells() { return cells; }
@@ -55,6 +59,10 @@ public class SheetDTO {
 
     public int getRowsHeightUnits() { return rowsHeightUnits; }
 
+    public Map<String, Range> getRanges()
+    {
+        return ranges;
+    }
 
 
     public CellDTO getCell(String coordinate){

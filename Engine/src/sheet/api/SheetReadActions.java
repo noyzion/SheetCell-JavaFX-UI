@@ -3,6 +3,7 @@ package sheet.api;
 import sheet.cell.api.Cell;
 import sheet.coordinate.Coordinate;
 import sheet.impl.Edge;
+import sheet.range.Range;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,5 @@ public interface SheetReadActions {
 
     int getCounterChangedCells();
 
-
+    Map<String, Range> getRanges();
 }
