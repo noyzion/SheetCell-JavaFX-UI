@@ -55,12 +55,12 @@ public class RangeFactory {
                 }
             }
             else if (column < end.getColumn()) {
-                for (int row = 1; row <= rowSize; row++) {
+                for (int row = 0; row <= rowSize; row++) {
                     cellList.add(new CoordinateDTO(row, column));
                 }
             }
             else if (column == end.getColumn()) {
-                for (int row = 1; row <= end.getRow(); row++) {
+                for (int row = 0; row <= end.getRow(); row++) {
                     cellList.add(new CoordinateDTO(row, column));
                 }
             }
