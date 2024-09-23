@@ -8,6 +8,7 @@ import mainController.AppController;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateParser;
 import sheet.range.Range;
+import sheet.range.RangeFactory;
 import sheet.range.RangeImpl;
 
 import java.lang.runtime.TemplateRuntime;
@@ -16,22 +17,15 @@ import java.util.List;
 
 public class RangeController {
 
-    @FXML
-    ComboBox<String> startCell;
-    @FXML
-    ComboBox<String> endCell;
-    @FXML
-    TextField rangeName;
-    @FXML
-    Button addRangeButton;
-    @FXML
-    TableView rangesTable;
-    @FXML
-    private TableColumn<Range, String> nameColumn;
-    @FXML
-    private TableColumn<Range, String> startColumn;
-    @FXML
-    private TableColumn<Range, String> endColumn;
+    @FXML ComboBox<String> startCell;
+    @FXML ComboBox<String> endCell;
+    @FXML TextField rangeName;
+    @FXML Button addRangeButton;
+    @FXML Button deleteRangeButton;
+    @FXML TableView rangesTable;
+    @FXML private TableColumn<Range, String> nameColumn;
+    @FXML private TableColumn<Range, String> startColumn;
+    @FXML private TableColumn<Range, String> endColumn;
 
     @FXML
     public void initialize() {
@@ -52,7 +46,7 @@ public class RangeController {
     }
 
     @FXML
-    public void handleAddRangeAction() {
+    private void handleAddRangeAction() {
         String start = startCell.getValue();
         String end = endCell.getValue();
         String name = rangeName.getText();
@@ -63,7 +57,7 @@ public class RangeController {
         }
 
         try {
-            String range = end + ".." + start;
+            String range = start + ".." + end;
             mainController.addRangeForSheet(name, range);
             Range newRange = new RangeImpl(name, range);
             rangesTable.getItems().add(newRange);
@@ -71,7 +65,11 @@ public class RangeController {
             mainController.showErrorDialog("An error occurred while adding the range.", e.getMessage(), "Please try again or check your input.");
         }
     }
+@FXML
+private void handleDeleteRangeAction()
+{
 
+}
 
     public void clearUIComponents() {
         startCell.getItems().clear();
