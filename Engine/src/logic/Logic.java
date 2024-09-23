@@ -90,7 +90,7 @@ public class Logic implements Serializable {
         return new ConverterUtil().toSheetDTO(filteredSheet);
     }
 
-    public void addRange(String name, String range) throws Exception {
+    public void addRange( String name, String range) throws Exception {
         versionManager.getVersionedSheets().getLast().addRange(range,name);
     }
     public void deleteRange(String name) throws Exception {

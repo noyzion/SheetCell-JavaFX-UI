@@ -1,5 +1,6 @@
 package sheet.range;
 import DTO.CoordinateDTO;
+import DTO.SheetDTO;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateImpl;
 
@@ -11,26 +12,23 @@ import java.util.Map;
 public class RangeFactory {
     private static Map<String, Range> ranges = ranges = new HashMap<>();
 
-    public static boolean addRange(String name, String range) {
+    public static boolean addRange(int rowSize, int colSize, String name, String range) {
         if (ranges.containsKey(name)) {
-            System.out.println("Error: Range name already exists.");
-            return false;
+           throw new IllegalArgumentException("range already exists");
         }
 
-       Range newRange = new RangeImpl(name, range);
+       Range newRange = new RangeImpl(rowSize, colSize,name, range);
         ranges.put(name, newRange);
         return true;
     }
 
     public static boolean removeRange(String name) {
         if (!ranges.containsKey(name)) {
-            System.out.println("Error: Range not found.");
-            return false;
+            throw new IllegalArgumentException("range does not exist");
         }
 
         if (ranges.get(name).getIsUsedInFunction()) {
-             System.out.println("Error: Range is in use.");
-             return false;
+            throw new IllegalArgumentException("range is used in function");
          }
 
         ranges.remove(name);
@@ -45,26 +43,31 @@ public class RangeFactory {
         return ranges.containsKey(key);
     }
 
-    public static List<CoordinateDTO> parseRange(Coordinate start, Coordinate end, String range) {
+
+
+    public static List<CoordinateDTO> parseRange(int rowSize, int colSize, CoordinateDTO start, CoordinateDTO end) {
         List<CoordinateDTO> cellList = new ArrayList<>();
 
-        String[] parts = range.split("\\.\\.");
-
-        if (parts.length != 2) {
-            throw new IllegalArgumentException("Invalid range format: " + range);
-        }
-
-      CoordinateDTO startC = parseCell(parts[0].trim());
-        CoordinateDTO endC = parseCell(parts[1].trim());
-
-        for (int row = startC.getRow(); row <= endC.getRow(); row++) {
-            for (int column = startC.getColumn(); column <= endC.getColumn(); column++) {
-                cellList.add(new CoordinateDTO(row, column));
+        for (int column = start.getColumn(); column <= end.getColumn(); column++) {
+            if (column == start.getColumn()) {
+                for (int row = start.getRow(); row <= rowSize; row++) {
+                    cellList.add(new CoordinateDTO(row, column));
+                }
+            }
+            else if (column < end.getColumn()) {
+                for (int row = 1; row <= rowSize; row++) {
+                    cellList.add(new CoordinateDTO(row, column));
+                }
+            }
+            else if (column == end.getColumn()) {
+                for (int row = 1; row <= end.getRow(); row++) {
+                    cellList.add(new CoordinateDTO(row, column));
+                }
             }
         }
-
         return cellList;
     }
+
 
     public static CoordinateDTO parseCell(String cell) {
         String columnPart = cell.replaceAll("[^A-Z]", "");

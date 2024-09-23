@@ -400,7 +400,7 @@ public class SheetImpl implements Sheet, Serializable {
 
     @Override
     public void addRange(String rangeCells, String name) throws Exception {
-        RangeFactory.addRange(name,rangeCells);
+        RangeFactory.addRange(rowSize, columnSize,name,rangeCells);
     }
 
     @Override

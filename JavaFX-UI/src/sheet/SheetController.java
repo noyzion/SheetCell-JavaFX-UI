@@ -15,6 +15,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import mainController.AppController;
+import sheet.range.RangeFactory;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -247,7 +248,7 @@ public class SheetController {
         }
     }
 
-    private void clearHighlightedCells() {
+    public void clearHighlightedCells() {
         gridPane.getChildren().forEach(node -> {
             if (node instanceof Label) {
                 Label label = (Label) node;
@@ -290,6 +291,18 @@ public class SheetController {
             restoreEditable();
         }
     }
+
+    public void highlightRange(CoordinateDTO start, CoordinateDTO end) {
+        List<CoordinateDTO> rangeCoordinates = RangeFactory.parseRange(sheetDTO.getRowSize(), sheetDTO.getColumnSize(), start,end);
+        rangeCoordinates.forEach(rangeCord -> {
+            Label cellLabel = (Label) getCellNode(rangeCord);
+            if (cellLabel != null) {
+                cellLabel.setTextFill(Color.BLACK);
+                cellLabel.setStyle("-fx-background-color: #ffff9f;");
+            }
+        });
+    }
+
     private void highlightAffectedCells(CoordinateDTO coordinate) {
         List<CoordinateDTO> supportCoordinates = mainController.getAffectedCells(coordinate);
         supportCoordinates.forEach(supportCoord -> {

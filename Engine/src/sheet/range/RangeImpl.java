@@ -1,7 +1,10 @@
 package sheet.range;
 import DTO.CoordinateDTO;
+import DTO.SheetDTO;
+import sheet.api.Sheet;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateImpl;
+import sheet.coordinate.CoordinateParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +18,20 @@ public class RangeImpl implements Range {
     private List<Coordinate> cells;
     private boolean isUsedInFunction;
 
-    public RangeImpl(String name, String range) {
+    public RangeImpl(int rowSize, int colSize, String name, String range) {
         this.name = name;
         this.range = range;
-        for(CoordinateDTO cord : RangeFactory.parseRange(start,end,range))
-        {
-            this.cells.add(new CoordinateImpl(cord.getRow(),cord.getColumn()));
+        String[] parts = range.split("\\.\\.");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid range format: " + range);
+        }
+
+        start = new CoordinateImpl(RangeFactory.parseCell(parts[0].trim()).getRow()-1, RangeFactory.parseCell(parts[0].trim()).getColumn());
+        end = new CoordinateImpl(RangeFactory.parseCell(parts[1].trim()).getRow()-1, RangeFactory.parseCell(parts[1].trim()).getColumn());
+        cells = new ArrayList<>();
+        for (CoordinateDTO cord : RangeFactory.parseRange(rowSize, colSize,new CoordinateDTO(start.getRow(), start.getColumn())
+                , new CoordinateDTO(end.getRow(), end.getColumn()))) {
+            this.cells.add(new CoordinateImpl(cord.getRow(), cord.getColumn()));
         }
     }
 
@@ -30,16 +41,15 @@ public class RangeImpl implements Range {
     }
 
     @Override
-    public String getStart()
-    {
+    public String getStart() {
         return start.toString();
     }
 
     @Override
-    public String getEnd()
-    {
+    public String getEnd() {
         return end.toString();
     }
+
     @Override
     public String getRange() {
         return range;
@@ -61,12 +71,12 @@ public class RangeImpl implements Range {
     }
 
     @Override
-    public boolean getIsUsedInFunction(){
+    public boolean getIsUsedInFunction() {
         return this.isUsedInFunction;
     }
 
     @Override
-    public void setIsUsedInFunction(boolean isUsedInFunction){
+    public void setIsUsedInFunction(boolean isUsedInFunction) {
         this.isUsedInFunction = isUsedInFunction;
     }
 

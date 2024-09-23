@@ -17,15 +17,24 @@ import java.util.List;
 
 public class RangeController {
 
-    @FXML ComboBox<String> startCell;
-    @FXML ComboBox<String> endCell;
-    @FXML TextField rangeName;
-    @FXML Button addRangeButton;
-    @FXML Button deleteRangeButton;
-    @FXML TableView rangesTable;
-    @FXML private TableColumn<Range, String> nameColumn;
-    @FXML private TableColumn<Range, String> startColumn;
-    @FXML private TableColumn<Range, String> endColumn;
+    @FXML
+    ComboBox<String> startCell;
+    @FXML
+    ComboBox<String> endCell;
+    @FXML
+    TextField rangeName;
+    @FXML
+    Button addRangeButton;
+    @FXML
+    Button deleteRangeButton;
+    @FXML
+    TableView rangesTable;
+    @FXML
+    private TableColumn<Range, String> nameColumn;
+    @FXML
+    private TableColumn<Range, String> startColumn;
+    @FXML
+    private TableColumn<Range, String> endColumn;
 
     @FXML
     public void initialize() {
@@ -36,7 +45,32 @@ public class RangeController {
         endCell.setDisable(true);
         disableRange();
         addInputListeners();
+        nameColumn.setCellFactory(col -> {
+            TableCell<Range, String> cell = new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? null : item);
+                }
+            };
 
+            cell.setOnMouseClicked(event -> {
+                if (!cell.isEmpty()) {
+                    Range selectedRange = cell.getTableRow().getItem();
+                    handleRangeClick(selectedRange);
+                }
+            });
+
+            return cell;
+        });
+    }
+    private void handleRangeClick(Range selectedRange) {
+        String startCell = selectedRange.getStart();
+        String endCell = selectedRange.getEnd();
+        CoordinateDTO startCoord = CoordinateParser.parseDTO(startCell);
+        CoordinateDTO endCoord = CoordinateParser.parseDTO(endCell);
+        mainController.getSheetComponentController().clearHighlightedCells();
+        mainController.getSheetComponentController().highlightRange(startCoord, endCoord);
     }
 
     private AppController mainController;
@@ -59,17 +93,27 @@ public class RangeController {
         try {
             String range = start + ".." + end;
             mainController.addRangeForSheet(name, range);
-            Range newRange = new RangeImpl(name, range);
-            rangesTable.getItems().add(newRange);
+            rangesTable.getItems().add(RangeFactory.getRange(name));
         } catch (Exception e) {
             mainController.showErrorDialog("An error occurred while adding the range.", e.getMessage(), "Please try again or check your input.");
         }
     }
-@FXML
-private void handleDeleteRangeAction()
-{
 
-}
+    @FXML
+    private void handleDeleteRangeAction() {
+        Range selectedRange = (Range) rangesTable.getSelectionModel().getSelectedItem();
+        if (selectedRange == null) {
+            mainController.showErrorDialog("No Range Selected", "", "Please select a range to delete.");
+            return;
+        }
+
+        try {
+            mainController.deleteRangeForSheet(selectedRange.getName());
+            rangesTable.getItems().remove(selectedRange);
+        } catch (Exception e) {
+            mainController.showErrorDialog("Failed to delete the range.", e.getMessage(), "Please try again.");
+        }
+    }
 
     public void clearUIComponents() {
         startCell.getItems().clear();
@@ -89,7 +133,9 @@ private void handleDeleteRangeAction()
         rangeName.textProperty().addListener((observable, oldValue, newValue) -> {
             checkIfAddRangeCanBeEnabled();
         });
+
     }
+
     private void checkIfAddRangeCanBeEnabled() {
         boolean canEnable = !startCell.getValue().isEmpty() && !endCell.getValue().isEmpty() && !rangeName.getText().isEmpty();
         addRangeButton.setDisable(!(canEnable));

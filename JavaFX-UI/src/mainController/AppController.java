@@ -209,7 +209,7 @@ public class AppController extends Application {
         SheetDTO filteredSheet = logic.filterSheet(start, end, col,values);
         showSheet(filteredSheet,true);
     }
-    public void addRangeForSheet(String name,String range) throws Exception {
+    public void addRangeForSheet( String name,String range) throws Exception {
         logic.addRange(name,range);
     }
     public void deleteRangeForSheet(String name) throws Exception {
