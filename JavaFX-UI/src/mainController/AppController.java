@@ -13,20 +13,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.Logic;
+import ranges.RangeController;
 import sheet.SheetController;
 import sort.SortController;
 import xmlParse.XmlSheetLoader;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AppController extends Application {
@@ -42,6 +39,8 @@ public class AppController extends Application {
     @FXML private SortController sortComponentController;
     @FXML private VBox filterComponent;
     @FXML private FilterController filterComponentController;
+    @FXML private VBox rangeComponent;
+    @FXML private RangeController rangeComponentController;
     private SheetController sheetComponentController;
     private String sheetStyle = "/mainController/styles/BasicStyle.css";
     private Scene primaryScene;
@@ -51,7 +50,7 @@ public class AppController extends Application {
     @FXML
     public void initialize() {
         if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null
-                && sortComponent != null && filterComponent != null) {
+                && sortComponentController != null && filterComponentController != null && rangeComponentController != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
@@ -59,6 +58,7 @@ public class AppController extends Application {
             commandComponentController.setMainController(this);
             sortComponentController.setMainController(this);
             filterComponentController.setMainController(this);
+            rangeComponentController.setMainController(this);
             headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
         }
     }

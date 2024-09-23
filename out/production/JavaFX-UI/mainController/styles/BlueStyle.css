@@ -169,3 +169,68 @@
 .combo-box .arrow-button:hover {
     -fx-background-color: #003d7d; /* Slightly darker blue on hover */
 }
+/* Style for the Accordion */
+.accordion {
+    -fx-background-color: #f0f8ff; /* Very light blue background for the Accordion */
+    -fx-border-color: #007acc;     /* Lighter blue border around the Accordion */
+    -fx-border-width: 2px;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+}
+
+/* Style for the TitledPane (collapsed or unexpanded state) */
+.titled-pane {
+    -fx-background-color: #f0f8ff;  /* Very light blue background */
+    -fx-border-color: #007acc;      /* Lighter blue border for TitledPane */
+    -fx-border-width: 0.5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000;          /* Black text for the title */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Hover effect for the TitledPane */
+.titled-pane:hover {
+    -fx-background-color: #d0e7ff;  /* Light blue background when hovering */
+}
+
+/* Style for the expanded TitledPane */
+.titled-pane:expanded {
+    -fx-background-color: #d0e7ff;  /* Light blue background when expanded */
+}
+
+/* Style for the content inside the TitledPane */
+.titled-pane > .content {
+    -fx-background-color: #ffffff;  /* White background for the content */
+    -fx-border-color: #007acc;      /* Lighter blue border around the content */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0.1, 1, 1);
+}
+
+/* Style for the title text */
+.titled-pane > .title {
+    -fx-background-color: #b3d1ff;  /* Lighter blue background for the title */
+    -fx-text-fill: white;           /* White text for the title */
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the title */
+.titled-pane > .title:hover {
+    -fx-background-color: #005bb5;  /* Slightly darker blue when hovered */
+}
+
+/* Style for the arrow icon */
+.titled-pane > .arrow-button {
+    -fx-background-color: #007acc;  /* Lighter blue background for the arrow button */
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the arrow icon */
+.titled-pane > .arrow-button:hover {
+    -fx-background-color: #005bb5;  /* Slightly darker blue when hovered */
+}

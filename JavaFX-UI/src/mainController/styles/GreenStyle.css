@@ -180,3 +180,124 @@
     -fx-background-color: #d4f0d0; /* Light green on hover */
     -fx-cursor: hand;
 }
+/* Style for the TitledPane (collapsed or unexpanded state) */
+.titled-pane {
+    -fx-background-color: #e9f5e1;  /* Very light green background */
+    -fx-border-color: #c0f1d5;      /* Dark green border for TitledPane */
+    -fx-border-width: 0.5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000;          /* Black text for the title */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Hover effect for the TitledPane */
+.titled-pane:hover {
+    -fx-background-color: #cce0b2;  /* Light green background when hovering */
+}
+
+/* Style for the expanded TitledPane */
+.titled-pane:expanded {
+    -fx-background-color: #cce0b2;  /* Light green background when expanded */
+}
+
+/* Style for the content inside the TitledPane */
+.titled-pane > .content {
+    -fx-background-color: #ffffff;  /* White background for the content */
+    -fx-border-color: #27ae60;      /* Dark green border around the content */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.1, 1, 1);
+}
+
+/* Style for the title text */
+.titled-pane > .title {
+    -fx-background-color: #27ae60;  /* Dark green background for the title */
+    -fx-text-fill: white;           /* White text for the title */
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the title */
+.titled-pane > .title:hover {
+    -fx-background-color: #1e8449;  /* Slightly darker green when hovered */
+}
+
+/* Style for the arrow icon */
+.titled-pane > .arrow-button {
+    -fx-background-color: #27ae60;  /* Dark green background for the arrow button */
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the arrow icon */
+.titled-pane > .arrow-button:hover {
+    -fx-background-color: #1e8449;  /* Slightly darker green when hovered */
+}
+/* Style for the Accordion */
+.accordion {
+    -fx-background-color: #f0f9f0; /* Very light green background for the Accordion */
+    -fx-border-color: #66cc66;     /* Light green border around the Accordion */
+    -fx-border-width: 2px;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
+}
+
+/* Style for the TitledPane (collapsed or unexpanded state) */
+.titled-pane {
+    -fx-background-color: #f0f9f0;  /* Very light green background */
+    -fx-border-color: #66cc66;      /* Light green border for TitledPane */
+    -fx-border-width: 0.5;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-family: "Gisha";
+    -fx-text-fill: #000000;          /* Black text for the title */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0.1, 1, 1); /* Subtle shadow effect */
+}
+
+/* Hover effect for the TitledPane */
+.titled-pane:hover {
+    -fx-background-color: #d4f0d4;  /* Light green background when hovering */
+}
+
+/* Style for the expanded TitledPane */
+.titled-pane:expanded {
+    -fx-background-color: #d4f0d4;  /* Light green background when expanded */
+}
+
+/* Style for the content inside the TitledPane */
+.titled-pane > .content {
+    -fx-background-color: #ffffff;  /* White background for the content */
+    -fx-border-color: #66cc66;      /* Light green border around the content */
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0.1, 1, 1);
+}
+
+/* Style for the title text */
+.titled-pane > .title {
+    -fx-background-color: #b3e6b3;  /* Light green background for the title */
+    -fx-text-fill: white;           /* White text for the title */
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the title */
+.titled-pane > .title:hover {
+    -fx-background-color: #4caf50;  /* Medium green when hovered */
+}
+
+/* Style for the arrow icon */
+.titled-pane > .arrow-button {
+    -fx-background-color: #66cc66;  /* Light green background for the arrow button */
+    -fx-border-radius: 8;
+}
+
+/* Hover effect for the arrow icon */
+.titled-pane > .arrow-button:hover {
+    -fx-background-color: #4caf50;  /* Medium green when hovered */
+}

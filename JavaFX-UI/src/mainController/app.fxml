@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane prefHeight="779.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
+<ScrollPane prefHeight="783.0" prefWidth="1069.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
    <content>
-      <BorderPane prefHeight="758.0" prefWidth="1011.0">
+      <BorderPane prefHeight="773.0" prefWidth="1056.0">
          <top>
-            <VBox prefHeight="212.0" prefWidth="942.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="178.0" prefWidth="957.0" BorderPane.alignment="CENTER">
                <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
                <fx:include fx:id="actionLineComponent" source="../actionLine/actionLine.fxml" />
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
             </VBox>
          </top>
-         <left>
-            <fx:include fx:id="commandComponent" source="../commands/commands.fxml" />
-         </left>
          <padding>
             <Insets left="25.0" />
          </padding>
          <center>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="595.0" prefWidth="707.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="sheetComponent" prefHeight="546.0" prefWidth="653.0">
+                  <AnchorPane fx:id="sheetComponent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="747.0">
                      <padding>
                         <Insets left="20.0" top="40.0" />
                      </padding>
@@ -33,14 +35,51 @@
                </children>
             </HBox>
          </center>
-         <right>
-            <VBox prefHeight="476.0" prefWidth="155.0" BorderPane.alignment="CENTER">
-               <children>
-                  <fx:include fx:id="sortComponent" source="../sort/sort.fxml" />
-                  <fx:include fx:id="filterComponent" source="../filter/filter.fxml" />
-               </children>
-            </VBox>
-         </right>
+         <left>
+            <Accordion>
+              <panes>
+                <TitledPane animated="false" prefHeight="379.0" prefWidth="279.0" text="commands">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="228.0">
+                           <children>
+                              <fx:include fx:id="commandComponent" source="../commands/commands.fxml" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                </TitledPane>
+                <TitledPane animated="false" text="ranges">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="277.0">
+                           <children>
+                              <fx:include fx:id="rangeComponent" source="../ranges/ranges.fxml" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="sort">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="156.0">
+                           <children>
+                              <fx:include fx:id="sortComponent" source="../sort/sort.fxml" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </TitledPane>
+                  <TitledPane animated="false" layoutX="10.0" layoutY="72.0" prefHeight="0.0" prefWidth="230.0" text="filter">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                           <children>
+                              <fx:include fx:id="filterComponent" source="../filter/filter.fxml" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+              </panes>
+            </Accordion>
+         </left>
       </BorderPane>
    </content>
 </ScrollPane>

@@ -8,16 +8,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="260.0" prefWidth="155.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sort.SortController">
+<VBox prefHeight="168.0" prefWidth="156.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sort.SortController">
    <children>
-      <Label prefHeight="29.0" prefWidth="36.0" text="sort:">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <VBox.margin>
-            <Insets left="60.0" top="5.0" />
-         </VBox.margin>
-      </Label>
       <HBox prefHeight="27.0" prefWidth="152.0">
          <children>
             <Label prefHeight="29.0" prefWidth="47.0" text="from:">
@@ -42,7 +34,7 @@
          <children>
             <ComboBox fx:id="startCell" editable="true" prefHeight="31.0" prefWidth="66.0">
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="5.0" />
                </HBox.margin>
             </ComboBox>
             <ComboBox fx:id="endCell" editable="true" prefHeight="31.0" prefWidth="67.0">
@@ -51,6 +43,9 @@
                </HBox.margin>
             </ComboBox>
          </children>
+         <VBox.margin>
+            <Insets right="5.0" />
+         </VBox.margin>
       </HBox>
       <Label text="sort by the columns:">
          <VBox.margin>
