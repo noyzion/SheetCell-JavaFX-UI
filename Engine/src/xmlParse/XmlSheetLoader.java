@@ -9,9 +9,7 @@ import sheet.cell.impl.CellImpl;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
 import sheet.impl.SheetImpl;
-import xmlParse.jaxb.STLCell;
-import xmlParse.jaxb.STLCells;
-import xmlParse.jaxb.STLSheet;
+import xmlParse.jaxb.*;
 
 import java.io.File;
 
@@ -35,10 +33,12 @@ public class XmlSheetLoader {
 
         } catch (JAXBException e) {
             throw new IllegalArgumentException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static Sheet convert(STLSheet stlSheet)   {
+    public static Sheet convert(STLSheet stlSheet) throws Exception {
         if (stlSheet == null) {
             return null;
         }
@@ -49,8 +49,15 @@ public class XmlSheetLoader {
         int rowSize = stlSheet.getSTLLayout().getRows();
         int columnSize = stlSheet.getSTLLayout().getColumns();
         STLCells stlCells = stlSheet.getSTLCells();
-        Sheet sheet = new SheetImpl(name, rowSize, columnSize, colWidthUnits, rowHeightUnits, 1);
+        STLRanges ranges = stlSheet.getSTLRanges();
 
+        Sheet sheet = new SheetImpl(name, rowSize, columnSize, colWidthUnits, rowHeightUnits, 1);
+        for (STLRange range : ranges.getSTLRange()){
+            STLBoundaries boundaries = range.getSTLBoundaries();
+            String toCoordinate = boundaries.getTo();
+            String fromCoordinate = boundaries.getFrom();
+            sheet.addRange(fromCoordinate + ".." + toCoordinate,range.getName());
+        }
         for (STLCell stlCell : stlCells.getSTLCell()) {
             String stringCord = stlCell.getColumn() + stlCell.getRow();
             Coordinate coordinate = CoordinateParser.parse(stringCord);

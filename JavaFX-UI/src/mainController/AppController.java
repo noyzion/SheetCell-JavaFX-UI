@@ -21,10 +21,12 @@ import javafx.stage.Stage;
 import logic.Logic;
 import ranges.RangeController;
 import sheet.SheetController;
+import sheet.range.Range;
 import sort.SortController;
 import xmlParse.XmlSheetLoader;
 
 import java.util.List;
+import java.util.Map;
 
 public class AppController extends Application {
 
@@ -214,5 +216,10 @@ public class AppController extends Application {
     }
     public void deleteRangeForSheet(String name) throws Exception {
         logic.deleteRange(name);
+    }
+
+    public Map<String,Range> getExistingRanges()
+    {
+       return logic.getLatestSheet().getRanges();
     }
 }

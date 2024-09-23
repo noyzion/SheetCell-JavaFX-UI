@@ -9,12 +9,20 @@
       <root url="jar://$PROJECT_DIR$/javafx-sdk-22.0.2/lib/javafx.swing.jar!/" />
       <root url="jar://$PROJECT_DIR$/javafx-sdk-22.0.2/lib/javafx.media.jar!/" />
       <root url="jar://$PROJECT_DIR$/javafx-sdk-22.0.2/lib/javafx.web.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/angus-activation.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jakarta.activation-api.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jakarta.xml.bind-api.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jaxb-core.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jaxb-impl.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jaxb-jxc.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jaxb-xjc.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/Engine/src" />
       <root url="file://$PROJECT_DIR$/JavaFX-UI/src" />
       <root url="file://$PROJECT_DIR$/UI/src" />
+      <root url="jar://$USER_HOME$/Downloads/jaxb-ri-4.0.5/jaxb-ri-4.0.5/mod/jaxb-xjc.jar!/" />
     </SOURCES>
   </library>
 </component>

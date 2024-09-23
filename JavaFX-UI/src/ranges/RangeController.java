@@ -13,6 +13,7 @@ import sheet.range.RangeImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RangeController {
 
@@ -39,6 +40,11 @@ public class RangeController {
         addInputListeners();
     }
 
+    private void loadExistingRanges() {
+        Map<String,Range> existingRanges = mainController.getExistingRanges(); // Assuming this method exists in AppController
+        rangesTable.getItems().clear(); // Clear any existing items
+        rangesTable.getItems().addAll(existingRanges.values()); // Add existing ranges to the table
+    }
     private void setupTableCellClickListener() {
         nameColumn.setCellFactory(col -> {
             TableCell<Range, String> cell = new TableCell<>() {
@@ -172,6 +178,8 @@ public class RangeController {
         startCell.setDisable(false);
         endCell.setDisable(false);
         rangeName.setDisable(false);
+        loadExistingRanges();
+
     }
 
     private void populateComboBoxWithCells() {

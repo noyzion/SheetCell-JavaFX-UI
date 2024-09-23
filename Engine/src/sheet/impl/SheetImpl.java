@@ -1,6 +1,5 @@
 package sheet.impl;
 
-import DTO.CoordinateDTO;
 import sheet.api.Sheet;
 import sheet.cell.api.Cell;
 import sheet.cell.api.EffectiveValue;
@@ -11,7 +10,6 @@ import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateImpl;
 import sheet.range.Range;
 import sheet.range.RangeFactory;
-import sheet.range.RangeImpl;
 
 import java.io.Serializable;
 import java.util.*;
@@ -32,6 +30,7 @@ public class SheetImpl implements Sheet, Serializable {
     public SheetImpl(String sheetName, int rowSize, int columnSize, int columnWidthUnits, int rowsHeightUnits, int version) {
         this.sheetName = sheetName;
         this.cells = new HashMap<>();
+        this.ranges = new HashMap<>();
         this.rowSize = rowSize;
         this.columnSize = columnSize;
         this.columnWidthUnits = columnWidthUnits;
@@ -400,12 +399,14 @@ public class SheetImpl implements Sheet, Serializable {
 
     @Override
     public void addRange(String rangeCells, String name) throws Exception {
-        RangeFactory.addRange(rowSize, columnSize,name,rangeCells);
+        Range newRange = RangeFactory.createRange(rowSize, columnSize, name, rangeCells);
+        ranges.put(newRange.getName(), newRange);
     }
 
     @Override
     public void deleteRange(String name)  throws Exception{
         RangeFactory.removeRange(name);
+        ranges.remove(name);
     }
 
     @Override

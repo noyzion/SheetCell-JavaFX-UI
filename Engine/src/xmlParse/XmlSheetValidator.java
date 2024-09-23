@@ -1,10 +1,10 @@
 package xmlParse;
 
-import xmlParse.jaxb.STLCell;
-import xmlParse.jaxb.STLLayout;
-import xmlParse.jaxb.STLSheet;
+import xmlParse.jaxb.*;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class XmlSheetValidator {
@@ -75,4 +75,5 @@ public class XmlSheetValidator {
     public static String createCellId(STLCell cell) {
         return cell.getColumn() + String.valueOf(cell.getRow());
     }
+
 }

@@ -1,4 +1,7 @@
 package expression;
+
+import expression.impl.Operations.numeric.Sum;
+
 public enum Operation {
     PLUS(2),
     MINUS(2),
@@ -10,7 +13,7 @@ public enum Operation {
     CONCAT(2),
     SUB(3),
     REF(1),
-    PRECENT(2),
+    PERCENT(2),
     AVERAGE(1),
     SUM(1),
     IF(3),

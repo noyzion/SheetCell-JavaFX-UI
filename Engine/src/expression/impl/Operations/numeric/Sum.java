@@ -10,11 +10,11 @@ import sheet.range.Range;
 
 import java.util.List;
 
-public class Average extends UnaryExpression {
+public class Sum extends UnaryExpression {
 
     private Sheet sheet;
 
-    public Average(Expression ex1, Sheet sheet) {
+    public Sum(Expression ex1, Sheet sheet) {
         super(ex1);
         this.sheet = sheet;
     }
@@ -36,26 +36,20 @@ public class Average extends UnaryExpression {
 
         List<Coordinate> rangeCells = range.getCells();
         double sum = 0.0;
-        int counter = 0;
 
         for (Coordinate c : rangeCells) {
             Object cellValue = sheet.getCell(c).getEffectiveValue().getValue();
             if (cellValue instanceof Number) {
                 sum += ((Number) cellValue).doubleValue();
-                counter++;
             }
         }
 
-        if (counter == 0) {
-            throw new IllegalArgumentException("No numeric cells found in the specified range.");
-        }
-
-        return sum / counter; // Return the average
+        return sum;
     }
 
     @Override
     public String getOperationName() {
-        return "AVERAGE";
+        return "SUM";
     }
 
     @Override

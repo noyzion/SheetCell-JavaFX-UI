@@ -4,14 +4,14 @@ import expression.api.Expression;
 import expression.impl.BinaryExpression;
 import sheet.cell.api.CellType;
 
-public class Precent extends BinaryExpression {
-    public Precent(Expression expression1, Expression expression2) {
+public class Percent extends BinaryExpression {
+    public Percent(Expression expression1, Expression expression2) {
         super(expression1, expression2);
     }
 
     @Override
     public String getOperationName() {
-        return "PRECENT";
+        return "PERCENT";
     }
 
     @Override

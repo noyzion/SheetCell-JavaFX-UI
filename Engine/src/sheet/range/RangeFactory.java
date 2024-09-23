@@ -1,8 +1,5 @@
 package sheet.range;
 import DTO.CoordinateDTO;
-import DTO.SheetDTO;
-import sheet.coordinate.Coordinate;
-import sheet.coordinate.CoordinateImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,14 +9,14 @@ import java.util.Map;
 public class RangeFactory {
     private static Map<String, Range> ranges = ranges = new HashMap<>();
 
-    public static boolean addRange(int rowSize, int colSize, String name, String range) {
+    public static Range createRange(int rowSize, int colSize, String name, String range) {
         if (ranges.containsKey(name)) {
-           throw new IllegalArgumentException("range already exists");
+            throw new IllegalArgumentException("range already exists");
         }
 
-       Range newRange = new RangeImpl(rowSize, colSize,name, range);
+        Range newRange = new RangeImpl(rowSize, colSize, name, range);
         ranges.put(name, newRange);
-        return true;
+        return newRange;
     }
 
     public static boolean removeRange(String name) {
@@ -48,25 +45,25 @@ public class RangeFactory {
     public static List<CoordinateDTO> parseRange(int rowSize, int colSize, CoordinateDTO start, CoordinateDTO end) {
         List<CoordinateDTO> cellList = new ArrayList<>();
 
+        // Ensure the start and end coordinates are within bounds
+        if (start.getRow() < 0 || start.getRow() >= rowSize ||
+                start.getColumn() < 0 || start.getColumn() >= colSize ||
+                end.getRow() < 0 || end.getRow() >= rowSize ||
+                end.getColumn() < 0 || end.getColumn() >= colSize) {
+            throw new IllegalArgumentException("Start or end coordinates are out of bounds.");
+        }
+
+        // Iterate over the range defined by start and end coordinates
         for (int column = start.getColumn(); column <= end.getColumn(); column++) {
-            if (column == start.getColumn()) {
-                for (int row = start.getRow(); row <= rowSize; row++) {
-                    cellList.add(new CoordinateDTO(row, column));
-                }
-            }
-            else if (column < end.getColumn()) {
-                for (int row = 0; row <= rowSize; row++) {
-                    cellList.add(new CoordinateDTO(row, column));
-                }
-            }
-            else if (column == end.getColumn()) {
-                for (int row = 0; row <= end.getRow(); row++) {
-                    cellList.add(new CoordinateDTO(row, column));
-                }
+            for (int row = (column == start.getColumn() ? start.getRow() : 0);
+                 row <= (column == end.getColumn() ? end.getRow() : rowSize - 1);
+                 row++) {
+                cellList.add(new CoordinateDTO(row, column));
             }
         }
         return cellList;
     }
+
 
 
     public static CoordinateDTO parseCell(String cell) {

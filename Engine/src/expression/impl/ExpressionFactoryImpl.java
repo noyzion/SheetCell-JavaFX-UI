@@ -35,7 +35,9 @@ public class ExpressionFactoryImpl implements ExpressionFactory, Serializable {
             case "BIGGER" -> new Bigger(args.get(0), args.get(1));
             case "LESS" -> new Less(args.get(0), args.get(1));
             case "EQUAL" -> new Equal(args.get(0), args.get(1));
-            case "PRECENT" -> new Precent(args.get(0), args.get(1));
+            case "PERCENT" -> new Percent(args.get(0), args.get(1));
+            case "AVERAGE" -> new Average(args.get(0), sheet);
+            case "SUM" -> new Sum(args.get(0), sheet);
             default -> throw new IllegalArgumentException("Unknown operator: " + operator);
         };
     }
@@ -47,7 +49,7 @@ public class ExpressionFactoryImpl implements ExpressionFactory, Serializable {
         }
 
         return switch (operator) {
-            case "PLUS", "MINUS", "TIMES", "DIVIDE", "MOD", "POW", "PRECENT", "BIGGER", "LESS" ->
+            case "PLUS", "MINUS", "TIMES", "DIVIDE", "MOD", "POW", "PERCENT", "BIGGER", "LESS" ->
                     validateBinaryOperation(operator, args, coordinate);
             case "CONCAT" -> validateConcatOperation(operator, args, coordinate);
             case "ABS" -> validateAbsOperation(operator, args, coordinate);
@@ -57,8 +59,18 @@ public class ExpressionFactoryImpl implements ExpressionFactory, Serializable {
             case "OR", "AND" -> validateBinaryBooleanOperation(operator, args, coordinate);
             case "IF" -> validateIfOperation(operator, args, coordinate);
             case "EQUAL" -> CellType.BOOLEAN;
+            case "SUM" -> validateRangeOperation(operator, args, coordinate);
+            case "AVERAGE" -> validateRangeOperation(operator, args, coordinate);
             default -> throw new IllegalArgumentException("Unknown operator: " + operator);
         };
+    }
+
+    private CellType validateRangeOperation(String operator, List<Expression> args, Coordinate coordinate) {
+        if (args.size() != 1) {
+            throw new IllegalArgumentException(operator + " requires exactly 1 argument, but got " + args.size());
+        }
+        validateArgumentType(args.get(0), CellType.STRING, operator, "Range", coordinate);
+        return CellType.NUMERIC;
     }
 
     private CellType validateBinaryOperation(String operator, List<Expression> args, Coordinate coordinate) {
