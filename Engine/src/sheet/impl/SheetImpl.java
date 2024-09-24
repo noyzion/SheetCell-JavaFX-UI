@@ -400,6 +400,11 @@ public class SheetImpl implements Sheet, Serializable {
     @Override
     public void addRange(String rangeCells, String name) throws Exception {
         Range newRange = RangeFactory.createRange(rowSize, columnSize, name, rangeCells);
+        if(ranges.get(name) != null)
+        {
+            throw new IllegalArgumentException(name + "range already exists");
+        }
+
         ranges.put(newRange.getName(), newRange);
     }
 

@@ -127,7 +127,7 @@ public class AppController extends Application {
         actionLineComponentController.updateFields(coordinate, cell);
     }
 
-    public CellDTO setCell(String coordinate, String value) {
+    public CellDTO setCell(String coordinate, String value) throws Exception {
         logic.setCellValue(coordinate.toString(), value);
         showSheet(logic.getLatestSheet(),false);
         return logic.getLatestSheet().getCell(coordinate.toString());

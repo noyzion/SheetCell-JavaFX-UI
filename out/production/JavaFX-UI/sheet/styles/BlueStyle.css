@@ -3,7 +3,6 @@
     -fx-padding: 10;
     -fx-font-size: 14px;
     -fx-font-family: "Gisha"; /* Font set to Gisha */
-    -fx-alignment: center;
     -fx-background-radius: 8;  /* Slightly rounded corners */
     -fx-background-insets: 0;
     -fx-background-color: #e6f0ff; /* Very light blue background for cells */

@@ -10,6 +10,8 @@ import sheet.coordinate.CoordinateImpl;
 import sheet.coordinate.CoordinateParser;
 import sheet.impl.Edge;
 import sheet.impl.SheetImpl;
+import sheet.range.Range;
+import sheet.range.RangeImpl;
 
 import java.io.Serializable;
 import java.util.*;
@@ -33,7 +35,7 @@ public class Logic implements Serializable {
         return versionManager.getSheetByVersion(version);
     }
 
-    public void setCellValue(String cellId, String value){
+    public void setCellValue(String cellId, String value) throws Exception {
         if (cellId == null) {
             throw new IllegalArgumentException("Cell ID cannot be null.");
         }
@@ -52,7 +54,7 @@ public class Logic implements Serializable {
         versionManager.addSheet(newSheet);
     }
 
-    private Sheet createNewSheetFrom(Sheet oldSheet) {
+    private Sheet createNewSheetFrom(Sheet oldSheet) throws Exception {
         SheetImpl newSheet = new SheetImpl(
                 oldSheet.getSheetName(),
                 oldSheet.getRowSize(),
@@ -71,6 +73,11 @@ public class Logic implements Serializable {
         for (Edge edge : oldSheet.getEdges()) {
             Edge newEdge = new Edge(edge.getFrom(), edge.getTo());
             newSheet.addEdge(newEdge);
+        }
+
+        for (Map.Entry<String, Range> entry : oldSheet.getRanges().entrySet()) {
+            Range newRange = new RangeImpl(oldSheet.getRowSize(),oldSheet.getColSize(),entry.getValue().getName(), entry.getValue().getRange());
+            newSheet.addRange(newRange.getRange(), newRange.getName());
         }
         return newSheet;
     }

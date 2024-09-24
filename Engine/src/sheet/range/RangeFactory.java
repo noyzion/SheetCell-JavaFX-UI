@@ -11,7 +11,7 @@ public class RangeFactory {
 
     public static Range createRange(int rowSize, int colSize, String name, String range) {
         if (ranges.containsKey(name)) {
-            throw new IllegalArgumentException("range already exists");
+            return ranges.get(name);
         }
 
         Range newRange = new RangeImpl(rowSize, colSize, name, range);

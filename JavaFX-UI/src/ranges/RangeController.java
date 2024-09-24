@@ -41,9 +41,9 @@ public class RangeController {
     }
 
     private void loadExistingRanges() {
-        Map<String,Range> existingRanges = mainController.getExistingRanges(); // Assuming this method exists in AppController
-        rangesTable.getItems().clear(); // Clear any existing items
-        rangesTable.getItems().addAll(existingRanges.values()); // Add existing ranges to the table
+        Map<String,Range> existingRanges = mainController.getExistingRanges();
+        rangesTable.getItems().clear();
+        rangesTable.getItems().addAll(existingRanges.values());
     }
     private void setupTableCellClickListener() {
         nameColumn.setCellFactory(col -> {
