@@ -126,7 +126,7 @@ public class RangeController {
     private void addInputListeners() {
         startCell.valueProperty().addListener((observable, oldValue, newValue) -> {
             populateEndCell(newValue);
-            checkIfAddRangeCanBeEnabled(); // Ensure this is checked after updating the end cell
+            checkIfAddRangeCanBeEnabled();
         });
 
         endCell.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -145,23 +145,26 @@ public class RangeController {
 
     private void populateEndCell(String startCellValue) {
         if (startCellValue != null) {
-            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
-            List<String> endCells = new ArrayList<>();
-            int row = startCoordinate.getRow() + 2;
-            for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
-                while (row <= mainController.getLatestSheet().getRowSize()) {
-                    String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
-                    endCells.add(endCellValue);
-                    row++;
+            if(!startCellValue.isEmpty()) {
+                endCell.setDisable(false);
+                CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
+                List<String> endCells = new ArrayList<>();
+                int row = startCoordinate.getRow() + 2;
+                for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
+                    while (row <= mainController.getLatestSheet().getRowSize()) {
+                        String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
+                        endCells.add(endCellValue);
+                        row++;
+                    }
+                    row = 1;
                 }
-                row = 1;
-            }
 
-            endCell.getItems().clear();
-            endCell.getItems().addAll(endCells);
+                endCell.getItems().clear();
+                endCell.getItems().addAll(endCells);
 
-            if (!endCells.isEmpty()) {
-                endCell.getSelectionModel().selectFirst();
+                if (!endCells.isEmpty()) {
+                    endCell.getSelectionModel().selectFirst();
+                }
             }
         }
     }
@@ -176,7 +179,6 @@ public class RangeController {
     public void enableRange() {
         populateComboBoxWithCells();
         startCell.setDisable(false);
-        endCell.setDisable(false);
         rangeName.setDisable(false);
         loadExistingRanges();
 

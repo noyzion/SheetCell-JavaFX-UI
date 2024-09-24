@@ -22,6 +22,7 @@ public class HeaderController {
     @FXML private TextField currentFile;
     @FXML private TextField fileName;
     @FXML private Button loadFileButton;
+    @FXML private Button cancelAnimation;
     private Consumer<Void> sheetLoadedListener;
     private AppController mainController;
     private String xmlFilePath;
@@ -38,7 +39,6 @@ public class HeaderController {
     }
     @FXML
     private void handleLoadFileButtonAction() {
-        // Save the current file path and name before attempting to load a new file
         previousFilePath = currentFile.getText();
         previousFileName = fileName.getText();
 
@@ -97,7 +97,7 @@ public class HeaderController {
         progressBar.progressProperty().bind(task.progressProperty());
         progressStage.setOnCloseRequest(event -> {
             if (task.isRunning()) {
-                task.cancel(); // Cancel the task if the dialog is closed
+                task.cancel();
             }
         });
 
@@ -107,7 +107,6 @@ public class HeaderController {
 
             try {
                 mainController.setSheetByXML();
-                // Update UI to reflect the new file and name
                 currentFile.setText(xmlFilePath);
                 fileName.setText(file.getName());
                 if (sheetLoadedListener != null) {
@@ -123,7 +122,6 @@ public class HeaderController {
         task.setOnFailed(e -> Platform.runLater(() -> {
             progressBar.progressProperty().unbind();
             progressStage.close();
-            // Restore the previous file path and name
             currentFile.setText(previousFilePath);
             fileName.setText(previousFileName);
             mainController.showErrorDialog("File Load Error", "An error occurred while loading the file.", e.getSource().getException().getMessage());
@@ -139,5 +137,11 @@ public class HeaderController {
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
+    }
+
+    @FXML
+    public void handleCancelAnimationAction()
+    {
+
     }
 }

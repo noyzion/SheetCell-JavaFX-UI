@@ -19,16 +19,11 @@ public class FilterController {
 
     private AppController mainController;
 
-    @FXML
-    private Button filterButton;
-    @FXML
-    private Button cancelFilterButton;
-    @FXML
-    private ComboBox<String> chooseColumn;
-    @FXML
-    private ComboBox<String> startCell;
-    @FXML
-    private ComboBox<String> endCell;
+    @FXML private Button filterButton;
+    @FXML private Button cancelFilterButton;
+    @FXML private ComboBox<String> chooseColumn;
+    @FXML private ComboBox<String> startCell;
+    @FXML private ComboBox<String> endCell;
     private ListView<CheckBox> valueListView = new ListView<>();
     private boolean filter;
     private boolean isProcessing = false;
@@ -73,29 +68,31 @@ public class FilterController {
         populateComboBoxWithColumns();
         populateComboBoxWithCells();
         startCell.setDisable(false);
-        endCell.setDisable(false);
         chooseColumn.setDisable(false);
     }
 
     private void populateEndCell(String startCellValue) {
         if (startCellValue != null) {
-            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
-            List<String> endCells = new ArrayList<>();
-            int row = startCoordinate.getRow() + 2; // Starting 2 rows down
-            for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
-                while (row <= mainController.getLatestSheet().getRowSize()) {
-                    String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
-                    endCells.add(endCellValue);
-                    row++;
+            if (!startCellValue.isEmpty()) {
+                endCell.setDisable(false);
+                CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
+                List<String> endCells = new ArrayList<>();
+                int row = startCoordinate.getRow() + 2; // Starting 2 rows down
+                for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
+                    while (row <= mainController.getLatestSheet().getRowSize()) {
+                        String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
+                        endCells.add(endCellValue);
+                        row++;
+                    }
+                    row = 1;
                 }
-                row = 1;
-            }
 
-            endCell.getItems().clear();
-            endCell.getItems().addAll(endCells);
+                endCell.getItems().clear();
+                endCell.getItems().addAll(endCells);
 
-            if (!endCells.isEmpty()) {
-                endCell.getSelectionModel().selectFirst();
+                if (!endCells.isEmpty()) {
+                    endCell.getSelectionModel().selectFirst();
+                }
             }
         }
     }

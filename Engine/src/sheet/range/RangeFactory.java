@@ -1,5 +1,7 @@
 package sheet.range;
 import DTO.CoordinateDTO;
+import sheet.coordinate.Coordinate;
+import sheet.coordinate.CoordinateImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +44,8 @@ public class RangeFactory {
 
 
 
-    public static List<CoordinateDTO> parseRange(int rowSize, int colSize, CoordinateDTO start, CoordinateDTO end) {
-        List<CoordinateDTO> cellList = new ArrayList<>();
+    public static List<Coordinate> parseRange(int rowSize, int colSize, Coordinate start, Coordinate end) {
+        List<Coordinate> cellList = new ArrayList<>();
 
         // Ensure the start and end coordinates are within bounds
         if (start.getRow() < 0 || start.getRow() >= rowSize ||
@@ -58,12 +60,22 @@ public class RangeFactory {
             for (int row = (column == start.getColumn() ? start.getRow() : 0);
                  row <= (column == end.getColumn() ? end.getRow() : rowSize - 1);
                  row++) {
-                cellList.add(new CoordinateDTO(row, column));
+                cellList.add(new CoordinateImpl(row, column));
             }
         }
         return cellList;
     }
 
+    public static List<CoordinateDTO> parseRangeDTO(int rowSize, int colSize, CoordinateDTO start, CoordinateDTO end) {
+        List<CoordinateDTO> cellList = new ArrayList<>();
+
+        for (int column = start.getColumn(); column <= end.getColumn(); column++) {
+            for (int row = (column == start.getColumn() ? start.getRow() : 1); row <= (column == end.getColumn() ? end.getRow() : rowSize); row++) {
+                cellList.add(new CoordinateDTO(row, column));
+            }
+        }
+        return cellList;
+    }
 
 
     public static CoordinateDTO parseCell(String cell) {

@@ -29,8 +29,8 @@ public class RangeImpl implements Range {
         start = new CoordinateImpl(RangeFactory.parseCell(parts[0].trim()).getRow()-1, RangeFactory.parseCell(parts[0].trim()).getColumn());
         end = new CoordinateImpl(RangeFactory.parseCell(parts[1].trim()).getRow()-1, RangeFactory.parseCell(parts[1].trim()).getColumn());
         cells = new ArrayList<>();
-        for (CoordinateDTO cord : RangeFactory.parseRange(rowSize, colSize,new CoordinateDTO(start.getRow(), start.getColumn())
-                , new CoordinateDTO(end.getRow(), end.getColumn()))) {
+        for (Coordinate cord : RangeFactory.parseRange(rowSize, colSize,start, end))
+        {
             this.cells.add(new CoordinateImpl(cord.getRow(), cord.getColumn()));
         }
     }

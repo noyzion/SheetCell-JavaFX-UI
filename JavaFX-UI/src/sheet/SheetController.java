@@ -15,6 +15,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import mainController.AppController;
+import sheet.coordinate.Coordinate;
+import sheet.coordinate.CoordinateImpl;
 import sheet.range.RangeFactory;
 
 import java.net.URL;
@@ -293,7 +295,8 @@ public class SheetController {
     }
 
     public void highlightRange(CoordinateDTO start, CoordinateDTO end) {
-        List<CoordinateDTO> rangeCoordinates = RangeFactory.parseRange(sheetDTO.getRowSize(), sheetDTO.getColumnSize(), start,end);
+        List<CoordinateDTO> rangeCoordinates = RangeFactory.parseRangeDTO(sheetDTO.getRowSize(), sheetDTO.getColumnSize(),start,end);
+
         rangeCoordinates.forEach(rangeCord -> {
             Label cellLabel = (Label) getCellNode(rangeCord);
             if (cellLabel != null) {

@@ -89,6 +89,7 @@ public class SortController {
     }
 
     public void disableSort() {
+        endCell.setDisable(true);
         cancelSortButton.setDisable(true);
         sortButton.setDisable(true);
         sort = false;
@@ -97,14 +98,16 @@ public class SortController {
     public void enableSort() {
         populateComboBoxWithCells();
         startCell.setDisable(false);
-        endCell.setDisable(false);
     }
 
     private void generateColumnCheckBoxes(String start, String end) {
         checkboxContainer.getChildren().clear();
         columnCheckBoxes.clear();
 
-        if (start == null || end == null) {
+        if ( start == null || end == null) {
+            return;
+        }
+        else if(start.isEmpty() || end.isEmpty()) {
             return;
         }
 
@@ -136,7 +139,6 @@ public class SortController {
         checkIfSortCanBeEnabled();
     }
 
-
     private void checkIfSortCanBeEnabled() {
         boolean canEnable = !startCell.getValue().isEmpty() && !endCell.getValue().isEmpty();
         boolean anyColumnSelected = columnCheckBoxes.stream().anyMatch(CheckBox::isSelected);
@@ -156,30 +158,31 @@ public class SortController {
 
     private void populateEndCell(String startCellValue) {
         if (startCellValue != null) {
-            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
-            List<String> endCells = new ArrayList<>();
-            int row = startCoordinate.getRow() + 2;
-            for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
-                while (row <= mainController.getLatestSheet().getRowSize()) {
-                    String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
-                    endCells.add(endCellValue);
-                    row++;
+            if(!startCellValue.isEmpty()) {
+                endCell.setDisable(false);
+                CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
+                List<String> endCells = new ArrayList<>();
+                int row = startCoordinate.getRow() + 2;
+                for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
+                    while (row <= mainController.getLatestSheet().getRowSize()) {
+                        String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
+                        endCells.add(endCellValue);
+                        row++;
+                    }
+                    row = 1;
                 }
-                row = 1;
-            }
 
-            endCell.getItems().clear();
-            endCell.getItems().addAll(endCells);
+                endCell.getItems().clear();
+                endCell.getItems().addAll(endCells);
 
-            if (!endCells.isEmpty()) {
-                endCell.getSelectionModel().selectFirst();
+                if (!endCells.isEmpty()) {
+                    endCell.getSelectionModel().selectFirst();
+                }
             }
         }
     }
 
-
     private void populateComboBoxWithCells() {
-
         for (char column = 0; column < mainController.getLatestSheet().getColumnSize(); column++) {
             for (int row = 1; row <= mainController.getLatestSheet().getRowSize(); row++) {
                 String ch = CoordinateFactory.convertIndexToColumnLetter(column);
@@ -189,6 +192,4 @@ public class SortController {
             }
         }
     }
-
-
 }
