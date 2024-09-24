@@ -246,10 +246,6 @@ public class SheetImpl implements Sheet, Serializable {
             columnIndices.add(columnIndex);
         }
 
-        if (columnIndices.isEmpty() || start.getRow() > end.getRow() || start.getColumn() > end.getColumn()) {
-            throw new IllegalArgumentException("Invalid sorting range or columns.");
-        }
-
         List<Coordinate> cellsInRange = RangeFactory.parseRange(rowSize, columnSize, start, end);
         Map<Integer, List<Cell>> cellsByRows = new HashMap<>();
 
@@ -271,11 +267,14 @@ public class SheetImpl implements Sheet, Serializable {
         for (int row = 0; row < rowSize; row++) {
             for (int col = 0; col < columnSize; col++) {
                 Coordinate coordinate = new CoordinateImpl(row, col);
-                if (row >= start.getRow() && row <= end.getRow() && col >= start.getColumn() && col <= end.getColumn()) {
+                if (cellsInRange.contains(coordinate)) {
                     List<Cell> sortedRow = cellsByRows.get(row);
-                    if (sortedRow != null && col - start.getColumn() < sortedRow.size()) {
-                        Cell sortedCell = sortedRow.get(col - start.getColumn());
-                        newSheet.addCell(sortedCell);
+                    if (sortedRow != null) {
+                        for (Cell cell : sortedRow) {
+                            if (cell.getCoordinate().equals(coordinate)) {
+                                newSheet.addCell(cell);
+                            }
+                        }
                     }
                 } else {
                     Cell originalCell = this.getCell(coordinate);
