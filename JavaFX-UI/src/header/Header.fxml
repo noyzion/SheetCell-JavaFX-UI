@@ -60,10 +60,22 @@
       </VBox>
     </center>
    <left>
-      <Button fx:id="cancelAnimation" mnemonicParsing="false" onAction="#handleCancelAnimationAction" text="cancel animations" BorderPane.alignment="CENTER">
+      <VBox BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="100.0" left="5.0" />
          </BorderPane.margin>
-      </Button>
+         <children>
+            <Button fx:id="applyaAnimations" mnemonicParsing="false" onAction="#handleApplyAnimationAction" text="apply animations">
+               <VBox.margin>
+                  <Insets left="3.0" top="40.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="cancelAnimation" mnemonicParsing="false" onAction="#handleCancelAnimationAction" text="cancel animations">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
    </left>
 </BorderPane>

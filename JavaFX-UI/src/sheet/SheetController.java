@@ -167,7 +167,7 @@ public class SheetController {
         cell.setStyle("-fx-background-color: " + toRgbString(cellStyle.getBackgroundColor()) + ";");
     }
 
-    private Node getCellNode(CoordinateDTO coordinate) {
+    public Node getCellNode(CoordinateDTO coordinate) {
         for (Node node : gridPane.getChildren()) {
             if (node instanceof Label) {
                 Label label = (Label) node;

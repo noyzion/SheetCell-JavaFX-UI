@@ -19,10 +19,16 @@ import java.util.function.Consumer;
 
 public class HeaderController {
 
-    @FXML private TextField currentFile;
-    @FXML private TextField fileName;
-    @FXML private Button loadFileButton;
-    @FXML private Button cancelAnimation;
+    @FXML
+    private TextField currentFile;
+    @FXML
+    private TextField fileName;
+    @FXML
+    private Button loadFileButton;
+    @FXML
+    private Button cancelAnimation;
+    @FXML
+    private Button applyAnimation;
     private Consumer<Void> sheetLoadedListener;
     private AppController mainController;
     private String xmlFilePath;
@@ -33,10 +39,13 @@ public class HeaderController {
     private void initialize() {
         clearUIComponents();
         loadFileButton.setOnAction(event -> handleLoadFileButtonAction());
+        cancelAnimation.setOnAction(event -> handleCancelAnimationAction());
     }
+
     public void setSheetLoadedListener(Consumer<Void> listener) {
         this.sheetLoadedListener = listener;
     }
+
     @FXML
     private void handleLoadFileButtonAction() {
         previousFilePath = currentFile.getText();
@@ -140,8 +149,12 @@ public class HeaderController {
     }
 
     @FXML
-    public void handleCancelAnimationAction()
-    {
+    public void handleCancelAnimationAction() {
+        mainController.getActionLineController().cancelCellAnimation();
+    }
 
+    @FXML
+    public void handleApplyAnimationAction() {
+        mainController.getActionLineController().applyCellAnimation();
     }
 }
