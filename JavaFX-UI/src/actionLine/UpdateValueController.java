@@ -117,10 +117,9 @@ public class UpdateValueController {
                 TextField numberField = new TextField();
                 numberField.setPromptText("Enter a number");
 
-                // Add a TextFormatter to restrict input to numbers
                 numberField.setTextFormatter(new TextFormatter<>(change -> {
                     String newText = change.getControlNewText();
-                    if (newText.matches("\\d*\\.?\\d*")) { // Allows numbers and decimal points
+                    if (newText.matches("\\d*\\.?\\d*")) {
                         return change;
                     }
                     return null; // Reject invalid input

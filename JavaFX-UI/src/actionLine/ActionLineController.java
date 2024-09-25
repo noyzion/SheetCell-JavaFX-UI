@@ -157,6 +157,10 @@ public class ActionLineController {
                     List<FunctionArgument> functionArgs = updateDialog.getOperationArguments();
                     String updatedValue = updateDialog.getGeneratedString();
                     cell = mainController.setCell(cellIdSelection.getText(), updatedValue);
+                    Node cellLabel = mainController.getSheetComponentController().getCellNode(cell.getCoordinateDTO());
+                    if (cellLabel != null) {
+                        applyCellUpdateAnimation(cellLabel);
+                    }
                     validInput = true;
                 } else {
                     break;
