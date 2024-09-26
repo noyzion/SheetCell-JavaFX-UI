@@ -47,16 +47,19 @@
             </ComboBox>
          </children>
       </HBox>
-      <Label text="sort by the columns:">
+      <Label text="filter by the columns:">
          <VBox.margin>
             <Insets left="10.0" />
          </VBox.margin>
       </Label>
-      <ComboBox fx:id="chooseColumn" editable="true" prefHeight="31.0" prefWidth="69.0">
+      <VBox fx:id="checkboxContainer" spacing="5.0">
          <VBox.margin>
-            <Insets left="45.0" top="10.0" />
+            <Insets />
          </VBox.margin>
-      </ComboBox>
+         <padding>
+            <Insets bottom="5.0" left="55.0" />
+         </padding>
+      </VBox>
       <Button fx:id="filterButton" mnemonicParsing="false" onAction="#handleFilterButtonAction" text="filter">
          <VBox.margin>
             <Insets left="55.0" top="5.0" />

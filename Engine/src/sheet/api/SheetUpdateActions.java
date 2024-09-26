@@ -21,8 +21,7 @@ public interface SheetUpdateActions {
 
     Sheet sortSheet(Coordinate start, Coordinate end, List<String> selectedColumns);
 
-    Sheet applyFilter(Coordinate startCell, Coordinate endCell, char selectedColumn, List<String> selectedValues);
-
+    Sheet applyFilter(Coordinate startCell, Coordinate endCell, List<String> selectedValues, List<Integer> selectedCols);
      void addRange(String rangeCells, String name) throws Exception;
 
     void deleteRange(String name)  throws Exception;

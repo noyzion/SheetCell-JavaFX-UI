@@ -5,48 +5,54 @@ import DTO.SheetDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import mainController.AppController;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateParser;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FilterController {
 
     private AppController mainController;
 
-    @FXML private Button filterButton;
-    @FXML private Button cancelFilterButton;
-    @FXML private ComboBox<String> chooseColumn;
-    @FXML private ComboBox<String> startCell;
-    @FXML private ComboBox<String> endCell;
-    private ListView<CheckBox> valueListView = new ListView<>();
+    @FXML
+    private Button filterButton;
+    @FXML
+    private Button cancelFilterButton;
+    @FXML
+    private ComboBox<String> startCell;
+    @FXML
+    private ComboBox<String> endCell;
+    @FXML
+    private VBox checkboxContainer;
+    private ScrollPane valueScrollPane = new ScrollPane();
+    private VBox valueListViewContainer = new VBox();
     private boolean filter;
     private boolean isProcessing = false;
-    private String selectedColumn;
-
+    private List<String> selectedColumns = new ArrayList<>();
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
         startCell.setDisable(true);
         endCell.setDisable(true);
-        chooseColumn.setDisable(true);
         disableFilter();
         addInputListeners();
+
+        valueScrollPane.setContent(valueListViewContainer);
+        valueScrollPane.setFitToWidth(true);
+        valueListViewContainer.setSpacing(10);
     }
 
     public void clearUIComponents() {
-        chooseColumn.getItems().clear();
-        chooseColumn.getSelectionModel().clearSelection();
         startCell.getItems().clear();
         endCell.getItems().clear();
         startCell.getSelectionModel().clearSelection();
         endCell.getSelectionModel().clearSelection();
-        valueListView.getItems().clear();
+        valueListViewContainer.getChildren().clear();
+        selectedColumns.clear();
+        checkboxContainer.getChildren().clear();
     }
 
     @FXML
@@ -65,34 +71,30 @@ public class FilterController {
     }
 
     public void enableFilter() {
-        populateComboBoxWithColumns();
         populateComboBoxWithCells();
         startCell.setDisable(false);
-        chooseColumn.setDisable(false);
     }
 
     private void populateEndCell(String startCellValue) {
-        if (startCellValue != null) {
-            if (!startCellValue.isEmpty()) {
-                endCell.setDisable(false);
-                CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
-                List<String> endCells = new ArrayList<>();
-                int row = startCoordinate.getRow() + 2; // Starting 2 rows down
-                for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
-                    while (row <= mainController.getLatestSheet().getRowSize()) {
-                        String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
-                        endCells.add(endCellValue);
-                        row++;
-                    }
-                    row = 1;
+        if (startCellValue != null && !startCellValue.isEmpty()) {
+            endCell.setDisable(false);
+            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
+            List<String> endCells = new ArrayList<>();
+            int row = startCoordinate.getRow() + 2;
+            for (int column = startCoordinate.getColumn(); column < mainController.getLatestSheet().getColumnSize(); column++) {
+                while (row <= mainController.getLatestSheet().getRowSize()) {
+                    String endCellValue = CoordinateFactory.convertIndexToColumnLetter(column) + row;
+                    endCells.add(endCellValue);
+                    row++;
                 }
+                row = 1;
+            }
 
-                endCell.getItems().clear();
-                endCell.getItems().addAll(endCells);
+            endCell.getItems().clear();
+            endCell.getItems().addAll(endCells);
 
-                if (!endCells.isEmpty()) {
-                    endCell.getSelectionModel().selectFirst();
-                }
+            if (!endCells.isEmpty()) {
+                endCell.getSelectionModel().selectFirst();
             }
         }
     }
@@ -107,48 +109,29 @@ public class FilterController {
         }
     }
 
-    private void populateComboBoxWithColumns() {
-        chooseColumn.getItems().clear();
-        for (char column = 0; column < mainController.getLatestSheet().getColumnSize(); column++) {
-            String ch = CoordinateFactory.convertIndexToColumnLetter(column);
-            chooseColumn.getItems().add(ch);
-        }
-    }
-
     private void addInputListeners() {
         startCell.valueProperty().addListener((observable, oldValue, newValue) -> {
             populateEndCell(newValue);
         });
-        chooseColumn.valueProperty().addListener((observable, oldValue, newValue) -> {
-            selectedColumn = newValue;
-            validateInputs();
-            validateAndPopulateValues();
-        });
-    }
 
-    private void validateInputs() {
-        boolean isColumnSelected = chooseColumn.getSelectionModel().getSelectedItem() != null;
-        boolean isStartCellSelected = startCell.getSelectionModel().getSelectedItem() != null;
-        boolean isEndCellSelected = endCell.getSelectionModel().getSelectedItem() != null;
-        filterButton.setDisable(!(isColumnSelected && isStartCellSelected && isEndCellSelected));
+        endCell.valueProperty().addListener((observable, oldValue, newValue) -> {
+            populateColumnCheckBoxes();
+        });
     }
 
     private void validateAndPopulateValues() {
         if (isProcessing) return;
         isProcessing = true;
         try {
-            boolean isColumnSelected = chooseColumn.getSelectionModel().getSelectedItem() != null;
             boolean isStartCellSelected = startCell.getSelectionModel().getSelectedItem() != null;
             boolean isEndCellSelected = endCell.getSelectionModel().getSelectedItem() != null;
+            boolean isColumnSelected = !selectedColumns.isEmpty(); // Check if any columns are selected
 
             if (isColumnSelected && isStartCellSelected && isEndCellSelected) {
                 String startCellText = startCell.getValue();
                 String endCellText = endCell.getValue();
-                String selectedColumn = chooseColumn.getValue();
 
-                if (selectedColumn != null && !selectedColumn.isEmpty()) {
-                    populateUniqueValuesAndShowPopup(startCellText, endCellText);
-                }
+                populateUniqueValuesAndShowPopup(startCellText, endCellText);
             }
         } finally {
             isProcessing = false;
@@ -159,16 +142,16 @@ public class FilterController {
         CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
         CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellText);
 
-        List<String> uniqueValues = extractUniqueValues(startCoordinate, endCoordinate);
-        if (uniqueValues.isEmpty()) {
-            mainController.showErrorDialog("No Unique Values", "No unique values found", "Please check the selected column.");
-            return;
+        Map<String, List<String>> columnUniqueValues = new HashMap<>();
+        for (String selectedColumn : selectedColumns) {
+            List<String> uniqueValues = extractUniqueValues(startCoordinate, endCoordinate, selectedColumn);
+            columnUniqueValues.put(selectedColumn, uniqueValues);
         }
 
-        populateValueListView(uniqueValues);
+        populateValueListView(columnUniqueValues);
     }
 
-    private List<String> extractUniqueValues(CoordinateDTO start, CoordinateDTO end) {
+    private List<String> extractUniqueValues(CoordinateDTO start, CoordinateDTO end, String selectedColumn) {
         Set<String> uniqueValues = new HashSet<>();
         SheetDTO sheet = mainController.getLatestSheet();
         int columnIndex = selectedColumn.charAt(0) - 'A';
@@ -184,30 +167,27 @@ public class FilterController {
         return new ArrayList<>(uniqueValues);
     }
 
-    private void populateValueListView(List<String> uniqueValues) {
-        valueListView.getItems().clear();
-        for (String value : uniqueValues) {
-            CheckBox checkBox = new CheckBox(value);
-            valueListView.getItems().add(checkBox);
+    private void populateValueListView(Map<String, List<String>> columnUniqueValues) {
+        valueListViewContainer.getChildren().clear();
+
+        for (Map.Entry<String, List<String>> entry : columnUniqueValues.entrySet()) {
+            String columnName = entry.getKey();
+            List<String> uniqueValues = entry.getValue();
+
+            Label columnHeader = new Label("Column " + columnName);
+            columnHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+
+            VBox columnGroup = new VBox(5);
+            columnGroup.getChildren().add(columnHeader);
+
+            for (String value : uniqueValues) {
+                CheckBox checkBox = new CheckBox(value);
+                columnGroup.getChildren().add(checkBox);
+            }
+
+            valueListViewContainer.getChildren().add(columnGroup);
         }
     }
-
-    private void showFilterPopup() {
-        Alert dialog = new Alert(Alert.AlertType.NONE, "Select values to filter:");
-        dialog.initModality(Modality.APPLICATION_MODAL); // Make the dialog modal
-
-        VBox dialogPaneContent = new VBox();
-        dialogPaneContent.getChildren().add(valueListView);
-
-        ButtonType okButtonType = new ButtonType("Filter", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
-
-
-        dialog.getDialogPane().setContent(dialogPaneContent);
-        dialog.showAndWait();
-
-    }
-
 
     @FXML
     private void handleFilterButtonAction() {
@@ -215,16 +195,22 @@ public class FilterController {
         String startCellText = startCell.getValue();
         String endCellText = endCell.getValue();
         try {
-            if (startCellText == null || endCellText == null || selectedColumn == null) {
-                mainController.showErrorDialog("Input Error", "Invalid input", "Please specify a range and a column.");
+            if (startCellText == null || endCellText == null || selectedColumns.isEmpty()) {
+                mainController.showErrorDialog("Input Error", "Invalid input", "Please specify a range and at least one column.");
                 return;
             }
+            validateAndPopulateValues();
             showFilterPopup();
 
             List<String> selectedValues = new ArrayList<>();
-            for (CheckBox checkBox : valueListView.getItems()) {
-                if (checkBox.isSelected()) {
-                    selectedValues.add(checkBox.getText());
+
+            for (javafx.scene.Node node : valueListViewContainer.getChildren()) {
+                if (node instanceof VBox columnGroup) {
+                    for (javafx.scene.Node childNode : columnGroup.getChildren()) {
+                        if (childNode instanceof CheckBox checkBox && checkBox.isSelected()) {
+                            selectedValues.add(checkBox.getText());
+                        }
+                    }
                 }
             }
 
@@ -235,8 +221,14 @@ public class FilterController {
 
             CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellText);
             CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellText);
-            mainController.filterSheet(startCoordinate, endCoordinate, selectedColumn.charAt(0), selectedValues);
+            List<Integer> cols = new ArrayList<>();
+            for (String col : selectedColumns) {
+                cols.add(col.charAt(0) - 'A');
+            }
+            mainController.filterSheet(startCoordinate, endCoordinate, selectedValues, cols);
+
             cancelFilterButton.setDisable(false);
+
         } catch (Exception e) {
             String errorTitle = "Error";
             String errorHeader = "Failed to filter the selected cells";
@@ -244,5 +236,56 @@ public class FilterController {
 
             mainController.showErrorDialog(errorTitle, errorHeader, errorMessage);
         }
+    }
+
+    private void populateColumnCheckBoxes() {
+        checkboxContainer.getChildren().clear();
+
+        String startCellValue = startCell.getValue();
+        String endCellValue = endCell.getValue();
+
+        if (startCellValue == null || endCellValue == null) {
+            return;
+        } else if (startCellValue.isEmpty() || endCellValue.isEmpty()) {
+            return;
+        }
+        try {
+            CoordinateDTO startCoordinate = CoordinateParser.parseDTO(startCellValue);
+            CoordinateDTO endCoordinate = CoordinateParser.parseDTO(endCellValue);
+
+            for (int colIndex = startCoordinate.getColumn(); colIndex <= endCoordinate.getColumn(); colIndex++) {
+                String columnName = CoordinateFactory.convertIndexToColumnLetter(colIndex);
+                CheckBox columnCheckBox = new CheckBox(columnName);
+                columnCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        selectedColumns.add(columnName);
+                    } else {
+                        selectedColumns.remove(columnName);
+                    }
+                    filterButton.setDisable(selectedColumns.isEmpty());
+                });
+                checkboxContainer.getChildren().add(columnCheckBox);
+            }
+        } catch (Exception e) {
+            String errorTitle = "Checkbox Generation Error";
+            String errorHeader = "Failed to generate column checkboxes";
+            String errorMessage = "An error occurred while generating checkboxes: " + e.getMessage();
+
+            mainController.showErrorDialog(errorTitle, errorHeader, errorMessage);
+        }
+    }
+
+    private void showFilterPopup() {
+        Alert dialog = new Alert(Alert.AlertType.NONE, "Select values to filter:");
+        dialog.initModality(Modality.APPLICATION_MODAL);
+
+        VBox dialogPaneContent = new VBox();
+        dialogPaneContent.getChildren().add(valueScrollPane);
+
+        ButtonType okButtonType = new ButtonType("Filter", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(okButtonType, ButtonType.CANCEL);
+
+        dialog.getDialogPane().setContent(dialogPaneContent);
+        dialog.showAndWait();
     }
 }

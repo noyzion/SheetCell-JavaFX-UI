@@ -381,21 +381,29 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public Sheet applyFilter(Coordinate startCell, Coordinate endCell, char selectedColumn, List<String> selectedValues) {
+    public Sheet applyFilter(Coordinate startCell, Coordinate endCell, List<String> selectedValues, List<Integer> selectedCols) {
         Sheet filteredSheet = new SheetImpl(sheetName + " - Filtered", rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
-        int columnIndex = selectedColumn - 'A';
+
         for (int row = startCell.getRow(); row <= endCell.getRow(); row++) {
-            Coordinate currentCoordinate = new CoordinateImpl(row, columnIndex);
-            Cell cell = getCell(currentCoordinate);
-            if (cell != null) {
-                String cellValue = cell.getEffectiveValue() != null ? cell.getEffectiveValue().toString() : "";
-                if (selectedValues.contains(cellValue)) {
-                    for (int col = 0; col < columnSize; col++) {
-                        Coordinate newCoordinate = new CoordinateImpl(row, col);
-                        Cell originalCell = getCell(newCoordinate);
-                        if (originalCell != null) {
-                            filteredSheet.addCell(originalCell);
-                        }
+            boolean rowMatches = false;
+            for (int colIndex : selectedCols) {
+                Coordinate currentCoordinate = new CoordinateImpl(row, colIndex);
+                Cell cell = getCell(currentCoordinate);
+                if (cell != null) {
+                    String cellValue = cell.getEffectiveValue() != null ? cell.getEffectiveValue().toString() : "";
+                    if (selectedValues.contains(cellValue)) {
+                        rowMatches = true;
+                        break;
+                    }
+                }
+            }
+
+            if (rowMatches) {
+                for (int col = 0; col < columnSize; col++) {
+                    Coordinate newCoordinate = new CoordinateImpl(row, col);
+                    Cell originalCell = getCell(newCoordinate);
+                    if (originalCell != null) {
+                        filteredSheet.addCell(originalCell);
                     }
                 }
             }
