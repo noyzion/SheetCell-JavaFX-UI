@@ -9,73 +9,70 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="131.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="154.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
     <top>
-      <HBox prefWidth="693.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="220.0" top="5.0" />
-         </BorderPane.margin>
-      </HBox>
+        <HBox BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets left="220.0" top="5.0" />
+            </BorderPane.margin>
+        </HBox>
     </top>
     <center>
-      <VBox>
-         <children>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticell" textAlignment="CENTER" wrappingWidth="160.5791015625">
-                  <font>
-                      <Font name="Yu Gothic UI Light" size="40.0" />
-                  </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="150.0" />
-               </VBox.margin>
-              </Text>
-            <HBox maxWidth="-Infinity" prefHeight="27.0" prefWidth="483.0">
-               <children>
-                      <Button fx:id="loadFileButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="26.0" prefWidth="92.0" text="Load File ">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                     <padding>
-                        <Insets bottom="1.0" />
-                     </padding>
-                  </Button>
-                      <TextField fx:id="currentFile" editable="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pickOnBounds="false" prefHeight="27.0" prefWidth="344.0" promptText="file path">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <TextField fx:id="fileName" alignment="CENTER" editable="false" maxWidth="-Infinity" prefHeight="31.0" prefWidth="170.0" promptText="file name">
-               <VBox.margin>
-                  <Insets left="160.0" top="5.0" />
-               </VBox.margin>
-            </TextField>
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="20.0" left="100.0" top="10.0" />
-         </BorderPane.margin>
-      </VBox>
+        <VBox>
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shticell" textAlignment="CENTER">
+                    <font>
+                        <Font name="Yu Gothic UI Light" size="40.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="220.0" />
+                    </VBox.margin>
+                </Text>
+                <HBox prefHeight="27.0">
+                    <children>
+                        <Button fx:id="loadFileButton" mnemonicParsing="false" onAction="#handleLoadFileButtonAction" prefHeight="26.0" prefWidth="92.0" text="Load File">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <TextField fx:id="currentFile" editable="false" focusTraversable="false" prefHeight="31.0" prefWidth="385.0" promptText="file path">
+                            <HBox.margin>
+                                <Insets left="5.0" />
+                            </HBox.margin>
+                        </TextField>
+                    </children>
+                </HBox>
+                <TextField fx:id="fileName" alignment="CENTER" editable="false" maxWidth="-Infinity" prefHeight="31.0" prefWidth="265.0" promptText="file name">
+                    <VBox.margin>
+                        <Insets left="160.0" top="5.0" />
+                    </VBox.margin>
+                </TextField>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="20.0" left="140.0" top="10.0" />
+            </BorderPane.margin>
+        </VBox>
     </center>
-   <left>
-      <VBox BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="100.0" left="5.0" />
-         </BorderPane.margin>
-         <children>
-            <Button fx:id="applyaAnimations" mnemonicParsing="false" onAction="#handleApplyAnimationAction" text="apply animations">
-               <VBox.margin>
-                  <Insets left="3.0" top="40.0" />
-               </VBox.margin>
-            </Button>
-            <Button fx:id="cancelAnimation" mnemonicParsing="false" onAction="#handleCancelAnimationAction" text="cancel animations">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Button>
-         </children>
-      </VBox>
-   </left>
+    <left>
+        <VBox BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="100.0" left="5.0" />
+            </BorderPane.margin>
+            <children>
+                <Button fx:id="applyAnimations" mnemonicParsing="false" onAction="#handleApplyAnimationAction" text="Apply Animations">
+                    <VBox.margin>
+                        <Insets left="3.0" top="40.0" />
+                    </VBox.margin>
+                </Button>
+                <Button fx:id="cancelAnimation" mnemonicParsing="false" onAction="#handleCancelAnimationAction" text="Cancel Animations">
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </left>
 </BorderPane>
