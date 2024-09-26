@@ -19,16 +19,11 @@ import java.util.function.Consumer;
 
 public class HeaderController {
 
-    @FXML
-    private TextField currentFile;
-    @FXML
-    private TextField fileName;
-    @FXML
-    private Button loadFileButton;
-    @FXML
-    private Button cancelAnimation;
-    @FXML
-    private Button applyAnimation;
+    @FXML private TextField currentFile;
+    @FXML private TextField fileName;
+    @FXML private Button loadFileButton;
+    @FXML private Button cancelAnimation;
+    @FXML private Button applyAnimation;
     private Consumer<Void> sheetLoadedListener;
     private AppController mainController;
     private String xmlFilePath;

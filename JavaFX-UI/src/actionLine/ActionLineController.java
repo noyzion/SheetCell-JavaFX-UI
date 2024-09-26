@@ -29,7 +29,7 @@ public class ActionLineController {
     @FXML private Button lastVersionButton;
     private AppController mainController;
     private boolean versionSelected = false;
-    private BooleanProperty cancelAnimation = new SimpleBooleanProperty(false);
+    private BooleanProperty cancelAnimation = new SimpleBooleanProperty(true);
 
     private CellDTO selectedCell;
 
@@ -67,7 +67,7 @@ public class ActionLineController {
 
     private void applyCellUpdateAnimation(Node node) {
         if (cancelAnimation.get()) {
-            return; // Exit if the animation is canceled
+            return;
         }
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(400), node);
         scaleTransition.setFromX(1.0);

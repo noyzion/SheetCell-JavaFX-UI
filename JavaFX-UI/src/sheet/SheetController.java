@@ -295,15 +295,20 @@ public class SheetController {
     }
 
     public void highlightRange(CoordinateDTO start, CoordinateDTO end) {
-        List<CoordinateDTO> rangeCoordinates = RangeFactory.parseRangeDTO(sheetDTO.getRowSize(), sheetDTO.getColumnSize(),start,end);
 
-        rangeCoordinates.forEach(rangeCord -> {
-            Label cellLabel = (Label) getCellNode(rangeCord);
+        List<CoordinateDTO> rangeCoordinates = RangeFactory.parseRangeDTO(
+                sheetDTO.getRowSize(), sheetDTO.getColumnSize(), start, end);
+        System.out.println(rangeCoordinates);
+
+        rangeCoordinates.forEach(rangeCoord -> {
+            System.out.println("Highlighting range coordinate: " + rangeCoord);
+            Label cellLabel = (Label) getCellNode(rangeCoord);
             if (cellLabel != null) {
                 cellLabel.setTextFill(Color.BLACK);
                 cellLabel.setStyle("-fx-background-color: #ffff9f;");
             }
         });
+
     }
 
     private void highlightAffectedCells(CoordinateDTO coordinate) {

@@ -47,7 +47,6 @@ public class RangeFactory {
     public static List<Coordinate> parseRange(int rowSize, int colSize, Coordinate start, Coordinate end) {
         List<Coordinate> cellList = new ArrayList<>();
 
-        // Ensure the start and end coordinates are within bounds
         if (start.getRow() < 0 || start.getRow() >= rowSize ||
                 start.getColumn() < 0 || start.getColumn() >= colSize ||
                 end.getRow() < 0 || end.getRow() >= rowSize ||
@@ -55,11 +54,9 @@ public class RangeFactory {
             throw new IllegalArgumentException("Start or end coordinates are out of bounds.");
         }
 
-        // Iterate over the range defined by start and end coordinates
+
         for (int column = start.getColumn(); column <= end.getColumn(); column++) {
-            for (int row = (column == start.getColumn() ? start.getRow() : 0);
-                 row <= (column == end.getColumn() ? end.getRow() : rowSize - 1);
-                 row++) {
+            for (int row = (column == start.getColumn() ? start.getRow() : 0); row <= (column == end.getColumn() ? end.getRow() : rowSize -1); row++) {
                 cellList.add(new CoordinateImpl(row, column));
             }
         }
@@ -70,7 +67,7 @@ public class RangeFactory {
         List<CoordinateDTO> cellList = new ArrayList<>();
 
         for (int column = start.getColumn(); column <= end.getColumn(); column++) {
-            for (int row = (column == start.getColumn() ? start.getRow() : 1); row <= (column == end.getColumn() ? end.getRow() : rowSize); row++) {
+            for (int row = (column == start.getColumn() ? start.getRow() : 0); row <= (column == end.getColumn() ? end.getRow() : rowSize -1 ); row++) {
                 cellList.add(new CoordinateDTO(row, column));
             }
         }
