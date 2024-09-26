@@ -35,6 +35,7 @@ public class Sum extends UnaryExpression {
         }
 
         List<Coordinate> rangeCells = range.getCells();
+        range.setIsUsedInFunction(true);
         double sum = 0.0;
 
         for (Coordinate c : rangeCells) {

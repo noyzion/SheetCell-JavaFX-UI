@@ -423,10 +423,11 @@ public class SheetImpl implements Sheet, Serializable {
     }
 
     @Override
-    public void deleteRange(String name)  throws Exception{
+    public void deleteRange(String name) throws Exception {
         RangeFactory.removeRange(name);
         ranges.remove(name);
     }
+
 
     @Override
     public Map<String, Range> getRanges()
