@@ -384,23 +384,23 @@ public class SheetImpl implements Sheet, Serializable {
     public Sheet applyFilter(Coordinate startCell, Coordinate endCell, List<String> selectedValues, List<Integer> selectedCols) {
         Sheet filteredSheet = new SheetImpl(sheetName + " - Filtered", rowSize, columnSize, columnWidthUnits, rowsHeightUnits, version);
 
-        for (int row = startCell.getRow(); row <= endCell.getRow(); row++) {
+        List<Coordinate> range = RangeFactory.parseRange(rowSize,columnSize,startCell,endCell);
+        for(Coordinate cord : range){
             boolean rowMatches = false;
-            for (int colIndex : selectedCols) {
-                Coordinate currentCoordinate = new CoordinateImpl(row, colIndex);
-                Cell cell = getCell(currentCoordinate);
+          if(selectedCols.contains(cord.getColumn()))
+            {
+                Cell cell = getCell(cord);
                 if (cell != null) {
                     String cellValue = cell.getEffectiveValue() != null ? cell.getEffectiveValue().toString() : "";
                     if (selectedValues.contains(cellValue)) {
                         rowMatches = true;
-                        break;
                     }
                 }
             }
 
             if (rowMatches) {
-                for (int col = 0; col < columnSize; col++) {
-                    Coordinate newCoordinate = new CoordinateImpl(row, col);
+                for (int col = 0; col <= endCell.getColumn(); col++) {
+                    Coordinate newCoordinate = new CoordinateImpl(cord.getRow(), col);
                     Cell originalCell = getCell(newCoordinate);
                     if (originalCell != null) {
                         filteredSheet.addCell(originalCell);

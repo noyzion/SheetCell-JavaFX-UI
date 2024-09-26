@@ -8,8 +8,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import mainController.AppController;
+import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateParser;
+import sheet.range.Range;
+import sheet.range.RangeFactory;
+import sheet.range.RangeImpl;
 
 import java.util.*;
 
@@ -156,12 +160,16 @@ public class FilterController {
         SheetDTO sheet = mainController.getLatestSheet();
         int columnIndex = selectedColumn.charAt(0) - 'A';
 
-        for (int row = start.getRow(); row <= end.getRow(); row++) {
-            CoordinateDTO cord = new CoordinateDTO(row, columnIndex);
-            if (sheet.getCell(cord.toString()) != null) {
-                String cellValue = sheet.getCell(cord.toString()).getEffectiveValue().toString();
-                if (cellValue != null && !cellValue.isEmpty())
-                    uniqueValues.add(cellValue);
+        List<CoordinateDTO> rangeFilter = RangeFactory.parseRangeDTO(mainController.getLatestSheet().getRowSize(),mainController.getLatestSheet().getColumnSize(),
+                start,end);
+
+        for(CoordinateDTO cord : rangeFilter) {
+            if (cord.getColumn() == columnIndex) {
+                if (sheet.getCell(cord.toString()) != null) {
+                    String cellValue = sheet.getCell(cord.toString()).getEffectiveValue().toString();
+                    if (cellValue != null && !cellValue.isEmpty())
+                        uniqueValues.add(cellValue);
+                }
             }
         }
         return new ArrayList<>(uniqueValues);
