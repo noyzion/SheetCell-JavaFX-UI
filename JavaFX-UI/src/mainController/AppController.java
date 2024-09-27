@@ -5,6 +5,7 @@ import DTO.SheetDTO;
 import actionLine.ActionLineController;
 import commands.CommandsController;
 import filter.FilterController;
+import graphs.GraphController;
 import header.HeaderController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -43,6 +45,8 @@ public class AppController extends Application {
     @FXML private FilterController filterComponentController;
     @FXML private VBox rangeComponent;
     @FXML private RangeController rangeComponentController;
+    @FXML private VBox graphComponent;
+   @FXML private GraphController graphComponentController;
     private SheetController sheetComponentController;
     private String sheetStyle = "/mainController/styles/BasicStyle.css";
     private Scene primaryScene;
@@ -52,7 +56,8 @@ public class AppController extends Application {
     @FXML
     public void initialize() {
         if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null
-                && sortComponentController != null && filterComponentController != null && rangeComponentController != null) {
+                && sortComponentController != null && filterComponentController != null && rangeComponentController != null
+                && graphComponentController != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
@@ -61,6 +66,7 @@ public class AppController extends Application {
             sortComponentController.setMainController(this);
             filterComponentController.setMainController(this);
             rangeComponentController.setMainController(this);
+            graphComponentController.setMainController(this);
             headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
         }
     }
@@ -78,6 +84,8 @@ public class AppController extends Application {
     }
 
     public void showSheet(SheetDTO sheet, boolean readonly) {
+        graphComponentController.clearUIComponents();
+        graphComponentController.enableGraph();
         rangeComponentController.clearUIComponents();
         rangeComponentController.enableRange();
         commandComponentController.setEditCellDisable(true);

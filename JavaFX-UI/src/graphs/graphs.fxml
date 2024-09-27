@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+
+<?import javafx.scene.control.ScrollPane?>
+<VBox fx:id="graphContainer" spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/22.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphs.GraphController">
+    <Label text="Select X-Axis Column"/>
+    <ComboBox fx:id="xColumnComboBox"/>
+
+    <HBox spacing="5">
+        <Label text="Start Row:"/>
+        <ComboBox fx:id="xStartRowComboBox"/>
+        <Label text="End Row:"/>
+        <ComboBox fx:id="xEndRowComboBox"/>
+    </HBox>
+
+    <Separator />
+
+    <Label text="Select Y-Axis Column"/>
+    <ComboBox fx:id="yColumnComboBox"/>
+
+    <HBox spacing="5">
+        <Label text="Start Row:"/>
+        <ComboBox fx:id="yStartRowComboBox"/>
+        <Label text="End Row:"/>
+        <ComboBox fx:id="yEndRowComboBox"/>
+    </HBox>
+
+    <Separator />
+
+    <Label text="Select Graph Type"/>
+    <ComboBox fx:id="graphTypeComboBox"/>
+
+    <Button fx:id="generateGraph" text="Generate Graph" onAction="#onGenerateGraph"/>
+
+    <VBox fx:id="graphComponent" />
+</VBox>

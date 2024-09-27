@@ -188,7 +188,6 @@ public class SortController {
                 String ch = CoordinateFactory.convertIndexToColumnLetter(column);
                 String cell = "" + ch + row;
                 startCell.getItems().add(cell);
-                endCell.getItems().add(cell);
             }
         }
     }
