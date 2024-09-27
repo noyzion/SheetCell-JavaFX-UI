@@ -77,27 +77,25 @@ public class GraphController {
     }
 
     private void populateColumnComboBoxes() {
-        for (int column = 0 ; column < mainController.getLatestSheet().getColumnSize(); column++) {
-                xColumnComboBox.getItems().add(CoordinateFactory.convertIndexToColumnLetter(column));
+        for (int column = 0; column < mainController.getLatestSheet().getColumnSize(); column++) {
+            xColumnComboBox.getItems().add(CoordinateFactory.convertIndexToColumnLetter(column));
             yColumnComboBox.getItems().add(CoordinateFactory.convertIndexToColumnLetter(column));
         }
     }
 
-    private void populateStartComboBox(ComboBox<String> rowComboBox)
-    {
+    private void populateStartComboBox(ComboBox<String> rowComboBox) {
         rowComboBox.setDisable(false);
         for (int row = 1; row <= mainController.getLatestSheet().getRowSize(); row++) {
             rowComboBox.getItems().add(String.valueOf(row));
         }
     }
-    private void populateEndComboBox(ComboBox<String> rowStartComboBox,ComboBox<String> rowEndComboBox) {
-        rowEndComboBox.setDisable(false);
 
+    private void populateEndComboBox(ComboBox<String> rowStartComboBox, ComboBox<String> rowEndComboBox) {
+        rowEndComboBox.setDisable(false);
         for (int row = Integer.parseInt(rowStartComboBox.getValue()); row <= mainController.getLatestSheet().getRowSize(); row++) {
             rowEndComboBox.getItems().add(String.valueOf(row));
         }
     }
-
 
     @FXML
     private void onGenerateGraph() {
@@ -108,13 +106,37 @@ public class GraphController {
         String selectedYStartRow = yStartRowComboBox.getValue();
         String selectedYEndRow = yEndRowComboBox.getValue();
 
-        if (selectedXColumn == null || selectedYColumn == null || selectedXStartRow == null || selectedXEndRow == null ||
-            selectedYStartRow == null || selectedYEndRow == null) {
+        // Error handling for missing selections
+        if (selectedXColumn == null || selectedYColumn == null) {
+            mainController.showErrorDialog("Missing Column Selection", "Please select both X and Y columns.", "Error");
+            return;
+        }
+        if (selectedXStartRow == null || selectedXEndRow == null || selectedYStartRow == null || selectedYEndRow == null) {
+            mainController.showErrorDialog("Missing Row Selection", "Please select start and end rows for both X and Y.", "Error");
+            return;
+        }
+        if (Integer.parseInt(selectedXStartRow) > Integer.parseInt(selectedXEndRow)) {
+            mainController.showErrorDialog("Invalid Row Range", "X Start Row must be less than or equal to X End Row.", "Error");
+            return;
+        }
+        if (Integer.parseInt(selectedYStartRow) > Integer.parseInt(selectedYEndRow)) {
+            mainController.showErrorDialog("Invalid Row Range", "Y Start Row must be less than or equal to Y End Row.", "Error");
             return;
         }
 
+        // Collect data
         List<Double> xAxisData = getColumnData(selectedXColumn, Integer.parseInt(selectedXStartRow), Integer.parseInt(selectedXEndRow));
         List<Double> yAxisData = getColumnData(selectedYColumn, Integer.parseInt(selectedYStartRow), Integer.parseInt(selectedYEndRow));
+
+        // Check if data lists are empty
+        if (xAxisData.isEmpty()) {
+            mainController.showErrorDialog("No Numerical Data", "The selected range for X does not contain any numerical data.", "Error");
+            return;
+        }
+        if (yAxisData.isEmpty()) {
+            mainController.showErrorDialog("No Numerical Data", "The selected range for Y does not contain any numerical data.", "Error");
+            return;
+        }
 
         String graphType = graphTypeComboBox.getValue();
 
@@ -185,27 +207,36 @@ public class GraphController {
     }
 
     private void addInputListeners() {
-        xColumnComboBox.valueProperty().addListener((observable, oldValue, newValue) ->{ checkIfGraphCanBeEnabled();
-            populateStartComboBox(xStartRowComboBox); });
+        xColumnComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            checkIfGraphCanBeEnabled();
+            populateStartComboBox(xStartRowComboBox);
+        });
 
-        xStartRowComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {checkIfGraphCanBeEnabled();
-            populateEndComboBox(xStartRowComboBox,xEndRowComboBox);
+        xStartRowComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            checkIfGraphCanBeEnabled();
+            populateEndComboBox(xStartRowComboBox, xEndRowComboBox);
         });
 
         xEndRowComboBox.valueProperty().addListener((observable, oldValue, newValue) -> checkIfGraphCanBeEnabled());
 
-        yColumnComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {checkIfGraphCanBeEnabled();
-        populateStartComboBox(yStartRowComboBox);
+        yColumnComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            checkIfGraphCanBeEnabled();
+            populateStartComboBox(yStartRowComboBox);
         });
-        yStartRowComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {checkIfGraphCanBeEnabled();
-            populateEndComboBox(yStartRowComboBox,yEndRowComboBox);});
+
+        yStartRowComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            checkIfGraphCanBeEnabled();
+            populateEndComboBox(yStartRowComboBox, yEndRowComboBox);
+        });
+
         yEndRowComboBox.valueProperty().addListener((observable, oldValue, newValue) -> checkIfGraphCanBeEnabled());
     }
 
     private void checkIfGraphCanBeEnabled() {
-        boolean canEnable = xColumnComboBox.getValue() != null && xStartRowComboBox.getValue() != null &&
-                            xEndRowComboBox.getValue() != null && yColumnComboBox.getValue() != null &&
-                            yStartRowComboBox.getValue() != null && yEndRowComboBox.getValue() != null;
-        generateGraph.setDisable(!canEnable);
+        if (xColumnComboBox.getValue() != null && yColumnComboBox.getValue() != null) {
+            generateGraph.setDisable(false);
+        } else {
+            generateGraph.setDisable(true);
+        }
     }
 }
