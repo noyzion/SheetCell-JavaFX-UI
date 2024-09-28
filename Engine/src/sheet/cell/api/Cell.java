@@ -26,9 +26,9 @@ public interface Cell {
 
     void addCellToRelatedCells(Coordinate coordinate);
 
-    int getRowsHeightUnits();
+    double getRowsHeightUnits();
 
-    int getColumnWidthUnits();
+    double getColumnWidthUnits();
 
     void setVersion(int version);
 

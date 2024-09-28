@@ -115,4 +115,13 @@ public class Logic implements Serializable {
     public void deleteRange(String name) throws Exception {
         versionManager.getVersionedSheets().getLast().deleteRange(name);
     }
+
+    public void setRowsHeightUnits(int rowIndex, double newVal)
+    {
+        versionManager.getVersionedSheets().getLast().setRowsHeightUnits(rowIndex,newVal);
+    }
+   public void setColumnWidthUnits(int colIndex, double newVal)
+    {
+        versionManager.getVersionedSheets().getLast().setColumnWidthUnits(colIndex,newVal);
+    }
 }

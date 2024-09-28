@@ -43,10 +43,9 @@ public class Ref extends UnaryExpression {
         Cell cell = sheet.getCell(refCoordinate);
 
         if (cell == null) {
-            cell = new CellImpl(refCoordinate, sheet.getRowsHeightUnits(), sheet.getRowsHeightUnits());
+            cell = new CellImpl(refCoordinate, sheet.getCellRowHeightUnits(refCoordinate.getStringCord()), sheet.getCellColWidthUnits(refCoordinate.getStringCord()));
             sheet.addCell(cell);
             sheet.onCellUpdated(null, refCoordinate);
-            //throw new IllegalArgumentException("Cell at coordinate: " + coordinateStr + " is empty, you cant use it");
         } else if (Objects.equals(cell.getOriginalValue(), " ")) {
             return Double.NaN;
         }

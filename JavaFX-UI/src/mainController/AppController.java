@@ -243,4 +243,13 @@ public class AppController extends Application {
     {
        return logic.getLatestSheet().getRanges();
     }
+
+    public void setRowsHeightUnits(int rowIndex, double newVal)
+    {
+        logic.setRowsHeightUnits(rowIndex,newVal);
+    }
+    public void setColumnWidthUnits(int colIndex, double newVal)
+    {
+        logic.setColumnWidthUnits(colIndex,newVal);
+    }
 }

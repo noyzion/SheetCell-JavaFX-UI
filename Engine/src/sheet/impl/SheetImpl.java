@@ -9,6 +9,7 @@ import sheet.cell.impl.EffectiveValueImp;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateFactory;
 import sheet.coordinate.CoordinateImpl;
+import sheet.coordinate.CoordinateParser;
 import sheet.range.Range;
 import sheet.range.RangeFactory;
 
@@ -22,13 +23,12 @@ public class SheetImpl implements Sheet, Serializable {
     private int version;
     private final int rowSize;
     private final int columnSize;
-    private final int columnWidthUnits;
-    private final int rowsHeightUnits;
+    private double[][] columnWidthUnits;
+    private double[][] rowsHeightUnits;
     private int counterChangedCells = 0;
     private Map<String, Range> ranges;
 
-
-    public SheetImpl(String sheetName, int rowSize, int columnSize, int columnWidthUnits, int rowsHeightUnits, int version) {
+    public SheetImpl(String sheetName, int rowSize, int columnSize, double[][] columnWidthUnits, double[][] rowsHeightUnits, int version) {
         this.sheetName = sheetName;
         this.cells = new HashMap<>();
         this.ranges = new HashMap<>();
@@ -48,15 +48,26 @@ public class SheetImpl implements Sheet, Serializable {
     public void setCounter(int counter) {
         this.counterChangedCells = counter;
     }
-
     @Override
-    public int getColumnWidthUnits() {
+    public double[][] getColumnWidthUnits()
+    {
         return columnWidthUnits;
+    }
+    @Override
+    public double[][] getRowsHeightUnits()
+    {
+        return rowsHeightUnits;
+    }
+    @Override
+    public double getCellColWidthUnits(String cellid) {
+        Coordinate cord = CoordinateParser.parse(cellid);
+       return columnWidthUnits[cord.getRow()][cord.getColumn()];
     }
 
     @Override
-    public int getRowsHeightUnits() {
-        return rowsHeightUnits;
+    public double getCellRowHeightUnits(String cellid) {
+        Coordinate cord = CoordinateParser.parse(cellid);
+        return rowsHeightUnits[cord.getRow()][cord.getColumn()];
     }
 
     @Override
@@ -106,7 +117,7 @@ public class SheetImpl implements Sheet, Serializable {
             previousOriginalValue = cell.getOriginalValue();
             previousEffectiveValue = cell.getEffectiveValue() != null ? cell.getEffectiveValue().copy() : null;
         } else {
-            cell = new CellImpl(coordinate, rowsHeightUnits, columnWidthUnits);
+            cell = new CellImpl(coordinate, getCellRowHeightUnits(coordinate.getStringCord()), getCellColWidthUnits(coordinate.getStringCord()));
             addCell(cell);
         }
 
@@ -433,5 +444,21 @@ public class SheetImpl implements Sheet, Serializable {
     public Map<String, Range> getRanges()
     {
         return ranges;
+    }
+
+    @Override
+    public void setRowsHeightUnits(int rowIndex, double newVal)
+    {
+        for (int colIndex = 0; colIndex < columnSize; colIndex++) {
+            rowsHeightUnits[rowIndex][colIndex] = newVal;
+        }
+    }
+
+    @Override
+    public void setColumnWidthUnits(int colIndex, double newVal)
+    {
+        for (int rowIndex = 0; rowIndex < rowSize; rowIndex++) {
+            columnWidthUnits[rowIndex][colIndex] = newVal;
+        }
     }
 }

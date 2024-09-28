@@ -25,4 +25,7 @@ public interface SheetUpdateActions {
      void addRange(String rangeCells, String name) throws Exception;
 
     void deleteRange(String name)  throws Exception;
+
+    void setRowsHeightUnits(int rowIndex, double newVal);
+    void setColumnWidthUnits(int colIndex, double newVal);
 }

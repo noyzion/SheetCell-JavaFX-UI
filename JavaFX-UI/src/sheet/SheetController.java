@@ -196,8 +196,12 @@ public class SheetController {
 
     private Label createCellLabel(String text, String styleClass, CoordinateDTO coordinate) {
         Label label = new Label(text);
-        double columnWidth = sheetDTO.getColumnWidthUnits();
-        double rowHeight = sheetDTO.getRowsHeightUnits();
+        if(coordinate!= null) {
+            double columnWidth = sheetDTO.getCellColumnWidthUnits(coordinate.toString());
+            double rowHeight = sheetDTO.getCellRowsHeightUnits(coordinate.toString());
+            label.setPrefWidth(columnWidth);
+            label.setPrefHeight(rowHeight);
+        }
         if (coordinate != null) {
             label.setUserData(coordinate);
         }
@@ -216,8 +220,7 @@ public class SheetController {
             label.setAlignment(alignment);
         }
 
-        label.setPrefWidth(columnWidth);
-        label.setPrefHeight(rowHeight);
+
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         label.setPadding(new Insets(5));
@@ -398,7 +401,7 @@ public class SheetController {
             startRowResize(rowIndex, event.getY());
         });
         resizeLine.setOnMouseDragged(event -> {
-            resizeRow(rowIndex, event.getY());
+            double newHeight = resizeRow(rowIndex, event.getY());
         });
         resizeLine.setOnMouseReleased(event -> {
             endRowResize();
@@ -412,13 +415,12 @@ public class SheetController {
         this.resizingColumn = colIndex;
     }
 
-    private void resizeColumn(int colIndex, double currentX) {
+    private double resizeColumn(int colIndex, double currentX) {
         List<ColumnConstraints> columnConstraintsList = gridPane.getColumnConstraints();
-
-        if (colIndex >= 0 && colIndex < columnConstraintsList.size()) {
-            double deltaX = currentX - startX;
+         double deltaX = currentX - startX;
             ColumnConstraints constraints = columnConstraintsList.get(colIndex);
             double newWidth = constraints.getPrefWidth() + deltaX;
+            mainController.setColumnWidthUnits(colIndex-1, newWidth);
 
             if (newWidth < 0) {
                 newWidth = 0;
@@ -426,9 +428,7 @@ public class SheetController {
 
             constraints.setPrefWidth(newWidth);
             startX = currentX;
-        } else {
-            System.err.println("Column index " + colIndex + " is out of bounds. Column constraints size: " + columnConstraintsList.size());
-        }
+            return newWidth;
     }
 
     private void endColumnResize() {
@@ -440,17 +440,15 @@ public class SheetController {
         this.resizingRow = rowIndex;
     }
 
-    private void resizeRow(int rowIndex, double currentY) {
+    private double resizeRow(int rowIndex, double currentY) {
         List<RowConstraints> rowConstraintsList = gridPane.getRowConstraints();
-        if (rowIndex >= 0 && rowIndex < rowConstraintsList.size()) {
-            double deltaY = currentY - startY;
-            RowConstraints constraints = rowConstraintsList.get(rowIndex);
-            double newHeight = constraints.getPrefHeight() + deltaY;
-            constraints.setPrefHeight(Math.max(newHeight, 0)); // Ensure newHeight is not negative
-            startY = currentY;
-        } else {
-            System.err.println("Row index " + rowIndex + " is out of bounds. Row constraints size: " + rowConstraintsList.size());
-        }
+        double deltaY = currentY - startY;
+        RowConstraints constraints = rowConstraintsList.get(rowIndex);
+        double newHeight = constraints.getPrefHeight() + deltaY;
+        mainController.setRowsHeightUnits(rowIndex-1, newHeight);
+        constraints.setPrefHeight(Math.max(newHeight, 0)); // Ensure newHeight is not negative
+        startY = currentY;
+        return newHeight;
     }
 
     private void endRowResize() {
@@ -459,18 +457,25 @@ public class SheetController {
 
     private void initializeColumnConstraints(int numColumns) {
         gridPane.getColumnConstraints().clear();
-        for (int i = 0; i < numColumns + 1; i++) {
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setPrefWidth(sheetDTO.getColumnWidthUnits());
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setPrefWidth(50);
+        gridPane.getColumnConstraints().add(columnConstraints);
+        for (int i = 0; i < numColumns ; i++) {
+             columnConstraints = new ColumnConstraints();
+            columnConstraints.setPrefWidth(sheetDTO.getColumnWidthUnits()[0][i]);
             gridPane.getColumnConstraints().add(columnConstraints);
         }
     }
 
     private void initializeRowConstraints(int numRows) {
+
         gridPane.getRowConstraints().clear();
-        for (int i = 0; i < numRows + 1; i++) {
-            RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setPrefHeight(sheetDTO.getRowsHeightUnits());
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setPrefHeight(15);
+        gridPane.getRowConstraints().add(rowConstraints);
+        for (int i = 0; i < numRows; i++) {
+             rowConstraints = new RowConstraints();
+            rowConstraints.setPrefHeight(sheetDTO.getRowsHeightUnits()[i][0]);
             gridPane.getRowConstraints().add(rowConstraints);
         }
     }

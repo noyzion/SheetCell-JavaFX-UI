@@ -19,10 +19,10 @@ public interface SheetReadActions {
     int getRowSize();
 
     int getColSize();
-
-    int getColumnWidthUnits();
-
-    int getRowsHeightUnits();
+    double[][] getRowsHeightUnits();
+    double[][] getColumnWidthUnits();
+    double getCellColWidthUnits(String cellid);
+    double getCellRowHeightUnits(String cellid);
 
     Map<Coordinate, Cell> getCells();
 

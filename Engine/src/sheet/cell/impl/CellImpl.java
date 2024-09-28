@@ -16,11 +16,11 @@ public class CellImpl implements Cell, Serializable {
     private List<Coordinate> relatedCells = new ArrayList<>();
     private List<Coordinate> affectedCells = new ArrayList<>();
     private int lastVersionUpdate = 1;
-    private final int rowsHeightUnits;
-    private final int columnWidthUnits;
+    private double rowsHeightUnits;
+    private double columnWidthUnits;
 
 
-    public CellImpl(Coordinate coordinate, int rowsHeightUnits, int columnWidthUnits) {
+    public CellImpl(Coordinate coordinate, double rowsHeightUnits, double columnWidthUnits) {
         this.coordinate = coordinate;
         this.rowsHeightUnits = rowsHeightUnits;
         this.columnWidthUnits = columnWidthUnits;
@@ -108,12 +108,12 @@ public class CellImpl implements Cell, Serializable {
 
 
     @Override
-    public int getRowsHeightUnits() {
+    public double getRowsHeightUnits() {
         return rowsHeightUnits;
     }
 
     @Override
-    public int getColumnWidthUnits() {
+    public double getColumnWidthUnits() {
         return columnWidthUnits;
     }
 }

@@ -25,7 +25,7 @@ public class UpdateValueController {
     private CellDTO selectedCell;
     private String generatedString;
     private List<String> cellNames;
-    private boolean confirmed = false;  // Add this flag
+    private boolean confirmed = false;
 
     public boolean isConfirmed() {
         return confirmed;
@@ -62,14 +62,13 @@ public class UpdateValueController {
         Button submitButton = new Button("Submit");
         submitButton.getStyleClass().add("button");
         submitButton.setOnAction(e -> {
-            confirmed = true;  // User confirmed the action
+            confirmed = true;
             handleSubmit(inputTypeComboBox.getValue(), dynamicContentArea, window);
         });
 
-        // Add a Cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.setOnAction(e -> {
-            confirmed = false;  // User canceled the action
+            confirmed = false;
             window.close();
         });
 
@@ -122,7 +121,7 @@ public class UpdateValueController {
                     if (newText.matches("\\d*\\.?\\d*")) {
                         return change;
                     }
-                    return null; // Reject invalid input
+                    return null;
                 }));
 
                 dynamicContentArea.getChildren().add(numberField);
@@ -261,8 +260,6 @@ public class UpdateValueController {
             if (!functionArguments.isEmpty()) {
                 generatedString = formatOperation(selectedOperation, functionArguments);
             }
-
-            System.out.println("Formatted String: " + generatedString);
         } else {
             selectedOperation = null;
             functionArguments = null;
