@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="294.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dynamicAnalysis.DynamicAnalysisController">
+   <children>
+      <HBox prefHeight="31.0" prefWidth="234.0">
+         <children>
+            <Label text="Selected cell:">
+               <HBox.margin>
+                  <Insets left="50.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="selectedCell" text="None">
+               <HBox.margin>
+                  <Insets left="15.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <Label text="Minimum value:">
+         <VBox.margin>
+            <Insets left="60.0" top="5.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="minValue" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+         <VBox.margin>
+            <Insets left="45.0" top="5.0" />
+         </VBox.margin>
+         <padding>
+            <Insets left="40.0" />
+         </padding>
+      </TextField>
+      <Label text="Maximum value:">
+         <VBox.margin>
+            <Insets left="60.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="maxValue" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+         <padding>
+            <Insets left="40.0" />
+         </padding>
+         <VBox.margin>
+            <Insets left="45.0" />
+         </VBox.margin>
+      </TextField>
+      <TextField fx:id="stepSize" editable="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="75.0" promptText="step size">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+         <VBox.margin>
+            <Insets left="80.0" top="12.0" />
+         </VBox.margin>
+      </TextField>
+      <Slider fx:id="slider" prefHeight="37.0" prefWidth="229.0" showTickLabels="true" showTickMarks="true">
+         <VBox.margin>
+            <Insets left="5.0" top="5.0" />
+         </VBox.margin>
+      </Slider>
+      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelAction" text="cancel">
+         <VBox.margin>
+            <Insets left="80.0" top="10.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>
