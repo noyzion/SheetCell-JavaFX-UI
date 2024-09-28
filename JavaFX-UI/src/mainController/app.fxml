@@ -6,10 +6,10 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane prefHeight="783.0" prefWidth="1069.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
+<?import javafx.scene.layout.HBox?>
+<ScrollPane prefHeight="787.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
    <content>
       <BorderPane prefHeight="773.0" prefWidth="1056.0">
          <top>
@@ -24,21 +24,21 @@
          <padding>
             <Insets left="25.0" />
          </padding>
-         <center>
-            <HBox prefHeight="595.0" prefWidth="707.0" BorderPane.alignment="CENTER">
-               <children>
-                  <AnchorPane fx:id="sheetComponent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="747.0">
-                     <padding>
-                        <Insets left="20.0" top="40.0" />
-                     </padding>
-                  </AnchorPane>
-               </children>
-            </HBox>
-         </center>
+          <center>
+              <HBox prefHeight="595.0" prefWidth="707.0" BorderPane.alignment="CENTER">
+                  <children>
+                      <AnchorPane fx:id="sheetComponent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="747.0">
+                          <padding>
+                              <Insets left="20.0" top="40.0" />
+                          </padding>
+                      </AnchorPane>
+                  </children>
+              </HBox>
+          </center>
          <left>
             <Accordion>
               <panes>
-                <TitledPane animated="false" prefHeight="379.0" prefWidth="279.0" text="commands">
+                <TitledPane animated="false" prefHeight="379.0" prefWidth="279.0" text="Commands">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="228.0">
                            <children>
@@ -50,7 +50,7 @@
                         <Insets top="5.0" />
                      </padding>
                 </TitledPane>
-                <TitledPane animated="false" text="ranges">
+                <TitledPane animated="false" text="Ranges">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="277.0">
                            <children>
@@ -59,7 +59,7 @@
                         </AnchorPane>
                   </content>
                 </TitledPane>
-                <TitledPane animated="false" text="sort">
+                <TitledPane animated="false" text="Sort">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="156.0">
                            <children>
@@ -68,7 +68,7 @@
                         </AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="72.0" prefHeight="0.0" prefWidth="230.0" text="filter">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="72.0" prefHeight="0.0" prefWidth="230.0" text="Filter">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
                            <children>
@@ -77,11 +77,22 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="108.0" prefHeight="0.0" prefWidth="230.0" text="graphs" >
+                  <TitledPane animated="false" layoutX="10.0" layoutY="108.0" prefHeight="0.0" prefWidth="230.0" text="Graphs">
                   <content>
-                      <ScrollPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                          <children>
                               <fx:include fx:id="graphComponent" source="../graphs/graphs.fxml" />
-                      </ScrollPane>
+                          </children>
+                      </AnchorPane>
+                  </content>
+                  </TitledPane>
+                  <TitledPane animated="false" prefHeight="0.0" prefWidth="230.0" text="Dynamic Analysis" >
+                  <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                          <children>
+                              <fx:include fx:id="dynamicAnalysisComponent" source="../dynamicAnalysis/dynamicAnalayzer.fxml" />
+                          </children>
+                      </AnchorPane>
                   </content>
                   </TitledPane>
               </panes>

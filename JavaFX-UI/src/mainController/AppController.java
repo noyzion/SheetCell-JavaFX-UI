@@ -4,6 +4,7 @@ import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import actionLine.ActionLineController;
 import commands.CommandsController;
+import dynamicAnalysis.DynamicAnalysisController;
 import filter.FilterController;
 import graphs.GraphController;
 import header.HeaderController;
@@ -47,6 +48,8 @@ public class AppController extends Application {
     @FXML private RangeController rangeComponentController;
     @FXML private VBox graphComponent;
    @FXML private GraphController graphComponentController;
+   @FXML private VBox dynamicAnalysisComponent;
+   @FXML private DynamicAnalysisController dynamicAnalysisComponentController;
     private SheetController sheetComponentController;
     private String sheetStyle = "/mainController/styles/BasicStyle.css";
     private Scene primaryScene;
@@ -57,7 +60,7 @@ public class AppController extends Application {
     public void initialize() {
         if (headerComponentController != null && actionLineComponentController != null && commandComponentController != null
                 && sortComponentController != null && filterComponentController != null && rangeComponentController != null
-                && graphComponentController != null) {
+                && graphComponentController != null && dynamicAnalysisComponentController != null) {
             headerComponentController.setMainController(this);
             actionLineComponentController.setMainController(this);
             sheetComponentController = new SheetController();
@@ -67,8 +70,13 @@ public class AppController extends Application {
             filterComponentController.setMainController(this);
             rangeComponentController.setMainController(this);
             graphComponentController.setMainController(this);
+            dynamicAnalysisComponentController.setMainController(this);
             headerComponentController.setSheetLoadedListener(event -> actionLineComponentController.enableVersionSelector());
         }
+    }
+
+    public DynamicAnalysisController getDynamicAnalysisComponent() {
+        return dynamicAnalysisComponentController;
     }
 
     public List<String> getAllCellNames() {

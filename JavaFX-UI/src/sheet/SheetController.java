@@ -4,6 +4,7 @@ import DTO.CellStyle;
 import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import commands.CommandsController;
+import dynamicAnalysis.DynamicAnalysisController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -240,6 +241,8 @@ public class SheetController {
 
             CommandsController commandsController = mainController.getCommandsController();
             commandsController.updateCellCoordinate(coordinate);
+            DynamicAnalysisController dynamicAnalysisController = mainController.getDynamicAnalysisComponent();
+            dynamicAnalysisController.updateCellCoordinate(coordinate);
             commandsController.setEditCellDisable(false);
             clearHighlightedCells();
 
