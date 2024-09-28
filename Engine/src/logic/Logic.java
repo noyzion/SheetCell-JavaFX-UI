@@ -54,6 +54,18 @@ public class Logic implements Serializable {
         versionManager.addSheet(newSheet);
     }
 
+    public SheetDTO setCellValueDemo(String cellId, String value) throws Exception {
+        if (cellId == null) {
+            throw new IllegalArgumentException("Cell ID cannot be null.");
+        }
+
+        Sheet currentSheet = createNewSheetFrom(versionManager.getVersionedSheets().getLast());
+        Coordinate coordinate = CoordinateParser.parse(cellId);
+        currentSheet.onCellUpdated(value, coordinate);
+
+        return ConverterUtil.toSheetDTO(currentSheet);
+    }
+
     private Sheet createNewSheetFrom(Sheet oldSheet) throws Exception {
         SheetImpl newSheet = new SheetImpl(
                 oldSheet.getSheetName(),

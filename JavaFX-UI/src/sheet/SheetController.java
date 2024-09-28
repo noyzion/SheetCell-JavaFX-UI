@@ -243,6 +243,7 @@ public class SheetController {
             commandsController.updateCellCoordinate(coordinate);
             DynamicAnalysisController dynamicAnalysisController = mainController.getDynamicAnalysisComponent();
             dynamicAnalysisController.updateCellCoordinate(coordinate);
+            dynamicAnalysisController.clearUIComponents();
             commandsController.setEditCellDisable(false);
             clearHighlightedCells();
 

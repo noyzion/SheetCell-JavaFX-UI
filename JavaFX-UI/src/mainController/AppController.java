@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import logic.Logic;
 import ranges.RangeController;
 import sheet.SheetController;
+import sheet.coordinate.Coordinate;
 import sheet.range.Range;
 import sort.SortController;
 import xmlParse.XmlSheetLoader;
@@ -147,6 +148,10 @@ public class AppController extends Application {
         logic.setCellValue(coordinate.toString(), value);
         showSheet(logic.getLatestSheet(),false);
         return logic.getLatestSheet().getCell(coordinate.toString());
+    }
+
+    public void setCellDemo(String coordinate, String value) throws Exception {
+      showSheet(logic.setCellValueDemo(coordinate,value),true);
     }
 
     public SheetDTO getSheetByVersion(int version) {
