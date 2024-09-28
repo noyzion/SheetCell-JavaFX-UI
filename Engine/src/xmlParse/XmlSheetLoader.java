@@ -34,7 +34,7 @@ public class XmlSheetLoader {
         } catch (JAXBException e) {
             throw new IllegalArgumentException(e.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 

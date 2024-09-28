@@ -416,7 +416,7 @@ public class SheetImpl implements Sheet, Serializable {
         Range newRange = RangeFactory.createRange(rowSize, columnSize, name, rangeCells);
         if(ranges.get(name) != null)
         {
-            throw new IllegalArgumentException(name + "range already exists");
+            throw new IllegalArgumentException(name + " range already exists");
         }
 
         ranges.put(newRange.getName(), newRange);
