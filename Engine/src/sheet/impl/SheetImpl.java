@@ -124,6 +124,9 @@ public class SheetImpl implements Sheet, Serializable {
         try {
             cell.setOriginalValue(originalValue);
             removeDependence(cell);
+            for(Range range : ranges.values()) {
+                range.setIsUsedInFunction(false);
+            }
             if (cell.getEffectiveValue() == null) {
                 cell.setEffectiveValue(new EffectiveValueImp(coordinate));
             }
@@ -243,6 +246,7 @@ public class SheetImpl implements Sheet, Serializable {
             this.removeEdge(new Edge(cord, cell.getCoordinate()));
         }
         cell.getRelatedCells().clear();
+
     }
 
     @Override
