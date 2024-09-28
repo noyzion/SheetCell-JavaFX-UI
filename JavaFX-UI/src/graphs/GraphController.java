@@ -156,9 +156,11 @@ public class GraphController {
         for (int row = startRow; row <= endRow; row++) {
             CellDTO cell = sheet.getCell(new CoordinateDTO(row, columnIndex).toString());
             if (cell != null) {
-                Object cellValue = cell.getEffectiveValue().getValue();
-                if (cellValue instanceof Number) {
-                    columnData.add(((Number) cellValue).doubleValue());
+                if(cell.getEffectiveValue() != null) {
+                    Object cellValue = cell.getEffectiveValue().getValue();
+                    if (cellValue instanceof Number) {
+                        columnData.add(((Number) cellValue).doubleValue());
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
 package filter;
 
+import DTO.CellDTO;
 import DTO.CoordinateDTO;
 import DTO.SheetDTO;
 import javafx.fxml.FXML;
@@ -165,10 +166,13 @@ public class FilterController {
 
         for(CoordinateDTO cord : rangeFilter) {
             if (cord.getColumn() == columnIndex) {
-                if (sheet.getCell(cord.toString()) != null) {
-                    String cellValue = sheet.getCell(cord.toString()).getEffectiveValue().toString();
-                    if (cellValue != null && !cellValue.isEmpty())
-                        uniqueValues.add(cellValue);
+                CellDTO cell = sheet.getCell(cord.toString());
+                if (cell != null) {
+                    if (cell.getEffectiveValue() != null) {
+                        String cellValue = sheet.getCell(cord.toString()).getEffectiveValue().toString();
+                        if (cellValue != null && !cellValue.isEmpty())
+                            uniqueValues.add(cellValue);
+                    }
                 }
             }
         }
