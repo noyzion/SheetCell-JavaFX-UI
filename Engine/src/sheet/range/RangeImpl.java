@@ -30,7 +30,6 @@ public class RangeImpl implements Range {
         end = new CoordinateImpl(RangeFactory.parseCell(parts[1].trim()).getRow() - 1, RangeFactory.parseCell(parts[1].trim()).getColumn());
         cells = new ArrayList<>();
         for (Coordinate cord : RangeFactory.parseRange(rowSize, colSize, start, end)) {
-            System.out.println(cord.getStringCord());
             this.cells.add(new CoordinateImpl(cord.getRow(), cord.getColumn()));
         }
     }

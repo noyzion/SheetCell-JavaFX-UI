@@ -242,8 +242,8 @@ public class SheetController {
             CommandsController commandsController = mainController.getCommandsController();
             commandsController.updateCellCoordinate(coordinate);
             DynamicAnalysisController dynamicAnalysisController = mainController.getDynamicAnalysisComponent();
-            dynamicAnalysisController.updateCellCoordinate(coordinate);
             dynamicAnalysisController.clearUIComponents();
+            dynamicAnalysisController.updateCellCoordinate(coordinate);
             commandsController.setEditCellDisable(false);
             clearHighlightedCells();
 
@@ -302,10 +302,7 @@ public class SheetController {
 
         List<CoordinateDTO> rangeCoordinates = RangeFactory.parseRangeDTO(
                 sheetDTO.getRowSize(), sheetDTO.getColumnSize(), start, end);
-        System.out.println(rangeCoordinates);
-
         rangeCoordinates.forEach(rangeCoord -> {
-            System.out.println("Highlighting range coordinate: " + rangeCoord);
             Label cellLabel = (Label) getCellNode(rangeCoord);
             if (cellLabel != null) {
                 cellLabel.setTextFill(Color.BLACK);

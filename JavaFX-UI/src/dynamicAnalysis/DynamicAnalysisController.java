@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import mainController.AppController;
 import sheet.coordinate.Coordinate;
 import sheet.coordinate.CoordinateParser;
@@ -21,7 +22,7 @@ public class DynamicAnalysisController {
     @FXML private TextField stepSize;
     @FXML private Button cancelButton;
     @FXML private Slider slider;
-boolean dynamicAnlysis = false;
+    boolean dynamicAnalysis = false;
 
     public void setMainController(AppController mainController) {
         this.mainController = mainController;
@@ -30,34 +31,34 @@ boolean dynamicAnlysis = false;
     }
 
     public void clearUIComponents() {
-      minValue.clear();
-      maxValue.clear();
-      stepSize.clear();
-      slider.setValue(0);
+        selectedCell.setText("None");
+        minValue.clear();
+        maxValue.clear();
+        stepSize.clear();
     }
 
     @FXML
-    private void handleCancelAction()
-    {
-        if (dynamicAnlysis) {
+    private void handleCancelAction() {
+        if (dynamicAnalysis) {
             mainController.getSheetComponentController().setSheetDTO(mainController.getLatestSheet());
             mainController.showSheet(mainController.getLatestSheet(), false);
             disableInputFields();
         }
     }
+
     public void disableInputFields() {
         minValue.setDisable(true);
         maxValue.setDisable(true);
         stepSize.setDisable(true);
         slider.setDisable(true);
-        dynamicAnlysis = false;
+        dynamicAnalysis = false;
     }
 
     public void enableInputFields() {
         minValue.setDisable(false);
         maxValue.setDisable(false);
         stepSize.setDisable(false);
-        dynamicAnlysis = true;
+        dynamicAnalysis = true;
     }
 
     public void updateCellCoordinate(CoordinateDTO coordinate) {
@@ -66,7 +67,7 @@ boolean dynamicAnlysis = false;
     }
 
     public void enableDynamicAnalysis() {
-        dynamicAnlysis = true;
+        dynamicAnalysis = true;
         try {
             double min = Double.parseDouble(minValue.getText());
             double max = Double.parseDouble(maxValue.getText());
@@ -84,39 +85,41 @@ boolean dynamicAnlysis = false;
             slider.setShowTickMarks(true);
             slider.setMajorTickUnit((max - min) / 10);
             slider.setMinorTickCount(5);
-cancelButton.setDisable(false);
+            cancelButton.setDisable(false);
+
             slider.valueProperty().addListener((obs, oldValue, newValue) -> {
                 try {
                     performDynamicAnalysis(newValue.doubleValue());
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    mainController.showErrorDialog("Dynamic Analysis Error", "Error during dynamic analysis.", e.getMessage());
                 }
                 updateStepSize();
             });
 
         } catch (NumberFormatException e) {
-            System.out.println("Please enter valid numerical values.");
+            mainController.showErrorDialog("Input Error", "Invalid numerical input.", "Please enter valid numerical values.");
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            mainController.showErrorDialog("Range Error", "Invalid range provided.", e.getMessage());
         }
     }
 
     private void addInputListeners() {
-        ChangeListener<String> inputChangeListener = (observable, oldValue, newValue) -> {
-            if (!minValue.getText().isEmpty() && !maxValue.getText().isEmpty()) {
-                enableDynamicAnalysis();
-            }
-        };
 
-        minValue.textProperty().addListener(inputChangeListener);
-        maxValue.textProperty().addListener(inputChangeListener);
+        maxValue.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!minValue.getText().isEmpty() && !maxValue.getText().isEmpty()) {
+                    enableDynamicAnalysis();
+                }
+            }
+        });
+
     }
 
     private void performDynamicAnalysis(double newValue) throws Exception {
         String cellCoordinate = selectedCell.getText();
         Coordinate coordinate = CoordinateParser.parse(cellCoordinate);
 
-      mainController.setCellDemo(cellCoordinate,Double.toString(newValue));
+        mainController.setCellDemo(cellCoordinate, Double.toString(newValue));
     }
 
     private void updateStepSize() {

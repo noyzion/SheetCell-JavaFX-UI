@@ -77,12 +77,13 @@ public class CommandsController {
     }
 
     private void applyColumnAlignment() {
-        if (selectedColumnIndex > 0) { // Ensure a column is selected
+        if (selectedColumnIndex > 0) {
             SheetController sheetController = mainController.getSheetComponentController();
             sheetController.setColumnAlignment(selectedColumnIndex, selectedAlignment);
             setAligmentButtonsDisable(true);
         }
     }
+
     public void setEditCellDisable(boolean disable) {
         backgroundColorPicker.setDisable(disable);
         textColorPicker.setDisable(disable);
