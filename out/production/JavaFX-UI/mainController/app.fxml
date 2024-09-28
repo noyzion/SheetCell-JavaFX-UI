@@ -7,97 +7,91 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.layout.HBox?>
-<ScrollPane prefHeight="787.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
-   <content>
-      <BorderPane prefHeight="773.0" prefWidth="1056.0">
-         <top>
-            <VBox prefHeight="178.0" prefWidth="957.0" BorderPane.alignment="CENTER">
-               <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
-               <fx:include fx:id="actionLineComponent" source="../actionLine/actionLine.fxml" />
-               <padding>
-                  <Insets left="30.0" />
-               </padding>
-            </VBox>
-         </top>
-         <padding>
-            <Insets left="25.0" />
-         </padding>
-          <center>
-              <HBox prefHeight="595.0" prefWidth="707.0" BorderPane.alignment="CENTER">
-                  <children>
-                      <AnchorPane fx:id="sheetComponent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="595.0" prefWidth="747.0">
-                          <padding>
-                              <Insets left="20.0" top="40.0" />
-                          </padding>
-                      </AnchorPane>
-                  </children>
-              </HBox>
-          </center>
-         <left>
-            <Accordion maxHeight="-Infinity" prefHeight="568.0" prefWidth="278.0">
-              <panes>
-                <TitledPane animated="false" prefHeight="413.0" prefWidth="279.0" text="Commands">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="228.0">
-                           <children>
-                              <fx:include fx:id="commandComponent" source="../commands/commands.fxml" />
-                           </children>
+
+<ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="787.0" prefWidth="1079.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController.AppController">
+    <content>
+        <BorderPane prefHeight="773.0" prefWidth="1056.0">
+            <top>
+                <VBox prefHeight="178.0" prefWidth="957.0" BorderPane.alignment="CENTER">
+                    <fx:include fx:id="headerComponent" source="../header/Header.fxml" />
+                    <fx:include fx:id="actionLineComponent" source="../actionLine/actionLine.fxml" />
+                    <padding>
+                        <Insets left="30.0" />
+                    </padding>
+                </VBox>
+            </top>
+            <center>
+                <HBox prefHeight="595.0" prefWidth="707.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <AnchorPane fx:id="sheetComponent" prefHeight="595.0" prefWidth="747.0">
+                            <padding>
+                                <Insets left="20.0" top="40.0" />
+                            </padding>
                         </AnchorPane>
-                  </content>
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding>
-                </TitledPane>
-                <TitledPane animated="false" text="Ranges">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="277.0">
-                           <children>
-                              <fx:include fx:id="rangeComponent" source="../ranges/ranges.fxml" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </TitledPane>
-                <TitledPane animated="false" text="Sort">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="156.0">
-                           <children>
-                              <fx:include fx:id="sortComponent" source="../sort/sort.fxml" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="72.0" prefHeight="0.0" prefWidth="230.0" text="Filter">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
-                           <children>
-                              <fx:include fx:id="filterComponent" source="../filter/filter.fxml" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="108.0" prefHeight="0.0" prefWidth="230.0" text="Graphs">
-                  <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
-                          <children>
-                              <fx:include fx:id="graphComponent" source="../graphs/graphs.fxml" />
-                          </children>
-                      </AnchorPane>
-                  </content>
-                  </TitledPane>
-                  <TitledPane animated="false" prefHeight="0.0" prefWidth="230.0" text="Dynamic Analysis">
-                  <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="380.0" prefWidth="277.0">
-                          <children>
-                              <fx:include fx:id="dynamicAnalysisComponent" source="../dynamicAnalysis/dynamicAnalayzer.fxml" />
-                          </children>
-                      </AnchorPane>
-                  </content>
-                  </TitledPane>
-              </panes>
-            </Accordion>
-         </left>
-      </BorderPane>
-   </content>
+                    </children>
+                </HBox>
+            </center>
+            <left>
+                <Accordion prefHeight="568.0" prefWidth="278.0">
+                    <panes>
+                        <TitledPane animated="false" prefHeight="413.0" prefWidth="279.0" text="Commands">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="228.0">
+                                    <children>
+                                        <fx:include fx:id="commandComponent" source="../commands/commands.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Ranges">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="277.0">
+                                    <children>
+                                        <fx:include fx:id="rangeComponent" source="../ranges/ranges.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Sort">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="156.0">
+                                    <children>
+                                        <fx:include fx:id="sortComponent" source="../sort/sort.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Filter">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                                    <children>
+                                        <fx:include fx:id="filterComponent" source="../filter/filter.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Graphs">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                                    <children>
+                                        <fx:include fx:id="graphComponent" source="../graphs/graphs.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" text="Dynamic Analysis">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="380.0" prefWidth="277.0">
+                                    <children>
+                                        <fx:include fx:id="dynamicAnalysisComponent" source="../dynamicAnalysis/dynamicAnalayzer.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                    </panes>
+                </Accordion>
+            </left>
+        </BorderPane>
+    </content>
 </ScrollPane>

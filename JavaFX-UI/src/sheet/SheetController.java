@@ -446,7 +446,7 @@ public class SheetController {
         RowConstraints constraints = rowConstraintsList.get(rowIndex);
         double newHeight = constraints.getPrefHeight() + deltaY;
         mainController.setRowsHeightUnits(rowIndex-1, newHeight);
-        constraints.setPrefHeight(Math.max(newHeight, 0)); // Ensure newHeight is not negative
+        constraints.setPrefHeight(Math.max(newHeight, 0));
         startY = currentY;
         return newHeight;
     }
