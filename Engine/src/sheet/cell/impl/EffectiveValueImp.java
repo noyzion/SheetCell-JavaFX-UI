@@ -6,12 +6,15 @@ import expression.impl.BooleanExpression;
 import expression.impl.ExpressionFactoryImpl;
 import expression.impl.NumberExpression;
 import expression.impl.Operations.Ref;
+import expression.impl.Operations.numeric.Average;
+import expression.impl.Operations.numeric.Sum;
 import expression.impl.StringExpression;
 import sheet.api.Sheet;
 import sheet.cell.api.CellType;
 import sheet.cell.api.EffectiveValue;
 import sheet.coordinate.Coordinate;
 import sheet.impl.Edge;
+import sheet.range.Range;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -108,25 +111,43 @@ public class EffectiveValueImp implements EffectiveValue, Serializable {
         }
 
         Expression res;
-            res = getExpression(sheet, operator, args);
-            this.value = res.evaluate();
+        res = getExpression(sheet, operator, args);
+        this.value = res.evaluate();
 
-            if (res instanceof Ref refExpr) {
-                Coordinate ref = refExpr.getRefCoordinate();
-                sheet.getCell(coordinate).addCellToRelatedCells(ref);
-                sheet.getCell(ref).addCellToAffectedCells(coordinate);
-                Edge edge = new Edge(ref, coordinate);
-                if (!sheet.getEdges().contains(edge)) {
-                    sheet.addEdge(edge);
+        if (res instanceof Ref refExpr) {
+            Coordinate ref = refExpr.getRefCoordinate();
+            sheet.getCell(coordinate).addCellToRelatedCells(ref);
+            sheet.getCell(ref).addCellToAffectedCells(coordinate);
+            Edge edge = new Edge(ref, coordinate);
+            if (!sheet.getEdges().contains(edge)) {
+                sheet.addEdge(edge);
+            }
+            cellType = CellType.EXPRESSION;
+        }
+
+        if (res instanceof Average || res instanceof Sum) {
+            if (args.get(0).getCellType() == CellType.STRING) {
+                Range range = sheet.getRanges().get(args.get(0).toString());
+                if (range == null) {
+                    throw new IllegalArgumentException("Range does not exist.");
                 }
-                cellType = CellType.EXPRESSION;
+                List<Coordinate> rangeCells = range.getCells();
+                for (Coordinate cell : rangeCells) {
+                    sheet.getCell(coordinate).addCellToRelatedCells(cell);
+                    sheet.getCell(cell).addCellToAffectedCells(coordinate);
+                    Edge edge = new Edge(cell, coordinate);
+                    if (!sheet.getEdges().contains(edge)) {
+                        sheet.addEdge(edge);
+                    }
+                }
             }
+        }
 
-            if (res == null) {
-                throw new IllegalStateException("Expression could not be created or evaluated.");
-            }
+        if (res == null) {
+            throw new IllegalStateException("Expression could not be created or evaluated.");
+        }
 
-            return res;
+        return res;
 
     }
 

@@ -36,6 +36,7 @@ public class Average extends UnaryExpression {
 
         List<Coordinate> rangeCells = range.getCells();
         range.setIsUsedInFunction(true);
+
         double sum = 0.0;
         int counter = 0;
 
