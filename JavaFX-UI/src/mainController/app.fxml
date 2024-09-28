@@ -36,9 +36,9 @@
               </HBox>
           </center>
          <left>
-            <Accordion>
+            <Accordion maxHeight="-Infinity" prefHeight="568.0" prefWidth="278.0">
               <panes>
-                <TitledPane animated="false" prefHeight="379.0" prefWidth="279.0" text="Commands">
+                <TitledPane animated="false" prefHeight="413.0" prefWidth="279.0" text="Commands">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="228.0">
                            <children>
@@ -86,9 +86,9 @@
                       </AnchorPane>
                   </content>
                   </TitledPane>
-                  <TitledPane animated="false" prefHeight="0.0" prefWidth="230.0" text="Dynamic Analysis" >
+                  <TitledPane animated="false" prefHeight="0.0" prefWidth="230.0" text="Dynamic Analysis">
                   <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="465.0" prefWidth="253.0">
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="380.0" prefWidth="277.0">
                           <children>
                               <fx:include fx:id="dynamicAnalysisComponent" source="../dynamicAnalysis/dynamicAnalayzer.fxml" />
                           </children>
